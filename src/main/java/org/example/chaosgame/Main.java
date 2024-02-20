@@ -1,0 +1,6 @@
+package org.example.chaosgame;
+
+public class Main {
+  public static void main(String[] args) {
+  }
+}
