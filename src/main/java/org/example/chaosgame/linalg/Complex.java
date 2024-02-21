@@ -1,4 +1,4 @@
 package org.example.chaosgame.linalg;
 
-public class Complex {
+public class Complex extends Vector2D {
 }
