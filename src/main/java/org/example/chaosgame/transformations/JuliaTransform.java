@@ -14,7 +14,9 @@ public class JuliaTransform implements Transform2D{
 
   @Override
   public Vector2D transform(Vector2D point) {
-    Vector2D result = this.point.sqrt(point.getX(), point.getY());
+    Vector2D result = this.point.sqrt(
+            point.getX() - this.point.getX(),
+            point.getY() - this.point.getY());
     double a = sign * result.getX();
     double b = sign * result.getY();
     return new Vector2D(a, b);
