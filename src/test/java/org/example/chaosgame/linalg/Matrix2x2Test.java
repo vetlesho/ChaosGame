@@ -1,37 +1,78 @@
 package org.example.chaosgame.linalg;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class Matrix2x2Test {
-  private final double a = 1.0;
-  private final double b = 2.0;
-  private final double c = 3.0;
-  private final double d = 4.0;
-  Matrix2x2 matrix = new Matrix2x2(a, b, c, d);
-  Vector2D vector = new Vector2D(1.0, 2.0);
+  private  double a;
+  private  double b;
+  private  double c;
+  private  double d;
+  private Matrix2x2 matrix;
+  private Vector2D vector;
 
-  @Test
-  void getA() {
+  @BeforeEach
+  void setUp() {
+    a = 1.0;
+    b = 2.0;
+    c = 3.0;
+    d = 4.0;
+    matrix = new Matrix2x2(a, b, c, d);
+    vector = new Vector2D(1.0, 2.0);
   }
 
-  @Test
-  void getB() {
+  @AfterEach
+  void tearDown() {
+    matrix = null;
+    vector = null;
   }
 
-  @Test
-  void getC() {
+  @Nested
+  @DisplayName("Test for getters")
+  class TestGetters {
+    @Test
+    @DisplayName("Test getA")
+    void getA() {
+      assertEquals(a, matrix.getA());
+    }
+
+    @Test
+    @DisplayName("Test getB")
+    void getB() {
+      assertEquals(b, matrix.getB());
+    }
+
+    @Test
+    @DisplayName("Test getC")
+    void getC() {
+      assertEquals(c, matrix.getC());
+    }
+
+    @Test
+    @DisplayName("Test getD")
+    void getD() {
+      assertEquals(d, matrix.getD());
+    }
   }
 
-  @Test
-  void getD() {
-  }
+  @Nested
+  @DisplayName("Test multiply method")
+  class TestMultiply {
+    @Test
+    @DisplayName("Test multiply should work")
+    void multiply() {
+      Vector2D w = matrix.multiply(vector);
+      assertEquals(5.0, w.getX());
+      assertEquals(11.0, w.getY());
+    }
 
-  @Test
-  void multiply() {
-    Vector2D w = matrix.multiply(vector);
-    assertEquals(5.0, w.getX());
-    assertEquals(11.0, w.getY());
+    @Test
+    @DisplayName("Test multiply should not work")
+    void multiplyFail() {
+      Vector2D w = matrix.multiply(vector);
+      assertNotEquals(1.0, w.getX());
+      assertNotEquals(2.0, w.getY());
+    }
   }
 }
