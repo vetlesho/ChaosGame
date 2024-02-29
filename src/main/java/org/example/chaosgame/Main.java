@@ -35,18 +35,18 @@ public class Main extends Application {
     List<Transform2D> transforms = List.of(transform, transform2, transform3);
 
    JuliaTransform juliaTransform = new JuliaTransform(
-           new Complex(0.1, 0.2), 1);
+           new Complex(-0.84, -0.2), 1);
    JuliaTransform juliaTransform2 = new JuliaTransform(
            new Complex(0.3, 0.2), -1);
    JuliaTransform juliaTransform3 = new JuliaTransform(
            new Complex(0.5, 0.2), 1);
 
-    List<Transform2D> juliaTransforms = List.of(juliaTransform, juliaTransform2, juliaTransform3);
+    List<Transform2D> juliaTransforms = List.of(juliaTransform);
 
     ChaosGameDescription description = new ChaosGameDescription(
-            new Vector2D(0, 0),
-            new Vector2D(1, 1),
-            transforms
+            new Vector2D(-1.6, -1),
+            new Vector2D(1.6, 1),
+            juliaTransforms
     );
 
     ChaosGame game = new ChaosGame(description, 1200, 800);

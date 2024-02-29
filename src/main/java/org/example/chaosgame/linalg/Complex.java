@@ -1,5 +1,7 @@
 package org.example.chaosgame.linalg;
 
+import java.util.Random;
+
 /**
  * Class for complex numbers, extends Vector2D.
  * Complex numbers are represented by a real part and an imaginary part.
@@ -28,9 +30,9 @@ public class Complex extends Vector2D {
    */
   public Complex sqrt(double realPart, double imaginaryPart) {
     double a = Math.pow(realPart, 2) + Math.pow(imaginaryPart, 2);
-
-    double r = Math.sqrt(0.5 * (Math.sqrt(a) + realPart));
-    double i = Math.signum(imaginaryPart) * Math.sqrt(0.5 * (Math.sqrt(a) - realPart));
+    int random = new Random().nextInt(2) == 0 ? 1 : -1;
+    double r = random * Math.sqrt(0.5 * (Math.sqrt(a) + realPart));
+    double i = random * Math.signum(imaginaryPart) * Math.sqrt(0.5 * (Math.sqrt(a) - realPart));
 
     return new Complex(r, i);
   }

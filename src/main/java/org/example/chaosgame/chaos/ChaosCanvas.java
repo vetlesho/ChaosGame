@@ -42,7 +42,9 @@ public class ChaosCanvas {
     Vector2D indices = transformCoordsToIndices.transform(point);
     int x = (int) indices.getX();
     int y = (int) indices.getY();
-    canvas[x][y] = 1;
+    if (x >= 0 && x < height && y >= 0 && y < width) {
+      canvas[x][y] = 1;
+    }
   }
   public int[][] getCanvasArray(){
     return canvas;
