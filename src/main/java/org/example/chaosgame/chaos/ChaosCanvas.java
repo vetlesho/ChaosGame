@@ -21,31 +21,15 @@ public class ChaosCanvas {
     this.maxCoords = maxCoords;
     this.transformCoordsToIndices = new AffineTransform2D(
         new Matrix2x2(0.0, ((height - 1) / (minCoords.getY() - maxCoords.getY())),
-                (width - 1) / (maxCoords.getX() - minCoords.getX()), 0.0),
+                ((width - 1) / (maxCoords.getX() - minCoords.getX())), 0.0),
 
-            new Vector2D((((height - 1.0) * maxCoords.getY())
-                    / (maxCoords.getY() - minCoords.getY())),
+            new Vector2D((((height - 1.0) * maxCoords.getY()) / (maxCoords.getY() - minCoords.getY())),
                     ((width - 1.0) * minCoords.getX()) / (minCoords.getX() - maxCoords.getX())
   ));
     //Vector2D a  = transformCoordsToIndices.transform(new Vector2D(width, height));
     this.canvas = new int[height][width];
   }
 
-  public int getPixel(Vector2D point){
-    Vector2D indices = transformCoordsToIndices.transform(point);
-    int x = (int) indices.getX();
-    int y = (int) indices.getY();
-    return canvas[x][y];
-  }
-
-  public void putPixel (Vector2D point){
-    Vector2D indices = transformCoordsToIndices.transform(point);
-    int x = (int) indices.getX();
-    int y = (int) indices.getY();
-    if (x >= 0 && x < height && y >= 0 && y < width) {
-      canvas[x][y] = 1;
-    }
-  }
   public int[][] getCanvasArray(){
     return canvas;
   }
@@ -64,5 +48,28 @@ public class ChaosCanvas {
 
   public Vector2D getMaxCoords() {
     return maxCoords;
+  }
+
+  public int getPixel(Vector2D point){
+    Vector2D indices = transformCoordsToIndices.transform(point);
+    int x = (int) indices.getX();
+    int y = (int) indices.getY();
+    return canvas[x][y];
+  }
+
+  public void putPixel (Vector2D point){
+    Vector2D indices = transformCoordsToIndices.transform(point);
+    int x = (int) indices.getX();
+    int y = (int) indices.getY();
+    if (x >= 0 && x < height && y >= 0 && y < width) {
+      canvas[x][y] = 1;
+    }
+  }
+  public void clearCanvas(){
+    for (int i = 0; i < height; i++){
+      for (int j = 0; j < width; j++){
+        canvas[i][j] = 0;
+      }
+    }
   }
 }
