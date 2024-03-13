@@ -26,7 +26,7 @@ public class ChaosGameFileHandler {
     while (scanner.hasNextLine()) {
       String line = scanner.nextLine();
       if (line.isEmpty() || line.startsWith("#")) {
-        continue; // Skip empty lines and comments
+        continue; //Skip empty lines and comments
       }
 
       if (minCoords == null) {
@@ -34,6 +34,8 @@ public class ChaosGameFileHandler {
       } else if (maxCoords == null) {
         maxCoords = parseVector(line);
       } else {
+
+        //Change this if it is a Julia or Affine transformation
         transforms.add(parseAffine(line));
       }
     }
@@ -64,5 +66,13 @@ public class ChaosGameFileHandler {
     double x = Double.parseDouble(parts[4].trim());
     double y = Double.parseDouble(parts[5].trim());
     return new AffineTransform2D(new Matrix2x2(a, b, c, d), new Vector2D(x, y));
+  }
+
+  private Transform2D parseJulia(String line) {
+    System.out.println("Parsing transform: " + line);
+    String[] parts = line.split(",");
+    double a = Double.parseDouble(parts[0].trim());
+    double b = Double.parseDouble(parts[1].trim());
+    return new JuliaTransform(new Complex(a, b), 1);
   }
 }

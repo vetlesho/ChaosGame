@@ -26,7 +26,6 @@ public class ChaosCanvas {
             new Vector2D((((height - 1.0) * maxCoords.getY()) / (maxCoords.getY() - minCoords.getY())),
                     ((width - 1.0) * minCoords.getX()) / (minCoords.getX() - maxCoords.getX())
   ));
-    //Vector2D a  = transformCoordsToIndices.transform(new Vector2D(width, height));
     this.canvas = new int[height][width];
   }
 

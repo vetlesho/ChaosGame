@@ -36,4 +36,5 @@ public class Complex extends Vector2D {
 
     return new Complex(r, i);
   }
+
 }
