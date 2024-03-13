@@ -1,48 +1,68 @@
 package org.example.chaosgame;
 
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import org.example.chaosgame.chaos.ChaosCanvas;
 import org.example.chaosgame.chaos.ChaosGame;
 import org.example.chaosgame.chaos.ChaosGameDescription;
-import org.example.chaosgame.linalg.Vector2D;
-import org.example.chaosgame.transformations.AffineTransform2D;
-import org.example.chaosgame.transformations.Transform2D;
-import org.example.chaosgame.linalg.Matrix2x2;
-import java.util.List;
+import org.example.chaosgame.chaos.ChaosGameFileHandler;
 
-public class Main {
-  public static void main(String[] args) {
+public class Main extends Application {
+  @Override
+  public void start(Stage primaryStage) throws Exception {
+    ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
+    ChaosGameDescription description = null;
+    try {
+      // Change this to the path of the file you want to read
+      description = fileHandler.readFromFile("src/main/resources/sierpinski.txt");
+    } catch (Exception e) {
+      System.out.println(e);;
+    }
 
-    AffineTransform2D transform = new AffineTransform2D(new Matrix2x2(0.5, 0, 0, 0.5),
-            new Vector2D(0, 0));
-    AffineTransform2D transform2 = new AffineTransform2D(new Matrix2x2(0.5, 0, 0, 0.5),
-            new Vector2D(0.5, 0));
-    AffineTransform2D transform3 = new AffineTransform2D(new Matrix2x2(0.5, 0, 0, 0.5),
-            new Vector2D(0.25, 0.5));
-    List<Transform2D> transforms = List.of(transform, transform2, transform3);
+    if (description == null) {
+      System.out.println("Failed to read file");
+      return;
+    }
 
-    ChaosGameDescription description = new ChaosGameDescription(
-            new Vector2D(0, 0),
-            new Vector2D(1, 1),
-            transforms
-    );
-
-    ChaosGame game = new ChaosGame(description, 100, 49);
-
+    ChaosGame game = new ChaosGame(description, 1200, 800);
+    game.runSteps(100000000);
     ChaosCanvas chaosCanvas = game.getCanvas();
 
-    game.runSteps(10000000);
-    int[][] canvasArray = chaosCanvas.getCanvasArray();
-    for (int[] ints : canvasArray) {
-      for (int anInt : ints) {
-        if (anInt == 1) {
-          System.out.print("X");
-        } else {
-          System.out.print(" ");
-        }
+    // Create a JavaFX canvas
+    Canvas canvas = new Canvas(chaosCanvas.getWidth(), chaosCanvas.getHeight());
+    GraphicsContext gc = canvas.getGraphicsContext2D();
 
+
+    // Draw ChaosCanvas on JavaFX canvas
+    int[][] canvasArray = chaosCanvas.getCanvasArray();
+    double cellWidth = canvas.getWidth() / chaosCanvas.getWidth();
+    double cellHeight = canvas.getHeight() / chaosCanvas.getHeight();
+    for (int i = 0; i < chaosCanvas.getHeight(); i++) {
+      for (int j = 0; j < chaosCanvas.getWidth(); j++) {
+        if (canvasArray[i][j] == 1) {
+          gc.setFill(Color.WHITE);
+        } else {
+          gc.setFill(Color.BLACK);
+        }
+        gc.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
       }
-      System.out.println();
     }
+
+    // Create a JavaFX window
+    StackPane root = new StackPane();
+    root.getChildren().add(canvas);
+    Scene scene = new Scene(root, chaosCanvas.getWidth(), chaosCanvas.getHeight());
+    primaryStage.setScene(scene);
+    primaryStage.setTitle("Chaos Game Canvas");
+    primaryStage.show();
   }
 
+  public static void main(String[] args) {
+    launch(args);
+  }
 }
