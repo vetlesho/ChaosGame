@@ -51,4 +51,8 @@ public class Vector2D {
             x - other.x,
             y - other.y);
   }
+
+  public double lengthSQ() {
+    return x * x + y * y;
+  }
 }

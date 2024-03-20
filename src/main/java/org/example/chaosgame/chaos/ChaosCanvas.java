@@ -12,6 +12,7 @@ public class ChaosCanvas {
   private final Vector2D maxCoords;
   private final AffineTransform2D transformCoordsToIndices;
 
+
   public ChaosCanvas(int width,
                      int height, Vector2D minCoords,
                      Vector2D maxCoords) {
@@ -43,8 +44,20 @@ public class ChaosCanvas {
     int x = (int) indices.getX();
     int y = (int) indices.getY();
     if (x >= 0 && x < height && y >= 0 && y < width) {
-      canvas[x][y] = 1;
+      canvas[x][y] += 1;
     }
+  }
+
+  public void putPixel(int x, int y, int iter){
+    if (y >= 0 && y < height && x >= 0 && x < width) {
+      canvas[y][x] = iter;
+    }
+  }
+
+  public Vector2D transformIndicesToCoords(int i, int j) {
+    double x = (i * (maxCoords.getX() - minCoords.getX()) / (width - 1)) + minCoords.getX();
+    double y = (j * (minCoords.getY() - maxCoords.getY()) / (height - 1)) + maxCoords.getY();
+    return new Vector2D(x, y);
   }
   public int[][] getCanvasArray(){
     return canvas;

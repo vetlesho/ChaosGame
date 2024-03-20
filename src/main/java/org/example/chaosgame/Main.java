@@ -35,7 +35,7 @@ public class Main extends Application {
     List<Transform2D> transforms = List.of(transform, transform2, transform3);
 
    JuliaTransform juliaTransform = new JuliaTransform(
-           new Complex(-0.84, -0.2), 1);
+           new Complex(-0.70176, -0.3842), 1);
    JuliaTransform juliaTransform2 = new JuliaTransform(
            new Complex(0.3, 0.2), -1);
    JuliaTransform juliaTransform3 = new JuliaTransform(
@@ -50,7 +50,7 @@ public class Main extends Application {
     );
 
     ChaosGame game = new ChaosGame(description, 1200, 800);
-    game.runSteps(1000000);
+    game.runSteps(100000);
     ChaosCanvas chaosCanvas = game.getCanvas();
 
     // Create a JavaFX canvas
@@ -64,14 +64,15 @@ public class Main extends Application {
     double cellHeight = canvas.getHeight() / chaosCanvas.getHeight();
     for (int i = 0; i < chaosCanvas.getHeight(); i++) {
       for (int j = 0; j < chaosCanvas.getWidth(); j++) {
-        if (canvasArray[i][j] == 1) {
-          gc.setFill(Color.BLACK);
-        } else {
-          gc.setFill(Color.WHITE);
-        }
+
+          int scaledValue = Math.min(255, canvasArray[i][j] * 3); // Scale up, but don't exceed 255
+          gc.setFill(Color.rgb(scaledValue, 0, 0, 1));
+//          gc.setFill(Color.rgb(canvasArray[i][j], 0, 0, 1));
+
         gc.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
       }
     }
+    System.out.println(canvasArray[700][1100]);
 
     // Create a JavaFX window
     StackPane root = new StackPane();
