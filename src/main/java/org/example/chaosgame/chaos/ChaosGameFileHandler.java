@@ -7,45 +7,57 @@ import org.example.chaosgame.transformations.AffineTransform2D;
 import org.example.chaosgame.transformations.JuliaTransform;
 import org.example.chaosgame.transformations.Transform2D;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
 
 
 public class ChaosGameFileHandler {
+  private Vector2D minCoords;
+  private Vector2D maxCoords;
+  private final List<Transform2D> transforms = new ArrayList<>();
 
   public ChaosGameDescription readFromFile(String path) throws IOException {
-    Scanner scanner = new Scanner(new File(path));
+    Vector2D minCoords;
+    Vector2D maxCoords;
+    try (Scanner scanner = new Scanner(new File(path))) {
+      scanner.useLocale(Locale.ENGLISH);
+      String typeOfTransformation = scanner.nextLine();
+      minCoords = parseVector(scanner.nextLine().trim());
+      maxCoords = parseVector(scanner.nextLine().trim());
 
-    Vector2D minCoords = null;
-    Vector2D maxCoords = null;
-    List<Transform2D> transforms = new ArrayList<>();
-
-    while (scanner.hasNextLine()) {
-      String line = scanner.nextLine();
-      if (line.isEmpty() || line.startsWith("#")) {
-        continue; //Skip empty lines and comments
-      }
-
-      if (minCoords == null) {
-        minCoords = parseVector(line);
-      } else if (maxCoords == null) {
-        maxCoords = parseVector(line);
-      } else {
-
-        //Change this if it is a Julia or Affine transformation
-        transforms.add(parseAffine(line));
+      //delimeter for kmt
+      transforms.clear();
+      while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        if (typeOfTransformation.equals("Affine2D")) {
+          transforms.add(parseAffine(line));
+        } else if (typeOfTransformation.equals("Julia")) {
+          transforms.add(parseJulia(line));
+        } else {
+          throw new IOException("Invalid transform type");
+        }
       }
     }
-
-    scanner.close();
     return new ChaosGameDescription(minCoords, maxCoords, transforms);
   }
 
-  public void writeToFile(ChaosGameDescription description, String path){
+  public void writeToFile(ChaosGameDescription description, String path) throws IOException {
+    BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 
+    // Skriv type transformasjon
+    if (description.getTransforms().getFirst() instanceof AffineTransform2D) {
+      writer.write("Affine2D\n");
+    } else if (description.getTransforms().getFirst() instanceof JuliaTransform) {
+      writer.write("Julia\n");
+    } else {
+      throw new IOException("Invalid transform type");
+    }
   }
 
   private Vector2D parseVector(String line) {
@@ -71,8 +83,8 @@ public class ChaosGameFileHandler {
   private Transform2D parseJulia(String line) {
     System.out.println("Parsing transform: " + line);
     String[] parts = line.split(",");
-    double a = Double.parseDouble(parts[0].trim());
-    double b = Double.parseDouble(parts[1].trim());
-    return new JuliaTransform(new Complex(a, b), 1);
+    double r = Double.parseDouble(parts[0].trim());
+    double i = Double.parseDouble(parts[1].trim());
+    return new JuliaTransform(new Complex(r, i), 1);
   }
 }

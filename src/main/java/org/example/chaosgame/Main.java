@@ -19,7 +19,7 @@ public class Main extends Application {
     ChaosGameDescription description = null;
     try {
       // Change this to the path of the file you want to read
-      description = fileHandler.readFromFile("src/main/resources/sierpinski.txt");
+      description = fileHandler.readFromFile("src/main/resources/julia.txt");
     } catch (Exception e) {
       System.out.println(e);;
     }
@@ -30,7 +30,7 @@ public class Main extends Application {
     }
 
     ChaosGame game = new ChaosGame(description, 1200, 800);
-    game.runSteps(100000000);
+    game.runSteps(10000000);
     ChaosCanvas chaosCanvas = game.getCanvas();
 
     // Create a JavaFX canvas
@@ -44,12 +44,19 @@ public class Main extends Application {
     double cellHeight = canvas.getHeight() / chaosCanvas.getHeight();
     for (int i = 0; i < chaosCanvas.getHeight(); i++) {
       for (int j = 0; j < chaosCanvas.getWidth(); j++) {
-        if (canvasArray[i][j] == 1) {
-          gc.setFill(Color.WHITE);
-        } else {
-          gc.setFill(Color.BLACK);
+        Color color;
+        int value = chaosCanvas.getCanvasArray()[i][j];
+        if (value >= 255) {
+          value = 255;
         }
-        gc.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
+        if (value == 0) {
+          color = Color.LIGHTGREY;
+        } else {
+          // Adjust the hue component based on the canvas array value
+          color = Color.rgb(value / 255, 0,0,1);
+        }
+        gc.setFill(color);
+        gc.fillRect(j, i, cellWidth, cellHeight);
       }
     }
 

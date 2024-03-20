@@ -1,5 +1,6 @@
 package org.example.chaosgame.chaos;
 
+import javafx.application.Platform;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
@@ -24,12 +25,10 @@ public class ChaosGame {
     return canvas;
   }
   public void runSteps (int steps){
-    // canvas.putPixel(currentPoint); first point may need to be drawn
     for (int i = 0; i < steps; i++){
       int transformIndex = random.nextInt(description.getTransforms().size());
       currentPoint = description.getTransforms().get(transformIndex).transform(currentPoint);
       canvas.putPixel(currentPoint);
     }
   }
-
 }
