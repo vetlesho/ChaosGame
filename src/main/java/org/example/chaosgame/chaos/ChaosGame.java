@@ -25,12 +25,8 @@ public class ChaosGame {
     return canvas;
   }
   public void runSteps (int steps){
-    canvas.putPixel(currentPoint); //first point may need to be drawn
-    System.out.println("Transforms: " + description.getTransforms());
     for (int i = 0; i < steps; i++){
-
       int transformIndex = random.nextInt(description.getTransforms().size());
-      System.out.println("transformIndex: " + transformIndex);
       currentPoint = description.getTransforms().get(transformIndex).transform(currentPoint);
       canvas.putPixel(currentPoint);
     }

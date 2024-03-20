@@ -30,7 +30,7 @@ public class Main extends Application {
     }
 
     ChaosGame game = new ChaosGame(description, 1200, 800);
-    game.runSteps(1000000);
+    game.runSteps(10000000);
     ChaosCanvas chaosCanvas = game.getCanvas();
 
     // Create a JavaFX canvas
@@ -46,6 +46,9 @@ public class Main extends Application {
       for (int j = 0; j < chaosCanvas.getWidth(); j++) {
         Color color;
         int value = chaosCanvas.getCanvasArray()[i][j];
+        if (value >= 255) {
+          value = 255;
+        }
         if (value == 0) {
           color = Color.LIGHTGREY;
         } else {
@@ -53,11 +56,7 @@ public class Main extends Application {
           color = Color.rgb(value / 255, 0,0,1);
         }
         gc.setFill(color);
-        //fillRect(x, y, width, height)
         gc.fillRect(j, i, cellWidth, cellHeight);
-
-        //Denne lager striper i canvaset
-        //gc.fillRect(j, i, cellWidth/2, cellHeight);
       }
     }
 

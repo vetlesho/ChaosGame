@@ -11,38 +11,38 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
 
 
 public class ChaosGameFileHandler {
+  private Vector2D minCoords;
+  private Vector2D maxCoords;
   private final List<Transform2D> transforms = new ArrayList<>();
 
   public ChaosGameDescription readFromFile(String path) throws IOException {
-    Scanner scanner = new Scanner(new File(path));
-
-    //check if the file is empty
-    if (!scanner.hasNextLine()) {
-      throw new IOException("File is empty");
-    }
-    //read the name of the file
     Vector2D minCoords;
     Vector2D maxCoords;
-    String name = scanner.nextLine();
-    if (name.equals("#Affine2D")) {
-      minCoords = parseVector(scanner.nextLine());
-      maxCoords = parseVector(scanner.nextLine());
-      while (scanner.hasNextLine()) {
-        transforms.add(parseAffine(scanner.nextLine()));
-      }
+    try (Scanner scanner = new Scanner(new File(path))) {
+      scanner.useLocale(Locale.ENGLISH);
+      String typeOfTransformation = scanner.nextLine();
+      minCoords = parseVector(scanner.nextLine().trim());
+      maxCoords = parseVector(scanner.nextLine().trim());
 
-    } else if (name.equals("#Julia")) {
-      minCoords = parseVector(scanner.nextLine());
-      maxCoords = parseVector(scanner.nextLine());
-      transforms.add(parseJulia(scanner.nextLine()));
-    } else {
-      throw new IOException("Invalid file format");
+      //delimeter for kmt
+      transforms.clear();
+      while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        if (typeOfTransformation.equals("Affine2D")) {
+          transforms.add(parseAffine(line));
+        } else if (typeOfTransformation.equals("Julia")) {
+          transforms.add(parseJulia(line));
+        } else {
+          throw new IOException("Invalid transform type");
+        }
+      }
     }
     return new ChaosGameDescription(minCoords, maxCoords, transforms);
   }
@@ -52,9 +52,9 @@ public class ChaosGameFileHandler {
 
     // Skriv type transformasjon
     if (description.getTransforms().getFirst() instanceof AffineTransform2D) {
-      writer.write("#Affine2D\n");
+      writer.write("Affine2D\n");
     } else if (description.getTransforms().getFirst() instanceof JuliaTransform) {
-      writer.write("#Julia\n");
+      writer.write("Julia\n");
     } else {
       throw new IOException("Invalid transform type");
     }
