@@ -14,11 +14,11 @@ public class Complex extends Vector2D {
    * Constructor for Complex class.
    * super(x, y) is used to call the constructor of the superclass, Vector2D.
    *
-   * @param x x-coordinate.
-   * @param y y-coordinate.
+   * @param real x-coordinate.
+   * @param imaginary y-coordinate.
    */
-  public Complex(double x, double y) {
-    super(x, y);
+  public Complex(double real, double imaginary) {
+    super(real, imaginary);
   }
 
   /**
