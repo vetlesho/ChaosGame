@@ -21,7 +21,7 @@ public class Main extends Application {
       // Change this to the path of the file you want to read
       description = fileHandler.readFromFile("src/main/resources/barnsley.txt");
     } catch (Exception e) {
-      System.out.println(e);;
+      System.err.println(e);;
     }
 
     if (description == null) {

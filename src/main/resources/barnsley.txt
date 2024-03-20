@@ -1,7 +1,7 @@
-Affine2D
--2.65, 0
-2.65, 10
-0, 0, 0, .16, 0, 0
-.85, .04, -.04, .85, 0, 1.6
-.2, -.26, .23, .22, 0, 1.6
--.15, .28, .26, .24, 0, .44
+Affine2D                        # Type of transformation
+-2.65, 0                        # Min-coordinate
+2.65, 10                        # Max-coordinate
+0, 0, 0, .16, 0, 0              # 1st transform
+.85, .04, -.04, .85, 0, 1.6     # 2nd transform
+.2, -.26, .23, .22, 0, 1.6      # 3rd transform
+-.15, .28, .26, .24, 0, .44     # 4th transform
