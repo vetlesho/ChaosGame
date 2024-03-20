@@ -61,9 +61,10 @@ public class ChaosCanvas {
     int x = (int) indices.getX();
     int y = (int) indices.getY();
     if (x >= 0 && x < height && y >= 0 && y < width) {
-      canvas[x][y] = 1;
+      canvas[x][y] += 1;
     }
   }
+
   public void clearCanvas(){
     for (int i = 0; i < height; i++){
       for (int j = 0; j < width; j++){

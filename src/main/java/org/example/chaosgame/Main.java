@@ -19,7 +19,7 @@ public class Main extends Application {
     ChaosGameDescription description = null;
     try {
       // Change this to the path of the file you want to read
-      description = fileHandler.readFromFile("src/main/resources/sierpinski.txt");
+      description = fileHandler.readFromFile("src/main/resources/julia.txt");
     } catch (Exception e) {
       System.out.println(e);;
     }
@@ -30,7 +30,7 @@ public class Main extends Application {
     }
 
     ChaosGame game = new ChaosGame(description, 1200, 800);
-    game.runSteps(100000000);
+    game.runSteps(1000000);
     ChaosCanvas chaosCanvas = game.getCanvas();
 
     // Create a JavaFX canvas
@@ -44,12 +44,20 @@ public class Main extends Application {
     double cellHeight = canvas.getHeight() / chaosCanvas.getHeight();
     for (int i = 0; i < chaosCanvas.getHeight(); i++) {
       for (int j = 0; j < chaosCanvas.getWidth(); j++) {
-        if (canvasArray[i][j] == 1) {
-          gc.setFill(Color.WHITE);
+        Color color;
+        int value = chaosCanvas.getCanvasArray()[i][j];
+        if (value == 0) {
+          color = Color.LIGHTGREY;
         } else {
-          gc.setFill(Color.BLACK);
+          // Adjust the hue component based on the canvas array value
+          color = Color.rgb(value / 255, 0,0,1);
         }
-        gc.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
+        gc.setFill(color);
+        //fillRect(x, y, width, height)
+        gc.fillRect(j, i, cellWidth, cellHeight);
+
+        //Denne lager striper i canvaset
+        //gc.fillRect(j, i, cellWidth/2, cellHeight);
       }
     }
 
