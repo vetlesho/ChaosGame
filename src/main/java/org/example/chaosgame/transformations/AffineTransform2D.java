@@ -3,7 +3,13 @@ package org.example.chaosgame.transformations;
 import org.example.chaosgame.linalg.Matrix2x2;
 import org.example.chaosgame.linalg.Vector2D;
 
-public class AffineTransform2D implements Transform2D{
+/**
+ * Represents an affine transformation in 2D space.
+ * The transformation is represented by a 2x2 matrix and a 2D vector.
+ * The transformation is applied to a 2D point by first multiplying the point with the matrix
+ * and then adding the vector.
+ */
+public class AffineTransform2D implements Transform2D {
   private final Matrix2x2 matrix;
   private final Vector2D vector;
 
@@ -12,6 +18,14 @@ public class AffineTransform2D implements Transform2D{
     this.vector = vector;
   }
 
+  /**
+   * Transforms a 2D point using this affine transformation.
+   * Overridden from the Transform2D interface.
+   *
+   * @param point the point to transform
+   *
+   * @return the transformed point
+   */
   @Override
   public Vector2D transform(Vector2D point) {
     return matrix.multiply(point).add(vector);
