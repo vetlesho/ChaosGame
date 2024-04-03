@@ -1,0 +1,6 @@
+Affine2D                # Type of transformation
+0, 0                    # Min-coordinate
+1, 1                    # Max-coordinate
+.5, 0, 0, .5, 0, 0      # 1st transform
+.5, 0, 0, .5, .25, .5   # 2nd transform
+.5, 0, 0, .5, .5, 0     # 3rd transform

@@ -28,8 +28,7 @@ public class ExploreGame {
         Vector2D tempPoint = currentPoint;
         while (iter < MAX_ITER && tempPoint.getX() >= description.getMinCoords().getX() && tempPoint.getX() <= description.getMaxCoords().getX() &&
                 tempPoint.getY() >= description.getMinCoords().getY() && tempPoint.getY() <= description.getMaxCoords().getY()){
-          int randomIndex = random.nextInt(description.getTransforms().size());
-          tempPoint = description.getTransforms().get(randomIndex).transform(tempPoint);
+          tempPoint = description.getTransforms().getFirst().transform(tempPoint);
           iter++;
         }
         canvas.putPixel(x, y, iter);

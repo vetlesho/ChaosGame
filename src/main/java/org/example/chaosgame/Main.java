@@ -21,20 +21,18 @@ import org.example.chaosgame.linalg.Matrix2x2;
 
 import java.util.List;
 
+import org.example.chaosgame.chaos.ChaosGameFileHandler;
+
 public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
-    // Create ChaosGameDescription and ChaosGame
-    AffineTransform2D transform = new AffineTransform2D(
-            new Matrix2x2(0.5, 0, 0, 0.5),
-            new Vector2D(0, 0));
-    AffineTransform2D transform2 = new AffineTransform2D(
-            new Matrix2x2(0.5, 0, 0, 0.5),
-            new Vector2D(0.5, 0));
-    AffineTransform2D transform3 = new AffineTransform2D(
-            new Matrix2x2(0.5, 0, 0, 0.5),
-            new Vector2D(0.25, 0.5));
-    List<Transform2D> transforms = List.of(transform, transform2, transform3);
+    ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
+//    try {
+//      // Change this to the path of the file you want to read
+//      description = fileHandler.readFromFile("src/main/resources/barnsley.txt");
+//    } catch (Exception e) {
+//      System.err.println(e);;
+//    }
 
    JuliaTransform juliaTransform = new JuliaTransform(
            new Complex(-0.70176, -0.3842), 1);
@@ -46,15 +44,20 @@ public class Main extends Application {
     ExploreJulia exploreTransform = new ExploreJulia(point);
 
     List<Transform2D> juliaTransforms = List.of(exploreTransform);
+    ChaosGameDescription description = new ChaosGameDescription(new Vector2D(-1.6, -1),
+            new Vector2D(1.6, 1), juliaTransforms);
 
-    ChaosGameDescription description = new ChaosGameDescription(
-            new Vector2D(-1.6, -1),
-            new Vector2D(1.6, 1),
-            juliaTransforms
-    );
+
     ExploreGame exploreGame = new ExploreGame(description, 1200, 800);
-    ChaosGame game = new ChaosGame(description, 1200, 800);
     exploreGame.exploreFractals();
+
+    if (description == null) {
+      System.out.println("Failed to read file");
+      return;
+    }
+
+//    ChaosGame game = new ChaosGame(description, 1200, 800);
+//    game.runStepsBarnsley(1000000);
     ChaosCanvas chaosCanvas = exploreGame.getCanvas();
 
     // Create a JavaFX canvas
@@ -69,10 +72,13 @@ public class Main extends Application {
     for (int i = 0; i < chaosCanvas.getHeight(); i++) {
       for (int j = 0; j < chaosCanvas.getWidth(); j++) {
 
-          int scaledValue = Math.min(255, canvasArray[i][j] * 3); // Scale up, but don't exceed 255
-          gc.setFill(Color.rgb(scaledValue, 0, 0, 1));
-//          gc.setFill(Color.rgb(canvasArray[i][j], 0, 0, 1));
-
+        int color = canvasArray[i][j];
+        if (color == 0) {
+          gc.setFill(Color.BLACK);
+        } else {
+          //hue based on the value of the pixel
+          gc.setFill(Color.hsb(color, 1.0, 1.0));
+        }
         gc.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
       }
     }

@@ -3,7 +3,16 @@ package org.example.chaosgame.transformations;
 import org.example.chaosgame.linalg.Complex;
 import org.example.chaosgame.linalg.Vector2D;
 
-public class JuliaTransform implements Transform2D{
+/**
+ * Class for the Julia transformation.
+ * The transformation is given by the formula:
+ * <br>
+ * <span style="font-family: Courier">
+ *  z → &#177;&radic;&#x305;z&#x305; &#x305;-&#x305; &#x305;c
+ *</span>
+ *
+ */
+public class JuliaTransform implements Transform2D {
   private final Complex point;
   private final int sign;
 
