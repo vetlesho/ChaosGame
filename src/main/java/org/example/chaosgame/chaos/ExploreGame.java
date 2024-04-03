@@ -37,4 +37,8 @@ public class ExploreGame {
       }
     }
   }
+
+  public ChaosCanvas getCanvas() {
+    return canvas;
+  }
 }
