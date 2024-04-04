@@ -7,30 +7,26 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import org.example.chaosgame.chaos.ChaosCanvas;
-import org.example.chaosgame.chaos.ChaosGame;
-import org.example.chaosgame.chaos.ChaosGameDescription;
-import org.example.chaosgame.chaos.ChaosGameFileHandler;
+import org.example.chaosgame.chaos.*;
 
 public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
     ChaosGameDescription description = null;
+    String path = "src/main/resources/julia.txt";
+
     try {
       // Change this to the path of the file you want to read
-      description = fileHandler.readFromFile("src/main/resources/barnsley.txt");
+      description = fileHandler.readFromFile(path);
+      fileHandler.writeToFile(description, path);
     } catch (Exception e) {
       System.err.println(e);;
     }
 
-    if (description == null) {
-      System.out.println("Failed to read file");
-      return;
-    }
-
+    //ChaosGame game2 = new ChaosGame(ChaosGameDescriptionFactory.get("Barnsley"), 1200, 800);
     ChaosGame game = new ChaosGame(description, 1200, 800);
-    game.runStepsBarnsley(1000000);
+    game.runSteps(1000000);
     ChaosCanvas chaosCanvas = game.getCanvas();
 
     // Create a JavaFX canvas
@@ -44,6 +40,7 @@ public class Main extends Application {
     double cellHeight = canvas.getHeight() / chaosCanvas.getHeight();
     for (int i = 0; i < chaosCanvas.getHeight(); i++) {
       for (int j = 0; j < chaosCanvas.getWidth(); j++) {
+
         int color = canvasArray[i][j];
         if (color == 0) {
           gc.setFill(Color.BLACK);
@@ -54,6 +51,7 @@ public class Main extends Application {
         gc.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
       }
     }
+
 
     // Create a JavaFX window
     StackPane root = new StackPane();

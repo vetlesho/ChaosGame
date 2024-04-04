@@ -30,4 +30,9 @@ public class JuliaTransform implements Transform2D {
     double b = sign * result.getY();
     return new Vector2D(a, b);
   }
+
+  public Complex getComplex() {
+    return point;
+  }
+
 }

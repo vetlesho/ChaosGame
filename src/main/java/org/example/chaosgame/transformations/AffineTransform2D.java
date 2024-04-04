@@ -30,4 +30,12 @@ public class AffineTransform2D implements Transform2D {
   public Vector2D transform(Vector2D point) {
     return matrix.multiply(point).add(vector);
   }
+
+  public Matrix2x2 getMatrix() {
+    return matrix;
+  }
+
+  public Vector2D getVector() {
+    return vector;
+  }
 }
