@@ -3,11 +3,13 @@ package org.example.chaosgame.chaos;
 import org.example.chaosgame.linalg.Vector2D;
 
 import java.util.Random;
+import java.util.stream.IntStream;
+import javafx.concurrent.Task;
 
 /**
  * Class for exploring julia sets.
  */
-public class ExploreGame {
+public class ExploreGame{
   private final int MAX_ITER = 256;
 
   private final ChaosCanvas canvas;
@@ -34,21 +36,24 @@ public class ExploreGame {
    */
   public void exploreFractals(){
 
-    int iter = 0;
+    long start = System.currentTimeMillis();
     for (int y = 0; y < canvas.getHeight(); y++) {
       for (int x = 0; x < canvas.getWidth(); x++) {
-
+        int iter = 0;
         currentPoint = canvas.transformIndicesToCoords(x, y);
         Vector2D tempPoint = currentPoint;
         while (iter < MAX_ITER && tempPoint.getX() >= description.getMinCoords().getX() && tempPoint.getX() <= description.getMaxCoords().getX() &&
-                tempPoint.getY() >= description.getMinCoords().getY() && tempPoint.getY() <= description.getMaxCoords().getY()){
+                tempPoint.getY() >= description.getMinCoords().getY() && tempPoint.getY() <= description.getMaxCoords().getY()) {
           tempPoint = description.getTransforms().getFirst().transform(tempPoint);
           iter++;
         }
         canvas.putPixel(x, y, iter);
-        iter = 0;
+
       }
+
     }
+    long end = System.currentTimeMillis();
+    System.out.println("Time taken: " + (end - start) + "ms");
   }
 
   public ChaosCanvas getCanvas() {
