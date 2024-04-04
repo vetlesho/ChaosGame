@@ -17,6 +17,13 @@ public class ChaosGameDescriptionFactory {
     SIERPINSKI
   }
 
+  /**
+   * Returns a ChaosGameDescription object based on the description and complex number.
+   *
+   * @param description The description of the chaos game
+   * @param c The complex number for the Julia set
+   * @return A ChaosGameDescription object
+   */
   public static ChaosGameDescription get(String description, Complex c) {
     ChaosGameType type = ChaosGameType.valueOf(description.toUpperCase());
     return switch (type) {
@@ -26,6 +33,12 @@ public class ChaosGameDescriptionFactory {
     };
   }
 
+  /**
+   * Creates a ChaosGameDescription object for the Julia set.
+   *
+   * @param c The complex number for the Julia set
+   * @return A ChaosGameDescription object
+   */
   private static ChaosGameDescription createJulia(Complex c) {
     return new ChaosGameDescription(
             new Vector2D(-1.6, -1),
@@ -36,6 +49,11 @@ public class ChaosGameDescriptionFactory {
     );
   }
 
+  /**
+   * Creates a ChaosGameDescription object for the Sierpinski triangle.
+   *
+   * @return A ChaosGameDescription object
+   */
   private static ChaosGameDescription createSierpinski() {
     return new ChaosGameDescription(
             new Vector2D(0.0, 0.0),
@@ -48,6 +66,11 @@ public class ChaosGameDescriptionFactory {
     );
   }
 
+  /**
+   * Creates a ChaosGameDescription object for the Barnsley fern.
+   *
+   * @return A ChaosGameDescription object
+   */
   private static ChaosGameDescription createBarnsley() {
     return new ChaosGameDescription(
             new Vector2D(-2.65, 0.0),

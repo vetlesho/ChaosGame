@@ -13,6 +13,15 @@ public class AffineTransform2D implements Transform2D {
   private final Matrix2x2 matrix;
   private final Vector2D vector;
 
+  /**
+   * Constructor for AffineTransform2D.
+   * An affine transformation is represented by a 2x2 matrix and a 2D vector.
+   * The transformation is applied to a 2D point by first multiplying the point with the matrix
+   * and then adding the vector.
+   *
+   * @param matrix the 2x2 matrix
+   * @param vector the 2D vector
+   */
   public AffineTransform2D(Matrix2x2 matrix, Vector2D vector) {
     this.matrix = matrix;
     this.vector = vector;
