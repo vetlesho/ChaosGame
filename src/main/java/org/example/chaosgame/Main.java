@@ -7,8 +7,18 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
 import org.example.chaosgame.chaos.*;
 import org.example.chaosgame.linalg.Complex;
+import org.example.chaosgame.linalg.Vector2D;
+import org.example.chaosgame.transformations.AffineTransform2D;
+import org.example.chaosgame.transformations.ExploreJulia;
+import org.example.chaosgame.transformations.JuliaTransform;
+import org.example.chaosgame.transformations.Transform2D;
+import org.example.chaosgame.linalg.Matrix2x2;
+
+import java.util.List;
+
 
 public class Main extends Application {
   @Override
@@ -32,6 +42,7 @@ public class Main extends Application {
     game.runSteps(1000000);
     ChaosCanvas chaosCanvas = game.getCanvas();
 
+
     // Create a JavaFX canvas
     Canvas canvas = new Canvas(chaosCanvas.getWidth(), chaosCanvas.getHeight());
     GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -44,12 +55,14 @@ public class Main extends Application {
     for (int i = 0; i < chaosCanvas.getHeight(); i++) {
       for (int j = 0; j < chaosCanvas.getWidth(); j++) {
 
-        int color = Math.min(canvasArray[i][j] * 3 , 255);
+        int color = Math.min(canvasArray[i][j] * 3, 255);
+
         if (color == 0) {
           gc.setFill(Color.BLACK);
         } else {
           //hue based on the value of the pixel
           gc.setFill(Color.rgb(color, 255, 255));
+
         }
         gc.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
       }
