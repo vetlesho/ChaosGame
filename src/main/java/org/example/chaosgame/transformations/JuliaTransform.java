@@ -20,11 +20,27 @@ public class JuliaTransform implements Transform2D {
     return point;
   }
 
+  /**
+   * Constructor for JuliaTransform.
+   *
+   * @param point the complex number c
+   * @param sign the sign of the transformation
+   */
   public JuliaTransform(Complex point, int sign) {
     this.point = point;
     this.sign = sign;
   }
 
+  /**
+   * Method to transform a 2D vector using the Julia transformation.
+   * The transformation is given by the formula:
+   * <br>
+   * <span style="font-family: Courier">
+   *   z → &#177;&radic;&#x305;z&#x305; &#x305;-&#x305; &#x305;c
+   *
+   * @param point the 2D vector to transform
+   * @return a new 2D vector
+   */
   @Override
   public Vector2D transform(Vector2D point) {
     Vector2D result = this.point.sqrt(

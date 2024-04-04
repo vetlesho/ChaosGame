@@ -79,13 +79,34 @@ public class ChaosCanvas {
       canvas[x][y] += 1;
     }
   }
-
+  /**
+   * Sets the pixel value at the given point to the given value.
+   * If the point is outside the canvas, the method does nothing.
+   *
+   * @param x The x-coordinate of the point
+   *
+   * @param y The y-coordinate of the point
+   *
+   * @param iter The iteration value to set the pixel to
+   */
   public void putPixel(int x, int y, int iter){
     if (y >= 0 && y < height && x >= 0 && x < width) {
       canvas[y][x] = iter;
     }
   }
 
+  /**
+   * Transforms indices in the canvas array to coordinates.
+   * The method calculates the x-coordinate and y-coordinate based on the indices,
+   * the width, height, minimum and maximum coordinates.
+   * Used in the ExploreGame class to map indices to coordinates which iterates through each pixel.
+   *
+   * @param i The x-coordinate in the canvas array
+   *
+   * @param j The y-coordinate in the canvas array
+   *
+   * @return The coordinates of the point
+   */
   public Vector2D transformIndicesToCoords(int i, int j) {
     double x = (i * (maxCoords.getX() - minCoords.getX()) / (width - 1)) + minCoords.getX();
     double y = (j * (minCoords.getY() - maxCoords.getY()) / (height - 1)) + maxCoords.getY();

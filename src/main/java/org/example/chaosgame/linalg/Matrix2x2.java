@@ -1,10 +1,14 @@
 package org.example.chaosgame.linalg;
 
+
 /**
  * Class for 2x2 matrices.
  * The matrices are represented by four double values: a, b, c, and d.
- * [a b]
- * [c d]
+ *
+ * <br>
+ * [ a b ]
+ * <br>
+ * [ c d ]
  */
 public class Matrix2x2 {
   private final double a;

@@ -4,6 +4,9 @@ import org.example.chaosgame.linalg.Vector2D;
 
 import java.util.Random;
 
+/**
+ * Class for exploring julia sets.
+ */
 public class ExploreGame {
   private final int MAX_ITER = 256;
 
@@ -11,13 +14,24 @@ public class ExploreGame {
   private final ChaosGameDescription description;
   private Vector2D currentPoint = new Vector2D(0.0, 0.0);
 
-  public final Random random = new Random();
-
+  /**
+   * Constructor for ExploreGame.
+   *
+   * @param description Description of the chaos game
+   *
+   * @param width Width of the canvas
+   *
+   * @param height Height of the canvas
+   */
   public ExploreGame(ChaosGameDescription description, int width, int height) {
     this.description = description;
     this.canvas = new ChaosCanvas(width, height, description.getMinCoords(), description.getMaxCoords());
   }
 
+  /**
+   * Method for exploring fractals. Iterates over all pixels in the canvas
+   * and applies the transformation to the current point.
+   */
   public void exploreFractals(){
 
     int iter = 0;
