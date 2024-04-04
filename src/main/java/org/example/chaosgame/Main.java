@@ -8,23 +8,27 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.example.chaosgame.chaos.*;
+import org.example.chaosgame.linalg.Complex;
 
 public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
     ChaosGameDescription description = null;
+    /*
     String path = "src/main/resources/julia.txt";
-
     try {
       description = fileHandler.readFromFile(path);
       fileHandler.writeToFile(description, path);
     } catch (Exception e) {
       System.err.println(e);;
     }
-
-    //ChaosGame game2 = new ChaosGame(ChaosGameDescriptionFactory.get("Barnsley"), 1200, 800);
     ChaosGame game = new ChaosGame(description, 1200, 800);
+    */
+
+    Complex c = new Complex(-0.835, 0.2321);
+    ChaosGame game = new ChaosGame(ChaosGameDescriptionFactory.get("Julia", c), 1200, 800);
+
     game.runSteps(1000000);
     ChaosCanvas chaosCanvas = game.getCanvas();
 
@@ -40,12 +44,12 @@ public class Main extends Application {
     for (int i = 0; i < chaosCanvas.getHeight(); i++) {
       for (int j = 0; j < chaosCanvas.getWidth(); j++) {
 
-        int color = canvasArray[i][j];
+        int color = Math.min(canvasArray[i][j] * 3 , 255);
         if (color == 0) {
           gc.setFill(Color.BLACK);
         } else {
           //hue based on the value of the pixel
-          gc.setFill(Color.hsb(color, 1.0, 1.0));
+          gc.setFill(Color.rgb(color, 255, 255));
         }
         gc.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
       }
