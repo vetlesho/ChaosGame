@@ -14,8 +14,11 @@ import org.example.chaosgame.linalg.Vector2D;
  */
 public class ChaosGame {
   private final ChaosCanvas canvas;
+
   private final ChaosGameDescription description;
+
   private Vector2D currentPoint = new Vector2D(0.0, 0.0);
+
   public final Random random = new Random();
 
   /**
@@ -27,6 +30,7 @@ public class ChaosGame {
    *
    * @param height Height of the canvas
    */
+
   public ChaosGame(ChaosGameDescription description, int width, int height) {
     this.description = description;
     this.canvas = new ChaosCanvas(width, height,
@@ -51,7 +55,6 @@ public class ChaosGame {
       canvas.putPixel(currentPoint);
     }
   }
-
 
   /**
    * Method for running the Barnsley chaos game. Randomly selects a transformation

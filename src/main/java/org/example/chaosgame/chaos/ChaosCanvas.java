@@ -37,6 +37,7 @@ public class ChaosCanvas {
    * @param maxCoords The maximum coordinates of the canvas
    *
    */
+
   public ChaosCanvas(int width,
                      int height, Vector2D minCoords,
                      Vector2D maxCoords) {
@@ -54,6 +55,41 @@ public class ChaosCanvas {
                     ((width - 1.0) * minCoords.getX()) / (minCoords.getX() - maxCoords.getX())
   ));
     this.canvas = new int[height][width];
+  }
+
+  public int getPixel(Vector2D point){
+    Vector2D indices = transformCoordsToIndices.transform(point);
+    int x = (int) indices.getX();
+    int y = (int) indices.getY();
+    return canvas[x][y];
+  }
+
+
+  /**
+   * Increments the pixel value at the given point by 1.
+   * If the point is outside the canvas, the method does nothing.
+   *
+   * @param point The point to put a pixel at
+   */
+  public void putPixel(Vector2D point) {
+    Vector2D indices = transformCoordsToIndices.transform(point);
+    int x = (int) indices.getX();
+    int y = (int) indices.getY();
+    if (x >= 0 && x < height && y >= 0 && y < width) {
+      canvas[x][y] += 1;
+    }
+  }
+
+  public void putPixel(int x, int y, int iter){
+    if (y >= 0 && y < height && x >= 0 && x < width) {
+      canvas[y][x] = iter;
+    }
+  }
+
+  public Vector2D transformIndicesToCoords(int i, int j) {
+    double x = (i * (maxCoords.getX() - minCoords.getX()) / (width - 1)) + minCoords.getX();
+    double y = (j * (minCoords.getY() - maxCoords.getY()) / (height - 1)) + maxCoords.getY();
+    return new Vector2D(x, y);
   }
 
   public int[][] getCanvasArray() {
@@ -74,28 +110,6 @@ public class ChaosCanvas {
 
   public Vector2D getMaxCoords() {
     return maxCoords;
-  }
-
-  public int getPixel(Vector2D point) {
-    Vector2D indices = transformCoordsToIndices.transform(point);
-    int x = (int) indices.getX();
-    int y = (int) indices.getY();
-    return canvas[x][y];
-  }
-
-  /**
-   * Increments the pixel value at the given point by 1.
-   * If the point is outside the canvas, the method does nothing.
-   *
-   * @param point The point to put a pixel at
-   */
-  public void putPixel(Vector2D point) {
-    Vector2D indices = transformCoordsToIndices.transform(point);
-    int x = (int) indices.getX();
-    int y = (int) indices.getY();
-    if (x >= 0 && x < height && y >= 0 && y < width) {
-      canvas[x][y] += 1;
-    }
   }
 
   public void clearCanvas() {
