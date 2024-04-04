@@ -1,10 +1,12 @@
 package org.example.chaosgame.chaos;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
 import org.example.chaosgame.linalg.Complex;
 import org.example.chaosgame.linalg.Matrix2x2;
 import org.example.chaosgame.linalg.Vector2D;
@@ -55,45 +57,65 @@ public class ChaosGameFileHandler {
     return new ChaosGameDescription(minCoords, maxCoords, transforms);
   }
 
-  //write to a file using BufferedWriter
-  public void writeToFile(ChaosGameDescription description, String path) throws IOException {
+
+  /**
+   * Writes a chaos game description to a file.
+   *
+   * <p>The text files will have the following format:
+   *
+   * <p>First line: type of transformation (Affine2D or Julia)
+   *
+   * <p>Second line: minimum coordinates of the canvas (x, y)
+   *
+   * <p>Third line: maximum coordinates of the canvas (x, y)
+   *
+   * <p>Fourth line and onwards: the transformations (Affine) or complex number (Julia)
+   *
+   * @param description the chaos game description
+   * @param path the path to the file
+   * @throws IOException if the file cannot be written
+   * @throws IllegalArgumentException if the type of transformation is unknown
+   */
+  public void writeToFile(ChaosGameDescription description, String path)
+          throws IOException, IllegalArgumentException {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-      //type of transformation
-      String typeOfTransformation = description.getTransforms().getFirst().getClass().getSimpleName();
-      if (typeOfTransformation.equals("AffineTransform2D")) {
+      String type = description.getTransforms().getFirst().getClass().getSimpleName();
+      if (type.equals("AffineTransform2D")) {
         writer.write("Affine2D");
-      } else if (typeOfTransformation.equals("JuliaTransform")) {
+      } else if (type.equals("JuliaTransform")) {
         writer.write("Julia");
       } else {
-        throw new IllegalArgumentException("Unknown type of transformation: " + typeOfTransformation);
+        throw new IllegalArgumentException("Unknown type of transformation: " + type);
       }
-      writer.write("           # Type of transformation");
+      writer.write("    # Type of transformation");
       writer.newLine();
 
-      //min coordinates
-      writer.write(description.getMinCoords().getX() + ", " + description.getMinCoords().getY() +
-              "           # Min-coordinate");
+      writer.write(description.getMinCoords().getX()
+              + ", " + description.getMinCoords().getY()
+              + "    # Min-coordinate");
       writer.newLine();
 
-      //max coordinates
-      writer.write(description.getMaxCoords().getX() + ", " + description.getMaxCoords().getY() +
-              "           # Max-coordinate");
+      writer.write(description.getMaxCoords().getX()
+              + ", " + description.getMaxCoords().getY()
+              + "    # Max-coordinate");
       writer.newLine();
 
-      //get the actual text of the transformations
       int count = 0;
       for (Transform2D transform : description.getTransforms()) {
         if (transform instanceof AffineTransform2D affine) {
           count++;
           Matrix2x2 matrix = affine.getMatrix();
           Vector2D vector = affine.getVector();
-          writer.write(matrix.getA() + ", " + matrix.getB() + ", " + matrix.getC() + ", " + matrix.getD() + ", "
+          writer.write(matrix.getA() + ", " + matrix.getB() + ", "
+                  + matrix.getC() + ", " + matrix.getD() + ", "
                   + vector.getX() + ", " + vector.getY()
-                  + "     # " + count + " transformation");
+                  + "    # " + count + " transformation");
         } else if (transform instanceof JuliaTransform julia) {
-          Complex complex = julia.getComplex();
-          writer.write(complex.getX() + ", " + complex.getY() +
-                  "     # Real and imaginary part of the complex number");
+          writer.write(julia.getComplex().getX() + ", " + julia.getComplex().getY()
+                  + "    # Real and imaginary part of the complex number");
+        } else {
+          throw new IllegalArgumentException("Unknown type of transformation: "
+                  + transform.getClass().getSimpleName());
         }
         writer.newLine();
       }
@@ -103,17 +125,20 @@ public class ChaosGameFileHandler {
   }
 
   /**
-   * Selects the correct transformation based on the type of transformation.
+   * Selects the transformation to parse based on the type of transformation.
    *
    * @param typeOfTransformation the type of transformation
-   * @param line the line of text
+   * @param line a line of text
    * @return the transformation
+   * @throws IllegalArgumentException if the type of transformation is unknown
    */
-  private Transform2D selectTransformation(String typeOfTransformation, String line) {
+  private Transform2D selectTransformation(String typeOfTransformation, String line)
+          throws IllegalArgumentException {
     return switch (typeOfTransformation) {
       case "Affine2D" -> parseAffine(line);
       case "Julia" -> parseJulia(line);
-      default -> throw new IllegalArgumentException("Unknown type of transformation: " + typeOfTransformation);
+      default -> throw new IllegalArgumentException("Unknown type of transformation: "
+              + typeOfTransformation);
     };
   }
 

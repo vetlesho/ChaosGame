@@ -36,12 +36,4 @@ public class Complex extends Vector2D {
 
     return new Complex(r, i);
   }
-
-  public int getReal() {
-    return (int) getX();
-  }
-
-  public int getImaginary() {
-    return (int) getY();
-  }
 }

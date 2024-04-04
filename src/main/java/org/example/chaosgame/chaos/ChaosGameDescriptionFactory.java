@@ -1,13 +1,15 @@
 package org.example.chaosgame.chaos;
 
+import java.util.List;
 import org.example.chaosgame.linalg.Complex;
 import org.example.chaosgame.linalg.Matrix2x2;
 import org.example.chaosgame.linalg.Vector2D;
 import org.example.chaosgame.transformations.AffineTransform2D;
 import org.example.chaosgame.transformations.JuliaTransform;
 
-import java.util.List;
-
+/**
+ * Factory class for creating ChaosGameDescription objects.
+ */
 public class ChaosGameDescriptionFactory {
   public static ChaosGameDescription get(String description) {
     return switch (description) {

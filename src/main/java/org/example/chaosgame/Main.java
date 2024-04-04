@@ -17,7 +17,6 @@ public class Main extends Application {
     String path = "src/main/resources/julia.txt";
 
     try {
-      // Change this to the path of the file you want to read
       description = fileHandler.readFromFile(path);
       fileHandler.writeToFile(description, path);
     } catch (Exception e) {

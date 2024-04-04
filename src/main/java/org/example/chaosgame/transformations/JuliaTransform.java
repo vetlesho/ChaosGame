@@ -16,6 +16,10 @@ public class JuliaTransform implements Transform2D {
   private final Complex point;
   private final int sign;
 
+  public Complex getComplex() {
+    return point;
+  }
+
   public JuliaTransform(Complex point, int sign) {
     this.point = point;
     this.sign = sign;
@@ -30,9 +34,4 @@ public class JuliaTransform implements Transform2D {
     double b = sign * result.getY();
     return new Vector2D(a, b);
   }
-
-  public Complex getComplex() {
-    return point;
-  }
-
 }
