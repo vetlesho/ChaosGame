@@ -7,10 +7,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import org.example.chaosgame.chaos.ChaosCanvas;
-import org.example.chaosgame.chaos.ChaosGame;
-import org.example.chaosgame.chaos.ChaosGameDescription;
-import org.example.chaosgame.chaos.ExploreGame;
+
+import org.example.chaosgame.chaos.*;
 import org.example.chaosgame.linalg.Complex;
 import org.example.chaosgame.linalg.Vector2D;
 import org.example.chaosgame.transformations.AffineTransform2D;
@@ -21,44 +19,29 @@ import org.example.chaosgame.linalg.Matrix2x2;
 
 import java.util.List;
 
-import org.example.chaosgame.chaos.ChaosGameFileHandler;
 
 public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
-//    try {
-//      // Change this to the path of the file you want to read
-//      description = fileHandler.readFromFile("src/main/resources/barnsley.txt");
-//    } catch (Exception e) {
-//      System.err.println(e);;
-//    }
-
-   JuliaTransform juliaTransform = new JuliaTransform(
-           new Complex(-0.70176, -0.3842), 1);
-   JuliaTransform juliaTransform2 = new JuliaTransform(
-           new Complex(0.3, 0.2), -1);
-   JuliaTransform juliaTransform3 = new JuliaTransform(
-           new Complex(0.5, 0.2), 1);
-   Complex point = new Complex(-0.70176, -0.3842);
-    ExploreJulia exploreTransform = new ExploreJulia(point);
-
-    List<Transform2D> juliaTransforms = List.of(exploreTransform);
-    ChaosGameDescription description = new ChaosGameDescription(new Vector2D(-1.6, -1),
-            new Vector2D(1.6, 1), juliaTransforms);
-
-
-    ExploreGame exploreGame = new ExploreGame(description, 1200, 800);
-    exploreGame.exploreFractals();
-
-    if (description == null) {
-      System.out.println("Failed to read file");
-      return;
+    ChaosGameDescription description = null;
+    /*
+    String path = "src/main/resources/julia.txt";
+    try {
+      description = fileHandler.readFromFile(path);
+      fileHandler.writeToFile(description, path);
+    } catch (Exception e) {
+      System.err.println(e);;
     }
+    ChaosGame game = new ChaosGame(description, 1200, 800);
+    */
 
-//    ChaosGame game = new ChaosGame(description, 1200, 800);
-//    game.runStepsBarnsley(1000000);
-    ChaosCanvas chaosCanvas = exploreGame.getCanvas();
+    Complex c = new Complex(-0.835, 0.2321);
+    ChaosGame game = new ChaosGame(ChaosGameDescriptionFactory.get("Julia", c), 1200, 800);
+
+    game.runSteps(1000000);
+    ChaosCanvas chaosCanvas = game.getCanvas();
+
 
     // Create a JavaFX canvas
     Canvas canvas = new Canvas(chaosCanvas.getWidth(), chaosCanvas.getHeight());
@@ -73,15 +56,18 @@ public class Main extends Application {
       for (int j = 0; j < chaosCanvas.getWidth(); j++) {
 
         int color = Math.min(canvasArray[i][j] * 3, 255);
+
         if (color == 0) {
-          gc.setFill(Color.WHITE);
+          gc.setFill(Color.BLACK);
         } else {
           //hue based on the value of the pixel
-          gc.setFill(Color.rgb(color, 0, 0));
+          gc.setFill(Color.rgb(color, 255, 255));
+
         }
         gc.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
       }
     }
+
 
     // Create a JavaFX window
     StackPane root = new StackPane();

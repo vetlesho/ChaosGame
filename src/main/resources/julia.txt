@@ -1,4 +1,4 @@
-Julia               # Type of transformation
--1.6, -1            # Min-coordinates
-1.6, 1              # Max-coordinates
--0.70176, -0.3842   # Real and Imaginary part of the constant c
+Julia    # Type of transformation
+-1.6, -1.0    # Min-coordinate
+1.6, 1.0    # Max-coordinate
+-0.70176, -0.3842    # Real and imaginary part of the complex number

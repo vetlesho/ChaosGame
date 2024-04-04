@@ -1,11 +1,12 @@
 package org.example.chaosgame.chaos;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
 import org.example.chaosgame.linalg.Complex;
 import org.example.chaosgame.linalg.Matrix2x2;
 import org.example.chaosgame.linalg.Vector2D;
@@ -39,42 +40,105 @@ public class ChaosGameFileHandler {
   public ChaosGameDescription readFromFile(String path) throws IOException {
     Vector2D minCoords;
     Vector2D maxCoords;
-    try (Scanner scanner = new Scanner(new File(path))) {
-      scanner.useLocale(Locale.ENGLISH);
-
-      String typeOfTransformation = skipComments(scanner.nextLine());
+    try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+      String typeOfTransformation = skipComments(reader.readLine());
       System.out.println("Parsing type of transformation: " + typeOfTransformation);
 
-      minCoords = parseVector(scanner.nextLine().trim());
-      maxCoords = parseVector(scanner.nextLine().trim());
+      minCoords = parseVector(reader.readLine().trim());
+      maxCoords = parseVector(reader.readLine().trim());
 
       transforms.clear();
 
-      while (scanner.hasNextLine()) {
-        transforms.add(selectTransformation(typeOfTransformation, scanner));
+      String line;
+      while ((line = reader.readLine()) != null) {
+        transforms.add(selectTransformation(typeOfTransformation, line));
       }
-
     }
     return new ChaosGameDescription(minCoords, maxCoords, transforms);
   }
 
-  public void writeToFile(ChaosGameDescription description, String path) throws IOException {
 
+  /**
+   * Writes a chaos game description to a file.
+   *
+   * <p>The text files will have the following format:
+   *
+   * <p>First line: type of transformation (Affine2D or Julia)
+   *
+   * <p>Second line: minimum coordinates of the canvas (x, y)
+   *
+   * <p>Third line: maximum coordinates of the canvas (x, y)
+   *
+   * <p>Fourth line and onwards: the transformations (Affine) or complex number (Julia)
+   *
+   * @param description the chaos game description
+   * @param path the path to the file
+   * @throws IOException if the file cannot be written
+   * @throws IllegalArgumentException if the type of transformation is unknown
+   */
+  public void writeToFile(ChaosGameDescription description, String path)
+          throws IOException, IllegalArgumentException {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
+      String type = description.getTransforms().getFirst().getClass().getSimpleName();
+      if (type.equals("AffineTransform2D")) {
+        writer.write("Affine2D");
+      } else if (type.equals("JuliaTransform")) {
+        writer.write("Julia");
+      } else {
+        throw new IllegalArgumentException("Unknown type of transformation: " + type);
+      }
+      writer.write("    # Type of transformation");
+      writer.newLine();
+
+      writer.write(description.getMinCoords().getX()
+              + ", " + description.getMinCoords().getY()
+              + "    # Min-coordinate");
+      writer.newLine();
+
+      writer.write(description.getMaxCoords().getX()
+              + ", " + description.getMaxCoords().getY()
+              + "    # Max-coordinate");
+      writer.newLine();
+
+      int count = 0;
+      for (Transform2D transform : description.getTransforms()) {
+        if (transform instanceof AffineTransform2D affine) {
+          count++;
+          Matrix2x2 matrix = affine.getMatrix();
+          Vector2D vector = affine.getVector();
+          writer.write(matrix.getA() + ", " + matrix.getB() + ", "
+                  + matrix.getC() + ", " + matrix.getD() + ", "
+                  + vector.getX() + ", " + vector.getY()
+                  + "    # " + count + " transformation");
+        } else if (transform instanceof JuliaTransform julia) {
+          writer.write(julia.getComplex().getX() + ", " + julia.getComplex().getY()
+                  + "    # Real and imaginary part of the complex number");
+        } else {
+          throw new IllegalArgumentException("Unknown type of transformation: "
+                  + transform.getClass().getSimpleName());
+        }
+        writer.newLine();
+      }
+    } catch (IOException e) {
+      throw new IOException("Could not write to file: " + path, e);
+    }
   }
 
   /**
-   * Selects the correct transformation based on the type of transformation.
+   * Selects the transformation to parse based on the type of transformation.
    *
-   * @param typeOfTransformation a string with the name of the transformation
-   * @param scanner the scanner to read the transformation from
+   * @param typeOfTransformation the type of transformation
+   * @param line a line of text
    * @return the transformation
+   * @throws IllegalArgumentException if the type of transformation is unknown
    */
-  private Transform2D selectTransformation(String typeOfTransformation, Scanner scanner) {
+  private Transform2D selectTransformation(String typeOfTransformation, String line)
+          throws IllegalArgumentException {
     return switch (typeOfTransformation) {
-      case "Affine2D" -> parseAffine(scanner.nextLine());
-      case "Julia" -> parseJulia(scanner.nextLine());
-      default -> throw new IllegalArgumentException(
-              "Unknown type of transformation: " + typeOfTransformation);
+      case "Affine2D" -> parseAffine(line);
+      case "Julia" -> parseJulia(line);
+      default -> throw new IllegalArgumentException("Unknown type of transformation: "
+              + typeOfTransformation);
     };
   }
 
@@ -132,9 +196,9 @@ public class ChaosGameFileHandler {
   private Transform2D parseJulia(String line) {
     String numbers = skipComments(line);
     System.out.println("Parsing transform: " + numbers);
-    String[] transformParts = numbers.split(",");
-    double r = Double.parseDouble(transformParts[0].trim());
-    double i = Double.parseDouble(transformParts[1].trim());
+    String[] parts = numbers.split(",");
+    double r = Double.parseDouble(parts[0].trim());
+    double i = Double.parseDouble(parts[1].trim());
     return new JuliaTransform(new Complex(r, i), 1);
   }
 }
