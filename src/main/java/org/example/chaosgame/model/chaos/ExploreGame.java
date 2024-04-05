@@ -1,6 +1,6 @@
-package org.example.chaosgame.chaos;
+package org.example.chaosgame.model.chaos;
 
-import org.example.chaosgame.linalg.Vector2D;
+import org.example.chaosgame.model.linalg.Vector2D;
 
 import java.util.Random;
 

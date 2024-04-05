@@ -1,8 +1,8 @@
-package org.example.chaosgame.chaos;
+package org.example.chaosgame.model.chaos;
 
-import org.example.chaosgame.linalg.Matrix2x2;
-import org.example.chaosgame.linalg.Vector2D;
-import org.example.chaosgame.transformations.AffineTransform2D;
+import org.example.chaosgame.model.linalg.Matrix2x2;
+import org.example.chaosgame.model.linalg.Vector2D;
+import org.example.chaosgame.model.transformations.AffineTransform2D;
 
 /**
  * A class representing a canvas for the chaos game.

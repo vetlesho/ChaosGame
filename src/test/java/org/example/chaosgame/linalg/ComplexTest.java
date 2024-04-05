@@ -1,8 +1,7 @@
 package org.example.chaosgame.linalg;
 
+import org.example.chaosgame.model.linalg.Complex;
 import org.junit.jupiter.api.*;
-
-import java.text.DecimalFormat;
 
 
 import static org.junit.jupiter.api.Assertions.*;

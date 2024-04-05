@@ -1,7 +1,7 @@
-package org.example.chaosgame.transformations;
+package org.example.chaosgame.model.transformations;
 
-import org.example.chaosgame.linalg.Matrix2x2;
-import org.example.chaosgame.linalg.Vector2D;
+import org.example.chaosgame.model.linalg.Matrix2x2;
+import org.example.chaosgame.model.linalg.Vector2D;
 
 /**
  * Represents an affine transformation in 2D space.

@@ -1,8 +1,8 @@
-package org.example.chaosgame.chaos;
+package org.example.chaosgame.model.chaos;
 
 import java.util.List;
-import org.example.chaosgame.linalg.Vector2D;
-import org.example.chaosgame.transformations.Transform2D;
+import org.example.chaosgame.model.linalg.Vector2D;
+import org.example.chaosgame.model.transformations.Transform2D;
 
 
 /**

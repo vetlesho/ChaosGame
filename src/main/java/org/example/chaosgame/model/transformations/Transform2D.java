@@ -1,6 +1,6 @@
-package org.example.chaosgame.transformations;
+package org.example.chaosgame.model.transformations;
 
-import org.example.chaosgame.linalg.Vector2D;
+import org.example.chaosgame.model.linalg.Vector2D;
 
 /**
  * Interface for 2D transformations.

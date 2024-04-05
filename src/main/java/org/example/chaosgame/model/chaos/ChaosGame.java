@@ -1,7 +1,11 @@
-package org.example.chaosgame.chaos;
+package org.example.chaosgame.model.chaos;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import org.example.chaosgame.linalg.Vector2D;
+
+import org.example.chaosgame.model.GameObserver;
+import org.example.chaosgame.model.linalg.Vector2D;
 
 /**
  * Class for running a chaos game.
@@ -19,7 +23,8 @@ public class ChaosGame {
 
   private Vector2D currentPoint = new Vector2D(0.0, 0.0);
 
-  public final Random random = new Random();
+  private final Random random = new Random();
+  private List<GameObserver> observers = new ArrayList<>();
 
   /**
    * Constructor for ChaosGame.
@@ -54,6 +59,7 @@ public class ChaosGame {
       currentPoint = description.getTransforms().get(transformIndex).transform(currentPoint);
       canvas.putPixel(currentPoint);
     }
+    notifyObservers();
   }
 
   /**
@@ -77,6 +83,21 @@ public class ChaosGame {
         currentPoint = description.getTransforms().get(3).transform(currentPoint);
       }
       canvas.putPixel(currentPoint);
+    }
+    notifyObservers();
+  }
+
+  public void addObserver(GameObserver observer) {
+    observers.add(observer);
+  }
+
+  public void removeObserver(GameObserver observer) {
+    observers.remove(observer);
+  }
+
+  private void notifyObservers() {
+    for (GameObserver observer : observers) {
+      observer.update();
     }
   }
 }

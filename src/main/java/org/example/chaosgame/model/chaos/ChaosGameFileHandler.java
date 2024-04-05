@@ -1,4 +1,4 @@
-package org.example.chaosgame.chaos;
+package org.example.chaosgame.model.chaos;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,12 +7,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.example.chaosgame.linalg.Complex;
-import org.example.chaosgame.linalg.Matrix2x2;
-import org.example.chaosgame.linalg.Vector2D;
-import org.example.chaosgame.transformations.AffineTransform2D;
-import org.example.chaosgame.transformations.JuliaTransform;
-import org.example.chaosgame.transformations.Transform2D;
+import org.example.chaosgame.model.linalg.Complex;
+import org.example.chaosgame.model.linalg.Matrix2x2;
+import org.example.chaosgame.model.linalg.Vector2D;
+import org.example.chaosgame.model.transformations.AffineTransform2D;
+import org.example.chaosgame.model.transformations.JuliaTransform;
+import org.example.chaosgame.model.transformations.Transform2D;
 
 /**
  * Class for reading and writing chaos game descriptions from and to files.

@@ -1,7 +1,8 @@
 package org.example.chaosgame.transformations;
 
-import org.example.chaosgame.linalg.Matrix2x2;
-import org.example.chaosgame.linalg.Vector2D;
+import org.example.chaosgame.model.linalg.Matrix2x2;
+import org.example.chaosgame.model.linalg.Vector2D;
+import org.example.chaosgame.model.transformations.AffineTransform2D;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

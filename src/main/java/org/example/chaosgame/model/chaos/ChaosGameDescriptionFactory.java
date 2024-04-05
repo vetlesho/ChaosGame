@@ -1,11 +1,11 @@
-package org.example.chaosgame.chaos;
+package org.example.chaosgame.model.chaos;
 
 import java.util.List;
-import org.example.chaosgame.linalg.Complex;
-import org.example.chaosgame.linalg.Matrix2x2;
-import org.example.chaosgame.linalg.Vector2D;
-import org.example.chaosgame.transformations.AffineTransform2D;
-import org.example.chaosgame.transformations.JuliaTransform;
+import org.example.chaosgame.model.linalg.Complex;
+import org.example.chaosgame.model.linalg.Matrix2x2;
+import org.example.chaosgame.model.linalg.Vector2D;
+import org.example.chaosgame.model.transformations.AffineTransform2D;
+import org.example.chaosgame.model.transformations.JuliaTransform;
 
 /**
  * Factory class for creating ChaosGameDescription objects.
@@ -17,21 +17,21 @@ public class ChaosGameDescriptionFactory {
     SIERPINSKI
   }
 
-  public static ChaosGameDescription get(String description, Complex c) {
+  public static ChaosGameDescription get(String description) {
     ChaosGameType type = ChaosGameType.valueOf(description.toUpperCase());
     return switch (type) {
-      case JULIA -> createJulia(c);
+      case JULIA -> createJulia();
       case BARNSLEY-> createBarnsley();
       case SIERPINSKI -> createSierpinski();
     };
   }
 
-  private static ChaosGameDescription createJulia(Complex c) {
+  private static ChaosGameDescription createJulia() {
     return new ChaosGameDescription(
             new Vector2D(-1.6, -1),
             new Vector2D(1.6, 1),
             List.of(
-                    new JuliaTransform(c, 1)
+                    new JuliaTransform(new Complex(-0.835, 0.2321), 1)
             )
     );
   }
