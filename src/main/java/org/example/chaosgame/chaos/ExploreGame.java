@@ -37,21 +37,41 @@ public class ExploreGame{
   public void exploreFractals(){
 
     long start = System.currentTimeMillis();
-    for (int y = 0; y < canvas.getHeight(); y++) {
+
+    IntStream yStream = IntStream.range(0, canvas.getHeight());
+    yStream.parallel().forEach(y -> {
       for (int x = 0; x < canvas.getWidth(); x++) {
         int iter = 0;
         currentPoint = canvas.transformIndicesToCoords(x, y);
         Vector2D tempPoint = currentPoint;
-        while (iter < MAX_ITER && tempPoint.getX() >= description.getMinCoords().getX() && tempPoint.getX() <= description.getMaxCoords().getX() &&
-                tempPoint.getY() >= description.getMinCoords().getY() && tempPoint.getY() <= description.getMaxCoords().getY()) {
+        while (iter < MAX_ITER && tempPoint.lengthSQ() < 4){
           tempPoint = description.getTransforms().getFirst().transform(tempPoint);
           iter++;
         }
-        canvas.putPixel(x, y, iter);
+        double abs = Math.sqrt(tempPoint.lengthSQ());
+        double smooth = iter - Math.log(Math.log(abs)) / Math.log(2);
+
+        canvas.putPixel(x, y, smooth);
 
       }
-
-    }
+    });
+//    for (int y = 0; y < canvas.getHeight(); y++) {
+//      for (int x = 0; x < canvas.getWidth(); x++) {
+//        int iter = 0;
+//        currentPoint = canvas.transformIndicesToCoords(x, y);
+//        Vector2D tempPoint = currentPoint;
+//        while (iter < MAX_ITER && tempPoint.lengthSQ() < 4){
+//          tempPoint = description.getTransforms().getFirst().transform(tempPoint);
+//          iter++;
+//        }
+//        double abs = Math.sqrt(tempPoint.lengthSQ());
+//        double smooth = iter - Math.log(Math.log(abs)) / Math.log(2);
+//
+//        canvas.putPixel(x, y, smooth);
+//
+//      }
+//
+//    }
     long end = System.currentTimeMillis();
     System.out.println("Time taken: " + (end - start) + "ms");
   }

@@ -1,16 +1,18 @@
 package org.example.chaosgame.view;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import org.example.chaosgame.chaos.ChaosCanvas;
 import org.example.chaosgame.chaos.ChaosGame;
 import org.example.chaosgame.chaos.ChaosGameDescriptionFactory;
@@ -18,10 +20,10 @@ import org.example.chaosgame.linalg.Complex;
 
 public class ChaosPage {
   private final StackPane chaosContent;
-  private final ChaosGame chaosGame;
-  private final ChaosCanvas chaosCanvas;
-  private Complex c = new Complex(-0.835, 0.2321);
-  private final Button runStepsButton = new Button("Run Steps");
+  private ChaosGame chaosGame;
+  private ChaosCanvas chaosCanvas;
+  private Complex c = new Complex(-0.70176, -0.3842);
+  private final Button runStepsButton = MenuView.shadedButton("Run Steps");
   private final Canvas canvas;
   private final GraphicsContext gc;
   private final Label errorLabel = new Label("Invalid input. Please enter a valid number.");
@@ -30,7 +32,7 @@ public class ChaosPage {
 
   public ChaosPage() {
     chaosContent = new StackPane();
-    chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get("Julia", c), 1200, 800);
+    updateChaosGame("Julia");
     chaosCanvas = chaosGame.getCanvas();
     canvas = new Canvas(chaosCanvas.getWidth(), chaosCanvas.getHeight());
     gc = canvas.getGraphicsContext2D();
@@ -40,24 +42,49 @@ public class ChaosPage {
     stepsField.setMaxWidth(150);
     stepsField.setPromptText("Enter number of steps");
 
-    runStepsButton.setOnAction(e -> {
-      if (!stepsField.getText().isEmpty()) {
-        try {
-          chaosGame.runSteps(Integer.parseInt(stepsField.getText()));
-          updateCanvas();
-          runStepsBox.getChildren().remove(errorLabel);
-        } catch (NumberFormatException ex) {
-          if (!runStepsBox.getChildren().contains(errorLabel)) {
-            runStepsBox.getChildren().add(errorLabel);
-          }
-        }
 
+
+    ComboBox<String> contextMenu = new ComboBox<>();
+    contextMenu.setPromptText("Select chaos game");
+    contextMenu.setStyle(MenuView.MENU_BUTTON_STYLE);
+    ColorAdjust shade = new ColorAdjust();
+    shade.setBrightness(0.4);
+    contextMenu.addEventHandler(MouseEvent.MOUSE_ENTERED,
+            e -> contextMenu.setEffect(shade));
+    contextMenu.addEventHandler(MouseEvent.MOUSE_EXITED,
+            e -> contextMenu.setEffect(null));
+
+
+    contextMenu.getItems().addAll("Julia", "Sierpinski", "Barnsley", "Make your own");
+
+    contextMenu.setOnAction(e -> {
+      String selectedGame = contextMenu.getValue();
+      if(selectedGame.equals("Make your own")) {
+
+        chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get("Julia", c), 1200, 800);
+      } else {
+        updateChaosGame(selectedGame);
       }
-
+      gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+      updateCanvas();
     });
+    runStepsButton.setOnAction(e5 -> {
+              if (!stepsField.getText().isEmpty()) {
+                try {
+                  chaosGame.runSteps(Integer.parseInt(stepsField.getText()));
+                  updateCanvas();
+                  runStepsBox.getChildren().remove(errorLabel);
+                } catch (NumberFormatException ex) {
+                  if (!runStepsBox.getChildren().contains(errorLabel)) {
+                    runStepsBox.getChildren().add(errorLabel);
+                  }
+                }
+              }
+            });
 
-
-    runStepsBox.getChildren().addAll(stepsField, runStepsButton);
+    runStepsBox.getChildren().addAll(contextMenu,stepsField, runStepsButton);
+    runStepsBox.setSpacing(10);
+    runStepsBox.setPadding(new Insets(10));
     runStepsBox.setAlignment(Pos.CENTER_RIGHT);
     chaosContent.getChildren().addAll(canvas, runStepsBox);
 
@@ -68,10 +95,12 @@ public class ChaosPage {
   }
 
   public void updateCanvas() {
-    int[][] canvasArray = chaosCanvas.getCanvasArray();
+    double[][] canvasArray = chaosCanvas.getCanvasArray();
     double cellWidth = gc.getCanvas().getWidth() / chaosCanvas.getWidth();
     double cellHeight = gc.getCanvas().getHeight() / chaosCanvas.getHeight();
     long start = System.currentTimeMillis();
+
+
 
     // Create an off-screen image
     WritableImage offScreenImage = new WritableImage(chaosCanvas.getWidth(), chaosCanvas.getHeight());
@@ -79,9 +108,9 @@ public class ChaosPage {
 
     for (int i = 0; i < chaosCanvas.getHeight(); i++) {
       for (int j = 0; j < chaosCanvas.getWidth(); j++) {
-        int color = Math.min(canvasArray[i][j] * 3, 255);
+        double color = Math.min(canvasArray[i][j] * 3, 255);
         if (color != 0) {
-          pixelWriter.setColor(j, i, Color.rgb(color, 0, 0));
+          pixelWriter.setColor(j, i, Color.rgb((int) (color), 0, 0));
         }
       }
     }
@@ -91,5 +120,10 @@ public class ChaosPage {
 
     long end = System.currentTimeMillis();
     System.out.println("Time taken to display: " + (end - start) + "ms");
+  }
+
+  private void updateChaosGame(String chaosGameType) {
+    chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get(chaosGameType, c), 1200, 800);
+    chaosCanvas = chaosGame.getCanvas();
   }
 }

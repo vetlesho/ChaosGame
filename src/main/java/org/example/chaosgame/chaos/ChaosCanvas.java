@@ -17,7 +17,7 @@ import org.example.chaosgame.transformations.AffineTransform2D;
 public class ChaosCanvas {
   private final int width;
   private final int height;
-  private final int[][] canvas;
+  private final double[][] canvas;
   private final Vector2D minCoords;
   private final Vector2D maxCoords;
   private final AffineTransform2D transformCoordsToIndices;
@@ -54,10 +54,10 @@ public class ChaosCanvas {
                     / (maxCoords.getY() - minCoords.getY())),
                     ((width - 1.0) * minCoords.getX()) / (minCoords.getX() - maxCoords.getX())
   ));
-    this.canvas = new int[height][width];
+    this.canvas = new double[height][width];
   }
 
-  public int getPixel(Vector2D point){
+  public double getPixel(Vector2D point){
     Vector2D indices = transformCoordsToIndices.transform(point);
     int x = (int) indices.getX();
     int y = (int) indices.getY();
@@ -89,7 +89,7 @@ public class ChaosCanvas {
    *
    * @param iter The iteration value to set the pixel to
    */
-  public void putPixel(int x, int y, int iter){
+  public void putPixel(int x, int y, double iter){
     if (y >= 0 && y < height && x >= 0 && x < width) {
       canvas[y][x] = iter;
     }
@@ -113,7 +113,7 @@ public class ChaosCanvas {
     return new Vector2D(x, y);
   }
 
-  public int[][] getCanvasArray() {
+  public double[][] getCanvasArray() {
     return canvas;
   }
 

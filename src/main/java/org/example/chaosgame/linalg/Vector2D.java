@@ -52,6 +52,24 @@ public class Vector2D {
             y - other.y);
   }
 
+  public Vector2D scale(double scalar) {
+    return new Vector2D(
+            x * scalar,
+            y * scalar);
+  }
+
+  public Vector2D multiply(Vector2D other) {
+    return new Vector2D(
+            x * other.x,
+            y * other.y);
+  }
+
+  public Vector2D divide(Vector2D other) {
+    return new Vector2D(
+            x / other.x,
+            y / other.y);
+  }
+
   public double lengthSQ() {
     return x * x + y * y;
   }
