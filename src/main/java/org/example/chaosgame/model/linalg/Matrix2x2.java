@@ -1,4 +1,4 @@
-package org.example.chaosgame.linalg;
+package org.example.chaosgame.model.linalg;
 
 
 /**

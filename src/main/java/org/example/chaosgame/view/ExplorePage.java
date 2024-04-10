@@ -4,23 +4,21 @@ import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import org.example.chaosgame.chaos.*;
-import org.example.chaosgame.linalg.Complex;
-import org.example.chaosgame.linalg.Vector2D;
-import org.example.chaosgame.transformations.ExploreJulia;
-import org.example.chaosgame.transformations.JuliaTransform;
-import org.example.chaosgame.transformations.Transform2D;
+import org.example.chaosgame.model.chaos.ChaosCanvas;
+import org.example.chaosgame.model.chaos.ChaosGameDescription;
+import org.example.chaosgame.model.chaos.ExploreGame;
+import org.example.chaosgame.model.linalg.Complex;
+import org.example.chaosgame.model.linalg.Vector2D;
+import org.example.chaosgame.model.transformations.ExploreJulia;
+import org.example.chaosgame.model.transformations.Transform2D;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class ExplorePage {
   private final StackPane exploreContent;
@@ -61,14 +59,14 @@ public class ExplorePage {
     exploreGame.exploreFractals();
     updateCanvas();
 
-    Button removeImage = MenuView.shadedButton("Remove Image");
+    Button removeImage = new Button("Remove Image");
     removeImage.setOnAction(event -> {
       gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     });
 
 
-    zoomInButton = MenuView.shadedButton("Zoom In");
-    zoomOutButton = MenuView.shadedButton("Zoom Out");
+    zoomInButton = new Button("Zoom In");
+    zoomOutButton = new Button("Zoom Out");
 
 
 

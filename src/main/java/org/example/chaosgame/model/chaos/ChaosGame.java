@@ -1,8 +1,8 @@
-package org.example.chaosgame.chaos;
+package org.example.chaosgame.model.chaos;
 
 import java.util.List;
 import java.util.Random;
-import org.example.chaosgame.linalg.Vector2D;
+import org.example.chaosgame.model.linalg.Vector2D;
 
 /**
  * Class for running a chaos game.

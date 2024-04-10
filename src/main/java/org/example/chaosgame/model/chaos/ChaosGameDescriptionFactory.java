@@ -1,11 +1,11 @@
-package org.example.chaosgame.chaos;
+package org.example.chaosgame.model.chaos;
 
 import java.util.List;
-import org.example.chaosgame.linalg.Complex;
-import org.example.chaosgame.linalg.Matrix2x2;
-import org.example.chaosgame.linalg.Vector2D;
-import org.example.chaosgame.transformations.AffineTransform2D;
-import org.example.chaosgame.transformations.JuliaTransform;
+import org.example.chaosgame.model.linalg.Complex;
+import org.example.chaosgame.model.linalg.Matrix2x2;
+import org.example.chaosgame.model.linalg.Vector2D;
+import org.example.chaosgame.model.transformations.AffineTransform2D;
+import org.example.chaosgame.model.transformations.JuliaTransform;
 
 /**
  * Factory class for creating ChaosGameDescription objects.

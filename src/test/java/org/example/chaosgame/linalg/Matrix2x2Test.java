@@ -1,5 +1,7 @@
 package org.example.chaosgame.linalg;
 
+import org.example.chaosgame.model.linalg.Matrix2x2;
+import org.example.chaosgame.model.linalg.Vector2D;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;

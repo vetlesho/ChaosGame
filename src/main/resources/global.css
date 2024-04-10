@@ -1,0 +1,32 @@
+.button {
+    -fx-text-fill: white;
+    -fx-font: 22 arial;
+    -fx-background-color: #0d2d3a;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-max-height: 50;
+}
+
+.combo-box {
+    -fx-text-fill: white;
+    -fx-font: 22 arial;
+    -fx-background-color: #0d2d3a;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+}
+
+.button:hover {
+    -fx-opacity: 0.8;
+}
+
+.combo-box:hover {
+    -fx-opacity: 0.8;
+}
+
+.combo-box .indexed-cell:selected {
+    -fx-text-fill: WHITE;
+}

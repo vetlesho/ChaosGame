@@ -12,18 +12,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import org.example.chaosgame.chaos.ChaosCanvas;
-import org.example.chaosgame.chaos.ChaosGame;
-import org.example.chaosgame.chaos.ChaosGameDescriptionFactory;
-import org.example.chaosgame.linalg.Complex;
+import org.example.chaosgame.model.chaos.ChaosCanvas;
+import org.example.chaosgame.model.chaos.ChaosGame;
+import org.example.chaosgame.model.chaos.ChaosGameDescriptionFactory;
+import org.example.chaosgame.model.linalg.Complex;
 
 public class ChaosPage {
   private final StackPane chaosContent;
   private ChaosGame chaosGame;
   private ChaosCanvas chaosCanvas;
   private Complex c = new Complex(-0.70176, -0.3842);
-  private final Button runStepsButton = MenuView.shadedButton("Run Steps");
+  private final Button runStepsButton = new Button("Run Steps");
   private final Canvas canvas;
   private final GraphicsContext gc;
   private final Label errorLabel = new Label("Invalid input. Please enter a valid number.");
@@ -46,7 +45,6 @@ public class ChaosPage {
 
     ComboBox<String> contextMenu = new ComboBox<>();
     contextMenu.setPromptText("Select chaos game");
-    contextMenu.setStyle(MenuView.MENU_BUTTON_STYLE);
     ColorAdjust shade = new ColorAdjust();
     shade.setBrightness(0.4);
     contextMenu.addEventHandler(MouseEvent.MOUSE_ENTERED,
