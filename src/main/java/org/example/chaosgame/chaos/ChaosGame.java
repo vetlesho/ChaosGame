@@ -1,5 +1,6 @@
 package org.example.chaosgame.chaos;
 
+import java.util.List;
 import java.util.Random;
 import org.example.chaosgame.linalg.Vector2D;
 
@@ -49,6 +50,13 @@ public class ChaosGame {
    * @param steps Number of steps to run
    */
   public void runSteps(int steps) {
+    if (description.getProbabilities() != null) {
+      runStepsWithProbabilities(steps, description.getProbabilities());
+    } else {
+      runStepsUniform(steps);
+    }
+  }
+  private void runStepsUniform(int steps) {
     for (int i = 0; i < steps; i++) {
       int transformIndex = random.nextInt(description.getTransforms().size());
       currentPoint = description.getTransforms().get(transformIndex).transform(currentPoint);
@@ -57,25 +65,28 @@ public class ChaosGame {
   }
 
   /**
-   * Method for running the Barnsley chaos game. Randomly selects a transformation
-   * from the description and applies it to the current point.
-   * The Barnsley chaos game has a different probability distribution
-   * for selecting transformations.
+   * Method for running the chaos game with probabilities.
+   * Randomly selects a transformation from the description based on the probabilities
+   * and applies it to the current point.
    *
    * @param steps Number of steps to run
+   * @param probabilities List of probabilities for the transformations
    */
-  public void runStepsBarnsley(int steps) {
+  private void runStepsWithProbabilities(int steps, List<Integer> probabilities) {
     for (int i = 0; i < steps; i++) {
       int test = random.nextInt(100);
-      if (test < 1) {
-        currentPoint = description.getTransforms().getFirst().transform(currentPoint);
-      } else if (test < 86) {
-        currentPoint = description.getTransforms().get(1).transform(currentPoint);
-      } else if (test < 93) {
-        currentPoint = description.getTransforms().get(2).transform(currentPoint);
-      } else {
-        currentPoint = description.getTransforms().get(3).transform(currentPoint);
+      int transformIndex = -1;
+      for (int j = 0; j < probabilities.size(); j++) {
+        test -= probabilities.get(j);
+        if (test < 0) {
+          transformIndex = j;
+          break;
+        }
       }
+      if (transformIndex == -1) {
+        transformIndex = probabilities.size() - 1; // default to the last transformation
+      }
+      currentPoint = description.getTransforms().get(transformIndex).transform(currentPoint);
       canvas.putPixel(currentPoint);
     }
   }

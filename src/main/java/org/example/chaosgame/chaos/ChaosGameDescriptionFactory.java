@@ -25,7 +25,7 @@ public class ChaosGameDescriptionFactory {
    * @return A ChaosGameDescription object
    */
   public static ChaosGameDescription get(String description, Complex c) {
-    ChaosGameType type = ChaosGameType.valueOf(description.toUpperCase());
+    ChaosGameType type = ChaosGameType.valueOf(description.toUpperCase().trim());
     return switch (type) {
       case JULIA -> createJulia(c);
       case BARNSLEY-> createBarnsley();
@@ -80,7 +80,7 @@ public class ChaosGameDescriptionFactory {
                     new AffineTransform2D(new Matrix2x2(0.85, 0.04, -0.04, 0.85), new Vector2D(0.0, 1.60)),
                     new AffineTransform2D(new Matrix2x2(0.20, -0.26, 0.23, 0.22), new Vector2D(0.0, 1.60)),
                     new AffineTransform2D(new Matrix2x2(-0.15, 0.28, 0.26, 0.24), new Vector2D(0.0, 0.44))
-            )
+            ), List.of(2, 84, 7, 7)
     );
   }
 }
