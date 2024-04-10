@@ -26,7 +26,6 @@ public class ChaosPage {
   private final Canvas canvas;
   private final GraphicsContext gc;
   private final Label errorLabel = new Label("Invalid input. Please enter a valid number.");
-
   private final VBox runStepsBox = new VBox();
 
   public ChaosPage() {
@@ -42,16 +41,8 @@ public class ChaosPage {
     stepsField.setPromptText("Enter number of steps");
 
 
-
     ComboBox<String> contextMenu = new ComboBox<>();
     contextMenu.setPromptText("Select chaos game");
-    ColorAdjust shade = new ColorAdjust();
-    shade.setBrightness(0.4);
-    contextMenu.addEventHandler(MouseEvent.MOUSE_ENTERED,
-            e -> contextMenu.setEffect(shade));
-    contextMenu.addEventHandler(MouseEvent.MOUSE_EXITED,
-            e -> contextMenu.setEffect(null));
-
 
     contextMenu.getItems().addAll("Julia", "Sierpinski", "Barnsley", "Make your own");
 
