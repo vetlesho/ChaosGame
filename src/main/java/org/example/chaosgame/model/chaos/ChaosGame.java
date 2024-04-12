@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.example.chaosgame.controller.ChaosGameSubject;
+import org.example.chaosgame.controller.Subject;
 import org.example.chaosgame.controller.Observer;
 import org.example.chaosgame.model.linalg.Vector2D;
 
@@ -17,7 +17,7 @@ import org.example.chaosgame.model.linalg.Vector2D;
  * The new point is then drawn on the canvas.
  * This process is repeated a selected amount of steps.
  */
-public class ChaosGame implements ChaosGameSubject {
+public class ChaosGame implements Subject {
   private final ChaosCanvas canvas;
 
   private final ChaosGameDescription description;

@@ -11,8 +11,8 @@ import org.example.chaosgame.model.transformations.Transform2D;
  * and a list of transformations to apply to the points.
  */
 public class ChaosGameDescription {
-  private final Vector2D minCoords;
-  private final Vector2D maxCoords;
+  private Vector2D minCoords;
+  private Vector2D maxCoords;
   private final List<Transform2D> transforms;
 
   private final List<Integer> probabilities;
@@ -48,6 +48,13 @@ public class ChaosGameDescription {
 
   public Vector2D getMaxCoords() {
     return maxCoords;
+  }
+
+  public void setMinCoords(Vector2D minCoords) {
+    this.minCoords = minCoords;
+  }
+  public void setMaxCoords(Vector2D maxCoords) {
+    this.maxCoords = maxCoords;
   }
 
   public List<Transform2D> getTransforms() {

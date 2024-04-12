@@ -1,5 +1,7 @@
 package org.example.chaosgame.view;
 
+import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -27,6 +29,9 @@ public class ExplorePage {
   private Complex c = new Complex(-0.835, 0.2321);
   private final Canvas canvas;
   private final GraphicsContext gc;
+  private Vector2D dragStart;
+  private Vector2D dragStartTemp;
+
   private final List<Transform2D> trans = List.of(
                   new ExploreJulia(c)
           );
@@ -42,6 +47,7 @@ public class ExplorePage {
 
   private WritableImage offScreenImage;
   private PixelWriter pixelWriter;
+  private Vector2D dragDistance;
 
 
   public ExplorePage() {
@@ -71,27 +77,55 @@ public class ExplorePage {
 
 
     zoomInButton.setOnMousePressed(event -> {
-      double scaleFactor = 1.05;
-      Vector2D newMinCoords = description.getMinCoords().scale(1 / scaleFactor);
-      Vector2D newMaxCoords = description.getMaxCoords().scale(1 / scaleFactor);
-        description = new ChaosGameDescription(newMinCoords, newMaxCoords, trans);
-        exploreGame = new ExploreGame(description, 1200, 800);
-//
-        exploreGame.exploreFractals();
-        updateCanvas();
-
-    });
-
-    zoomOutButton.setOnAction(event -> {
-      double scaleFactor = 1 / 1.05;
-      Vector2D newMinCoords = description.getMinCoords().scale(1 / scaleFactor);
-      Vector2D newMaxCoords = description.getMaxCoords().scale(1 / scaleFactor);
+      AnimationTimer zoomInTimer = new AnimationTimer() {
+        @Override
+        public void handle(long now) {
+          double scaleFactor = 1.05;
+          Vector2D canvasCenter = new Vector2D(canvas.getWidth() / 2, canvas.getHeight() / 2);
+          Vector2D fractalCenter = chaosCanvas.transformIndicesToCoords((int)canvasCenter.getX(), (int)canvasCenter.getY());
+          Vector2D newMinCoords = fractalCenter.subtract(fractalCenter.subtract(description.getMinCoords()).scale(1 / scaleFactor));
+          Vector2D newMaxCoords = fractalCenter.add(description.getMaxCoords().subtract(fractalCenter).scale(1 / scaleFactor));
           description = new ChaosGameDescription(newMinCoords, newMaxCoords, trans);
           exploreGame = new ExploreGame(description, 1200, 800);
-//          chaosCanvas = exploreGame.getCanvas();
           exploreGame.exploreFractals();
           updateCanvas();
+        }
+      };
+      zoomInTimer.start();
+      zoomInButton.setUserData(zoomInTimer); // Store the timer in the button's user data
+    });
 
+    zoomInButton.setOnMouseReleased(event -> {
+      AnimationTimer zoomInTimer = (AnimationTimer) zoomInButton.getUserData();
+      if (zoomInTimer != null) {
+        zoomInTimer.stop();
+      }
+    });
+
+    zoomOutButton.setOnMousePressed(event -> {
+      AnimationTimer zoomOutTimer = new AnimationTimer() {
+        @Override
+        public void handle(long now) {
+          double scaleFactor = 1.0 / 1.05;
+          Vector2D canvasCenter = new Vector2D(canvas.getWidth() / 2, canvas.getHeight() / 2);
+          Vector2D fractalCenter = chaosCanvas.transformIndicesToCoords((int)canvasCenter.getX(), (int)canvasCenter.getY());
+          Vector2D newMinCoords = fractalCenter.subtract(fractalCenter.subtract(description.getMinCoords()).scale(1 / scaleFactor));
+          Vector2D newMaxCoords = fractalCenter.add(description.getMaxCoords().subtract(fractalCenter).scale(1 / scaleFactor));
+          description = new ChaosGameDescription(newMinCoords, newMaxCoords, trans);
+          exploreGame = new ExploreGame(description, 1200, 800);
+          exploreGame.exploreFractals();
+          updateCanvas();
+        }
+      };
+      zoomOutTimer.start();
+      zoomOutButton.setUserData(zoomOutTimer); // Store the timer in the button's user data
+    });
+
+    zoomOutButton.setOnMouseReleased(event -> {
+      AnimationTimer zoomOutTimer = (AnimationTimer) zoomOutButton.getUserData();
+      if (zoomOutTimer != null) {
+        zoomOutTimer.stop();
+      }
     });
 
 
@@ -102,35 +136,94 @@ public class ExplorePage {
 
     exploreContent.getChildren().addAll(canvas, buttons);
 
+    Platform.runLater(() -> {
+      buttons.setLayoutX(canvas.getWidth() - buttons.getWidth());
+      buttons.setLayoutY(0);
+    });
+
     exploreContent.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
       try {
+        dragStart = new Vector2D(event.getX(), event.getY());
+
         double mouseX = event.getX() - canvas.getLayoutX();
         double mouseY = event.getY() - canvas.getLayoutY();
-        initialMousePosition = new Vector2D(mouseX, canvas.getHeight() - mouseY);
+        dragStartTemp = new Vector2D(mouseX, canvas.getHeight() - mouseY);
+//        initialMousePosition = new Vector2D(mouseX, canvas.getHeight() - mouseY);
       } catch (Exception e) {
         e.printStackTrace();
     }
 });
 
 exploreContent.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
-    Vector2D currentMousePosition = new Vector2D(event.getX(),canvas.getHeight() - event.getY());
-    Vector2D dragDistance = currentMousePosition.subtract(initialMousePosition);
+//    Vector2D currentMousePosition = new Vector2D(event.getX(),canvas.getHeight() - event.getY());
+//    Vector2D dragDistance = currentMousePosition.subtract(initialMousePosition);
+//
+//    // Adjust the drag distance based on the zoom level
+//// Convert the drag distance from canvas coordinates to fractal coordinates
+//  Vector2D fractalRange = description.getMaxCoords().subtract(description.getMinCoords());
+//  Vector2D adjustedDragDistance = dragDistance.multiply(fractalRange).divide(new Vector2D(canvas.getWidth(), canvas.getHeight()));
+//
+//    Vector2D newMinCoords = description.getMinCoords().subtract(adjustedDragDistance);
+//    Vector2D newMaxCoords = description.getMaxCoords().subtract(adjustedDragDistance);
+//    description.setMinCoords(newMinCoords);
+//    description.setMaxCoords(newMaxCoords);
+//    exploreGame = new ExploreGame(description, 1200, 800);
+//    exploreGame.exploreFractals();
+//    updateCanvas();
+//
+//    initialMousePosition = currentMousePosition;
 
-    // Adjust the drag distance based on the zoom level
-// Convert the drag distance from canvas coordinates to fractal coordinates
-  Vector2D fractalRange = description.getMaxCoords().subtract(description.getMinCoords());
-  Vector2D adjustedDragDistance = dragDistance.multiply(fractalRange).divide(new Vector2D(canvas.getWidth(), canvas.getHeight()));
+  Vector2D dragEnd = new Vector2D(event.getX(), event.getY());
+  dragDistance = dragEnd.subtract(dragStart);
 
+  canvas.setTranslateX(canvas.getTranslateX() + dragDistance.getX());
+  canvas.setTranslateY(canvas.getTranslateY() + dragDistance.getY());
+
+  dragStart = dragEnd;
+
+
+
+
+});
+
+    exploreContent.setOnMouseReleased(event -> {
+      dragDistance = new Vector2D(event.getX(), canvas.getHeight() - event.getY()).subtract(dragStartTemp);
+//       Reset the position where the drag started
+      Vector2D fractalRange = description.getMaxCoords().subtract(description.getMinCoords());
+      System.out.println("drag distance: " + dragDistance.getX() + ", " + dragDistance.getY());
+    Vector2D adjustedDragDistance = dragDistance.multiply(fractalRange).divide(new Vector2D(canvas.getWidth(), canvas.getHeight()));
+      System.out.println("Adjusted drag distance: " + adjustedDragDistance.getX() + ", " + adjustedDragDistance.getY());
     Vector2D newMinCoords = description.getMinCoords().subtract(adjustedDragDistance);
     Vector2D newMaxCoords = description.getMaxCoords().subtract(adjustedDragDistance);
-
-    description = new ChaosGameDescription(newMinCoords, newMaxCoords, trans);
+    description.setMinCoords(newMinCoords);
+    description.setMaxCoords(newMaxCoords);
     exploreGame = new ExploreGame(description, 1200, 800);
     exploreGame.exploreFractals();
     updateCanvas();
+      System.out.println("Mouse released");
 
-    initialMousePosition = currentMousePosition;
-});
+      dragStart = null;
+      canvas.setTranslateX(0);
+      canvas.setTranslateY(0);
+    });
+
+//exploreContent.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
+//    Vector2D currentMousePosition = new Vector2D(event.getX(), canvas.getHeight() - event.getY());
+//    Vector2D dragDistance = currentMousePosition.subtract(initialMousePosition);
+//
+//    // Adjust the drag distance based on the zoom level
+//    Vector2D fractalRange = description.getMaxCoords().subtract(description.getMinCoords());
+//    Vector2D adjustedDragDistance = dragDistance.multiply(fractalRange).divide(new Vector2D(canvas.getWidth(), canvas.getHeight()));
+//
+//    Vector2D newMinCoords = description.getMinCoords().subtract(adjustedDragDistance);
+//    Vector2D newMaxCoords = description.getMaxCoords().subtract(adjustedDragDistance);
+//
+//    description.setMinCoords(newMinCoords);
+//    description.setMaxCoords(newMaxCoords);
+//    exploreGame.setDescription(description);
+//    exploreGame.exploreFractals();
+//    updateCanvas();
+//  });
   }
 
   public StackPane getExploreContent() {
@@ -152,9 +245,10 @@ exploreContent.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
     for (int i = 0; i < chaosCanvas.getHeight(); i++) {
       for (int j = 0; j < chaosCanvas.getWidth(); j++) {
         double color = Math.min(canvasArray[i][j] * 3, 255);
-        if (color > 0 && color < 255) {
-          pixelWriter.setColor(j, i, Color.rgb((int) color, (int) color, (int) color));
-        }
+//        if (color >= 0 && color <= 255) {
+          pixelWriter.setColor(j, i, Color.rgb((int) color, 0, 0));
+//        }
+
       }
     }
 

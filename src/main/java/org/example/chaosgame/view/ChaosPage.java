@@ -12,28 +12,34 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import org.example.chaosgame.model.chaos.ChaosCanvas;
-import org.example.chaosgame.model.chaos.ChaosGame;
-import org.example.chaosgame.model.chaos.ChaosGameDescriptionFactory;
+import org.example.chaosgame.controller.ChaosGameController;
+import org.example.chaosgame.model.chaos.*;
 import org.example.chaosgame.model.linalg.Complex;
+import java.io.File;
+import java.io.IOException;
+import javafx.stage.FileChooser;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class ChaosPage {
+  ChaosGameController chaosGameController;
   private final StackPane chaosContent;
   private ChaosGame chaosGame;
   private ChaosCanvas chaosCanvas;
   private Complex c = new Complex(-0.70176, -0.3842);
   private final Button runStepsButton = new Button("Run Steps");
-  private final Canvas canvas;
-  private final GraphicsContext gc;
+  private final Canvas canvas = new Canvas(1200, 800);
+  private final GraphicsContext gc ;
   private final Label errorLabel = new Label("Invalid input. Please enter a valid number.");
   private final VBox runStepsBox = new VBox();
 
   public ChaosPage() {
+
     chaosContent = new StackPane();
+    gc = canvas.getGraphicsContext2D();
     updateChaosGame("Julia");
     chaosCanvas = chaosGame.getCanvas();
-    canvas = new Canvas(chaosCanvas.getWidth(), chaosCanvas.getHeight());
-    gc = canvas.getGraphicsContext2D();
+
 
 
     TextField stepsField = new TextField();
@@ -54,9 +60,9 @@ public class ChaosPage {
       } else {
         updateChaosGame(selectedGame);
       }
-      gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
       updateCanvas();
     });
+
     runStepsButton.setOnAction(e5 -> {
               if (!stepsField.getText().isEmpty()) {
                 try {
@@ -71,7 +77,25 @@ public class ChaosPage {
               }
             });
 
-    runStepsBox.getChildren().addAll(contextMenu,stepsField, runStepsButton);
+
+Button openFileButton = new Button("Open File");
+openFileButton.setOnAction(e -> {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
+    File selectedFile = fileChooser.showOpenDialog(null);
+
+    if (selectedFile != null) {
+        try {
+          ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
+          ChaosGameDescription description = fileHandler.readFromFile(selectedFile.getAbsolutePath());
+          updateChaosGame(description);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+});
+
+    runStepsBox.getChildren().addAll(contextMenu,stepsField, runStepsButton, openFileButton);
     runStepsBox.setSpacing(10);
     runStepsBox.setPadding(new Insets(10));
     runStepsBox.setAlignment(Pos.CENTER_RIGHT);
@@ -113,6 +137,14 @@ public class ChaosPage {
 
   private void updateChaosGame(String chaosGameType) {
     chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get(chaosGameType, c), 1200, 800);
+    chaosGameController = new ChaosGameController(chaosGame);
     chaosCanvas = chaosGame.getCanvas();
+    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+  }
+  private void updateChaosGame(ChaosGameDescription description){
+    chaosGame = new ChaosGame(description, 1200, 800);
+    chaosGameController = new ChaosGameController(chaosGame);
+    chaosCanvas = chaosGame.getCanvas();
+    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
   }
 }
