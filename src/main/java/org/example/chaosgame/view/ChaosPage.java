@@ -13,23 +13,23 @@ import javafx.scene.paint.Color;
 import org.example.chaosgame.controller.ChaosGameController;
 import org.example.chaosgame.model.chaos.*;
 
+import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.view.components.HomeButton;
 
 
 public class ChaosPage extends StackPane{
-  private ChaosGameController chaosGameController;
+  private final ChaosGameController chaosGameController;
   private ChaosCanvas chaosCanvas;
-  private final Button runStepsButton = new Button("Run Steps");
-  private final Canvas canvas = new Canvas(1200, 800);
   private final GraphicsContext gc;
-  private final VBox runStepsBox = new VBox();
-
-  private final Button homeButton = new HomeButton();
 
 
-  public ChaosPage(ChaosGameController chaosGameController) {
+    public ChaosPage(ChaosGameController chaosGameController) {
     this.chaosGameController = chaosGameController;
-    gc = canvas.getGraphicsContext2D();
+    this.chaosCanvas = chaosGameController.getChaosCanvas();
+    Canvas canvas = new Canvas(1200, 800);
+    this.gc = canvas.getGraphicsContext2D();
+    Button runStepsButton = new Button("Run Steps");
+
     TextField stepsField = new TextField();
     stepsField.setMaxWidth(150);
     stepsField.setPromptText("Enter number of steps");
@@ -46,26 +46,24 @@ public class ChaosPage extends StackPane{
 
     runStepsButton.setOnAction(event -> chaosGameController.runSteps(stepsField));
 
+    Button openFileButton = new Button("Open File");
+    openFileButton.setOnAction(e -> chaosGameController.openFromFile());
 
-Button openFileButton = new Button("Open File");
-openFileButton.setOnAction(e -> chaosGameController.openFromFile());
-
-    runStepsBox.getChildren().addAll(contextMenu, stepsField, runStepsButton, openFileButton);
+      VBox runStepsBox = new VBox();
+      runStepsBox.getChildren().addAll(contextMenu, stepsField, runStepsButton, openFileButton);
     runStepsBox.setSpacing(10);
     runStepsBox.setPadding(new Insets(10));
     runStepsBox.setAlignment(Pos.CENTER_RIGHT);
-    setAlignment(homeButton, Pos.TOP_LEFT);
+        Button homeButton = new HomeButton();
+        setAlignment(homeButton, Pos.TOP_LEFT);
 
     homeButton.setOnAction(e -> chaosGameController.homeButtonClicked());
     this.getChildren().addAll(canvas, runStepsBox, homeButton);
 
   }
 
-  public StackPane getChaosContent() {
-    return this;
-  }
-
   public void updateCanvas() {
+    chaosCanvas = chaosGameController.getChaosCanvas();
     double[][] canvasArray = chaosCanvas.getCanvasArray();
     double cellWidth = gc.getCanvas().getWidth() / chaosCanvas.getWidth();
     double cellHeight = gc.getCanvas().getHeight() / chaosCanvas.getHeight();
@@ -90,8 +88,4 @@ openFileButton.setOnAction(e -> chaosGameController.openFromFile());
     long end = System.currentTimeMillis();
     System.out.println("Time to draw: " + (end - start) + " ms");
   }
-
-//  public Button getHomeButton() {
-//    return homeButton;
-//  }
 }

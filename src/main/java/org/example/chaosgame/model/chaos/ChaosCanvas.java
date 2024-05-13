@@ -1,5 +1,6 @@
 package org.example.chaosgame.model.chaos;
 
+import javafx.scene.canvas.Canvas;
 import org.example.chaosgame.model.linalg.Matrix2x2;
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.AffineTransform2D;

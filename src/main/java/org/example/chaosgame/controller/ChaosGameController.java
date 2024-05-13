@@ -35,6 +35,9 @@ public class ChaosGameController implements Observer{
   public ChaosPage getChaosPage() {
     return chaosPage;
   }
+  public ChaosCanvas getChaosCanvas(){
+    return chaosCanvas;
+  }
   public void homeButtonClicked() {
     pageController.homeButtonClicked();
   }

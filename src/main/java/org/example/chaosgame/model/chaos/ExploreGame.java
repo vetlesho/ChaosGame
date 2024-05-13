@@ -11,7 +11,7 @@ public class ExploreGame{
   private final int MAX_ITER = 256;
 
   private final ChaosCanvas canvas;
-  private final ChaosGameDescription description;
+  private ChaosGameDescription description;
   private Vector2D currentPoint = new Vector2D(0.0, 0.0);
 
   /**
@@ -56,6 +56,10 @@ public class ExploreGame{
 
     long end = System.currentTimeMillis();
     System.out.println("Time taken: " + (end - start) + "ms");
+  }
+
+  public void setGameDescription(ChaosGameDescription description) {
+    this.description = description;
   }
 
   public ChaosCanvas getCanvas() {

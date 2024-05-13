@@ -44,14 +44,6 @@ public class PageController implements Observer{
   public void setExplorePage(ExplorePage explorePage) {
     this.explorePage = explorePage;
   }
-  public ChaosPage getChaosPage() {
-    return chaosPage;
-  }
-
-  public ExplorePage getExplorePage() {
-    return explorePage;
-  }
-
 
   @Override
   public void update() {

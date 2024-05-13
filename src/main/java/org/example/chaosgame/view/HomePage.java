@@ -20,13 +20,4 @@ public class HomePage extends VBox {
     exploreGameButton.setOnAction(e -> pageController.exploreGameButtonClicked());
     getChildren().addAll(header, chaosGameButton, exploreGameButton);
   }
-
-  public Button getChaosGameButton() {
-    return chaosGameButton;
-  }
-
-  public Button getExploreGameButton() {
-    return exploreGameButton;
-  }
-
 }
