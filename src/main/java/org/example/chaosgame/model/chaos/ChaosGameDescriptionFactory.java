@@ -21,13 +21,12 @@ public class ChaosGameDescriptionFactory {
    * Returns a ChaosGameDescription object based on the description and complex number.
    *
    * @param description The description of the chaos game
-   * @param c The complex number for the Julia set
    * @return A ChaosGameDescription object
    */
-  public static ChaosGameDescription get(String description, Complex c) {
+  public static ChaosGameDescription get(String description) {
     ChaosGameType type = ChaosGameType.valueOf(description.toUpperCase().trim());
     return switch (type) {
-      case JULIA -> createJulia(c);
+      case JULIA -> createJulia();
       case BARNSLEY-> createBarnsley();
       case SIERPINSKI -> createSierpinski();
     };
@@ -36,15 +35,14 @@ public class ChaosGameDescriptionFactory {
   /**
    * Creates a ChaosGameDescription object for the Julia set.
    *
-   * @param c The complex number for the Julia set
    * @return A ChaosGameDescription object
    */
-  private static ChaosGameDescription createJulia(Complex c) {
+  private static ChaosGameDescription createJulia() {
     return new ChaosGameDescription(
             new Vector2D(-1.6, -1),
             new Vector2D(1.6, 1),
             List.of(
-                    new JuliaTransform(c, 1)
+                    new JuliaTransform(new Complex(-0.70176, -0.3842), 1)
             )
     );
   }

@@ -12,7 +12,6 @@ public class ChaosGameController implements Observer{
 
   public ChaosGameController(ChaosGame chaosGame) {
     this.chaosGame = chaosGame;
-    chaosGame.registerObserver(this);
   }
 
   @Override

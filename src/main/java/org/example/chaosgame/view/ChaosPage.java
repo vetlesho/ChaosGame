@@ -22,11 +22,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 public class ChaosPage {
-  ChaosGameController chaosGameController;
+  private ChaosGameController chaosGameController;
   private final StackPane chaosContent;
   private ChaosGame chaosGame;
   private ChaosCanvas chaosCanvas;
-  private Complex c = new Complex(-0.70176, -0.3842);
   private final Button runStepsButton = new Button("Run Steps");
   private final Canvas canvas = new Canvas(1200, 800);
   private final GraphicsContext gc ;
@@ -39,7 +38,7 @@ public class ChaosPage {
     gc = canvas.getGraphicsContext2D();
     updateChaosGame("Julia");
     chaosCanvas = chaosGame.getCanvas();
-
+    chaosGame.registerObserver(chaosGameController);
 
 
     TextField stepsField = new TextField();
@@ -52,18 +51,18 @@ public class ChaosPage {
 
     contextMenu.getItems().addAll("Julia", "Sierpinski", "Barnsley", "Make your own");
 
-    contextMenu.setOnAction(e -> {
+    contextMenu.setOnAction(event -> {
       String selectedGame = contextMenu.getValue();
       if(selectedGame.equals("Make your own")) {
 
-        chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get("Julia", c), 1200, 800);
+        chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get("Julia"), 1200, 800);
       } else {
         updateChaosGame(selectedGame);
       }
       updateCanvas();
     });
 
-    runStepsButton.setOnAction(e5 -> {
+    runStepsButton.setOnAction(event -> {
               if (!stepsField.getText().isEmpty()) {
                 try {
                   chaosGame.runSteps(Integer.parseInt(stepsField.getText()));
@@ -132,11 +131,10 @@ openFileButton.setOnAction(e -> {
     gc.drawImage(offScreenImage, 0, 0, cellWidth * chaosCanvas.getWidth(), cellHeight * chaosCanvas.getHeight());
 
     long end = System.currentTimeMillis();
-    System.out.println("Time taken to display: " + (end - start) + "ms");
   }
 
   private void updateChaosGame(String chaosGameType) {
-    chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get(chaosGameType, c), 1200, 800);
+    chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get(chaosGameType), 1200, 800);
     chaosGameController = new ChaosGameController(chaosGame);
     chaosCanvas = chaosGame.getCanvas();
     gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());

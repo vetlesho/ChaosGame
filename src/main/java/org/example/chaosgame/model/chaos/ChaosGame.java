@@ -20,7 +20,7 @@ import org.example.chaosgame.model.linalg.Vector2D;
 public class ChaosGame implements Subject {
   private final ChaosCanvas canvas;
 
-  private final ChaosGameDescription description;
+  private ChaosGameDescription description;
 
   private Vector2D currentPoint = new Vector2D(0.0, 0.0);
 
@@ -96,6 +96,11 @@ public class ChaosGame implements Subject {
       currentPoint = description.getTransforms().get(transformIndex).transform(currentPoint);
       canvas.putPixel(currentPoint);
     }
+  }
+
+  public void setChaosGameDescription(ChaosGameDescription description) {
+    this.description = description;
+    notifyObservers();
   }
 
   @Override
