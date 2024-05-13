@@ -6,11 +6,13 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
-import org.example.chaosgame.chaos.*;
+import org.example.chaosgame.model.chaos.ChaosGameDescription;
+import org.example.chaosgame.model.chaos.ChaosGameFileHandler;
 import org.example.chaosgame.view.ChaosPage;
 import org.example.chaosgame.view.ExplorePage;
 import org.example.chaosgame.view.MenuView;
+
+import java.util.Objects;
 
 
 public class MainApp extends Application {
@@ -32,7 +34,6 @@ public class MainApp extends Application {
     });
     Button exploreButton = menuView.getExploreButton();
     exploreButton.setOnAction(e-> {
-
       borderPane.setCenter(explorePage.getExploreContent());
     });
     HBox menuBar = menuView.getMenuBar();
@@ -41,7 +42,7 @@ public class MainApp extends Application {
 
 
     Scene scene = new Scene(borderPane, 1200, 800);
-    scene.getStylesheets().add(getClass().getResource("/ComboBoxLabel.css").toExternalForm());
+    scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/global.css")).toExternalForm());
     primaryStage.setScene(scene);
     primaryStage.setTitle("Chaos Game Canvas");
     primaryStage.show();

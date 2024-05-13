@@ -1,11 +1,11 @@
-package org.example.chaosgame.chaos;
+package org.example.chaosgame.model.chaos;
 
 import java.util.List;
-import org.example.chaosgame.linalg.Complex;
-import org.example.chaosgame.linalg.Matrix2x2;
-import org.example.chaosgame.linalg.Vector2D;
-import org.example.chaosgame.transformations.AffineTransform2D;
-import org.example.chaosgame.transformations.JuliaTransform;
+import org.example.chaosgame.model.linalg.Complex;
+import org.example.chaosgame.model.linalg.Matrix2x2;
+import org.example.chaosgame.model.linalg.Vector2D;
+import org.example.chaosgame.model.transformations.AffineTransform2D;
+import org.example.chaosgame.model.transformations.JuliaTransform;
 
 /**
  * Factory class for creating ChaosGameDescription objects.
@@ -21,13 +21,12 @@ public class ChaosGameDescriptionFactory {
    * Returns a ChaosGameDescription object based on the description and complex number.
    *
    * @param description The description of the chaos game
-   * @param c The complex number for the Julia set
    * @return A ChaosGameDescription object
    */
-  public static ChaosGameDescription get(String description, Complex c) {
+  public static ChaosGameDescription get(String description) {
     ChaosGameType type = ChaosGameType.valueOf(description.toUpperCase().trim());
     return switch (type) {
-      case JULIA -> createJulia(c);
+      case JULIA -> createJulia();
       case BARNSLEY-> createBarnsley();
       case SIERPINSKI -> createSierpinski();
     };
@@ -36,15 +35,14 @@ public class ChaosGameDescriptionFactory {
   /**
    * Creates a ChaosGameDescription object for the Julia set.
    *
-   * @param c The complex number for the Julia set
    * @return A ChaosGameDescription object
    */
-  private static ChaosGameDescription createJulia(Complex c) {
+  private static ChaosGameDescription createJulia() {
     return new ChaosGameDescription(
             new Vector2D(-1.6, -1),
             new Vector2D(1.6, 1),
             List.of(
-                    new JuliaTransform(c, 1)
+                    new JuliaTransform(new Complex(-0.70176, -0.3842), 1)
             )
     );
   }

@@ -1,10 +1,8 @@
-package org.example.chaosgame.chaos;
+package org.example.chaosgame.model.chaos;
 
-import org.example.chaosgame.linalg.Vector2D;
+import org.example.chaosgame.model.linalg.Vector2D;
 
-import java.util.Random;
 import java.util.stream.IntStream;
-import javafx.concurrent.Task;
 
 /**
  * Class for exploring julia sets.
@@ -55,23 +53,7 @@ public class ExploreGame{
 
       }
     });
-//    for (int y = 0; y < canvas.getHeight(); y++) {
-//      for (int x = 0; x < canvas.getWidth(); x++) {
-//        int iter = 0;
-//        currentPoint = canvas.transformIndicesToCoords(x, y);
-//        Vector2D tempPoint = currentPoint;
-//        while (iter < MAX_ITER && tempPoint.lengthSQ() < 4){
-//          tempPoint = description.getTransforms().getFirst().transform(tempPoint);
-//          iter++;
-//        }
-//        double abs = Math.sqrt(tempPoint.lengthSQ());
-//        double smooth = iter - Math.log(Math.log(abs)) / Math.log(2);
-//
-//        canvas.putPixel(x, y, smooth);
-//
-//      }
-//
-//    }
+
     long end = System.currentTimeMillis();
     System.out.println("Time taken: " + (end - start) + "ms");
   }
