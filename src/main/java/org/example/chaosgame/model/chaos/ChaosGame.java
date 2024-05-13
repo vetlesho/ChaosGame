@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.example.chaosgame.controller.ChaosGameObserver;
 import org.example.chaosgame.controller.ChaosGameSubject;
-import org.example.chaosgame.controller.Observer;
 import org.example.chaosgame.model.linalg.Vector2D;
 
 /**
@@ -15,17 +15,14 @@ import org.example.chaosgame.model.linalg.Vector2D;
  * selecting a transformation from a set of transformations.
  * The selected transformation is then applied to the current point.
  * The new point is then drawn on the canvas.
- * This process is repeated a selected amount of steps.
+ * This process is repeated a selected number of steps.
  */
 public class ChaosGame implements ChaosGameSubject {
   private final ChaosCanvas canvas;
-
-  private final ChaosGameDescription description;
-
+  private ChaosGameDescription description;
   private Vector2D currentPoint = new Vector2D(0.0, 0.0);
-
   private final Random random = new Random();
-  private List<Observer> observers;
+  private ArrayList<ChaosGameObserver> chaosGameObservers;
 
   /**
    * Constructor for ChaosGame.
@@ -41,12 +38,18 @@ public class ChaosGame implements ChaosGameSubject {
     this.description = description;
     this.canvas = new ChaosCanvas(width, height,
             description.getMinCoords(), description.getMaxCoords());
-    this.observers = new ArrayList<>();
+    chaosGameObservers = new ArrayList<ChaosGameObserver>();
   }
-
 
   public ChaosCanvas getCanvas() {
     return canvas;
+  }
+
+  // This should be used by the controller to change the chaos game description, and notify the observers
+  public void setChaosGameDescription(ChaosGameDescription description) {
+    this.description = description;
+    System.out.println("ChaosGameDescription changed");
+    notifyChaosGameObservers();
   }
 
   /**
@@ -61,7 +64,7 @@ public class ChaosGame implements ChaosGameSubject {
     } else {
       runStepsUniform(steps);
     }
-    notifyObservers();
+    //notifyChaosGameObservers();
   }
   private void runStepsUniform(int steps) {
     for (int i = 0; i < steps; i++) {
@@ -99,23 +102,25 @@ public class ChaosGame implements ChaosGameSubject {
   }
 
   @Override
-  public void registerObserver(Observer observer) {
-    observers.add(observer);
-    System.out.println("Observer added");
+  public void registerChaosGameObserver(ChaosGameObserver newChaosGameObserver) {
+    chaosGameObservers.add(newChaosGameObserver);
+    System.out.println(chaosGameObservers);
+    System.out.println("ChaosGameObserver added");
   }
 
   @Override
-  public void removeObserver(Observer observer) {
-    observers.remove(observer);
-    System.out.println("Observer removed");
+  public void removeChaosGameObserver(ChaosGameObserver deleteChaosGameObserver) {
+    chaosGameObservers.remove(deleteChaosGameObserver);
+    System.out.println("ChaosGameObserver removed");
   }
 
   @Override
-  public void notifyObservers() {
-    for (Observer observer : observers) {
-      observer.update();
-      System.out.println("Observer notified");
+  public void notifyChaosGameObservers() {
+    canvas.clearCanvas();
+    for (ChaosGameObserver chaosGameObserver : chaosGameObservers) {
+      chaosGameObserver.update();
     }
+    //System.out.println("ChaosGameObservers notified");
   }
 }
 

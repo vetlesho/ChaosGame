@@ -12,28 +12,31 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import org.example.chaosgame.controller.ChaosGameObserver;
 import org.example.chaosgame.model.chaos.ChaosCanvas;
 import org.example.chaosgame.model.chaos.ChaosGame;
 import org.example.chaosgame.model.chaos.ChaosGameDescriptionFactory;
+import org.example.chaosgame.model.chaos.ChaosGameType;
 import org.example.chaosgame.model.linalg.Complex;
 
-public class ChaosPage {
+public class ChaosPage implements ChaosGameObserver {
   private final StackPane chaosContent;
   private ChaosGame chaosGame;
   private ChaosCanvas chaosCanvas;
-  private Complex c = new Complex(-0.70176, -0.3842);
   private final Button runStepsButton = new Button("Run Steps");
   private final Canvas canvas;
   private final GraphicsContext gc;
   private final Label errorLabel = new Label("Invalid input. Please enter a valid number.");
   private final VBox runStepsBox = new VBox();
 
-  public ChaosPage() {
+  public ChaosPage(ChaosGame game) {
     chaosContent = new StackPane();
-    updateChaosGame("Julia");
+    //updateChaosGame("Julia");
+    chaosGame = game;
     chaosCanvas = chaosGame.getCanvas();
     canvas = new Canvas(chaosCanvas.getWidth(), chaosCanvas.getHeight());
     gc = canvas.getGraphicsContext2D();
+    chaosGame.registerChaosGameObserver(this);
 
 
     TextField stepsField = new TextField();
@@ -47,12 +50,15 @@ public class ChaosPage {
     contextMenu.getItems().addAll("Julia", "Sierpinski", "Barnsley", "Make your own");
 
     contextMenu.setOnAction(e -> {
-      String selectedGame = contextMenu.getValue();
-      if(selectedGame.equals("Make your own")) {
+      ChaosGameType selectedGame = ChaosGameType.valueOf(contextMenu.getValue());
+      selectedGame = selectedGame == null ? ChaosGameType.JULIA : selectedGame;
 
-        chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get("Julia", c), 1200, 800);
+      if(selectedGame.equals(ChaosGameType.MAKE_YOUR_OWN)) {
+        chaosGame.setChaosGameDescription(ChaosGameDescriptionFactory.get(ChaosGameType.JULIA));
       } else {
-        updateChaosGame(selectedGame);
+        chaosGame.setChaosGameDescription(ChaosGameDescriptionFactory.get(selectedGame));
+
+        //updateChaosGame(selectedGame);
       }
       gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
       updateCanvas();
@@ -89,8 +95,6 @@ public class ChaosPage {
     double cellHeight = gc.getCanvas().getHeight() / chaosCanvas.getHeight();
     long start = System.currentTimeMillis();
 
-
-
     // Create an off-screen image
     WritableImage offScreenImage = new WritableImage(chaosCanvas.getWidth(), chaosCanvas.getHeight());
     PixelWriter pixelWriter = offScreenImage.getPixelWriter();
@@ -111,8 +115,14 @@ public class ChaosPage {
     System.out.println("Time taken to display: " + (end - start) + "ms");
   }
 
-  private void updateChaosGame(String chaosGameType) {
-    chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get(chaosGameType, c), 1200, 800);
+  private void updateChaosGame(ChaosGameType type) {
+    chaosGame.setChaosGameDescription(ChaosGameDescriptionFactory.get(type));
     chaosCanvas = chaosGame.getCanvas();
+  }
+
+  @Override
+  public void update() {
+    System.out.println("The observer got notified!");
+    updateCanvas();
   }
 }

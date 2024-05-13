@@ -1,7 +1,7 @@
 package org.example.chaosgame.controller;
 
 public interface ChaosGameSubject {
-  void registerObserver(Observer observer);
-  void removeObserver(Observer observer);
-  void notifyObservers();
+  void registerChaosGameObserver(ChaosGameObserver observer);
+  void removeChaosGameObserver(ChaosGameObserver observer);
+  void notifyChaosGameObservers();
 }

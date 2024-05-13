@@ -22,13 +22,17 @@ public class MainApp extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
-    ChaosGameDescription description = null;
+    //ChaosGameDescription description = ChaosGameDescriptionFactory.get("Julia");
+
+    MainController controller = new MainController();
+    //controller.updateChaosGame("Julia");
 
     BorderPane borderPane = new BorderPane();
-    ChaosPage chaosPage = new ChaosPage();
     ExplorePage explorePage = new ExplorePage();
     MenuView menuView = new MenuView();
 
+    ChaosGame chaosGame = controller.getChaosGame();
+    ChaosPage chaosPage = controller.getChaosContent();
 
     borderPane.setCenter(chaosPage.getChaosContent());
     Button chaosButton = menuView.getChaosButton();
@@ -43,13 +47,13 @@ public class MainApp extends Application {
 
     borderPane.setTop(menuBar);
 
-
     Scene scene = new Scene(borderPane, 1200, 800);
     scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/global.css")).toExternalForm());
     primaryStage.setScene(scene);
     primaryStage.setTitle("Chaos Game Canvas");
     primaryStage.show();
   }
+
 
   public static void main(String[] args) {
     launch(args);

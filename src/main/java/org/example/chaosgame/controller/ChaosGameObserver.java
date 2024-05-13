@@ -1,5 +1,5 @@
 package org.example.chaosgame.controller;
 
-public interface Observer {
+public interface ChaosGameObserver {
   void update();
 }
