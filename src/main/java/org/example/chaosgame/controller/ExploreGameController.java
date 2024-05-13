@@ -13,18 +13,23 @@ import java.util.List;
 
 public class ExploreGameController implements Observer{
   private final ExploreGame exploreGame;
+  private final PageController pageController;
   private final ExplorePage explorePage;
 
-  public ExploreGameController(ExplorePage explorePage) {
+  public ExploreGameController(PageController pageController) {
+    this.pageController = pageController;
     Complex c = new Complex(-0.835, 0.2321);
     List<Transform2D> trans = List.of(new ExploreJulia(c));
     ChaosGameDescription description = new ChaosGameDescription(
             new Vector2D(-1.6, -1),
             new Vector2D(1.6, 1), trans);
     this.exploreGame = new ExploreGame(description, 1200, 800);
-    this.explorePage = explorePage;
+    this.explorePage = new ExplorePage(this);
   }
 
+  public void homeButtonClicked() {
+    pageController.homeButtonClicked();
+  }
   public ExplorePage getExplorePage() {
     return explorePage;
   }

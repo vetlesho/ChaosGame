@@ -1,7 +1,6 @@
 package org.example.chaosgame.view;
 
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -9,13 +8,11 @@ import javafx.scene.control.Button;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ZoomEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import org.example.chaosgame.controller.ChaosGameController;
-import org.example.chaosgame.controller.MainController;
+import org.example.chaosgame.controller.ExploreGameController;
+import org.example.chaosgame.controller.PageController;
 import org.example.chaosgame.model.chaos.ChaosCanvas;
 import org.example.chaosgame.model.chaos.ChaosGameDescription;
 import org.example.chaosgame.model.chaos.ExploreGame;
@@ -29,7 +26,10 @@ import java.util.List;
 
 
 public class ExplorePage extends StackPane {
+
+  private final ExploreGameController exploreGameController;
   private ExploreGame exploreGame;
+
   private ChaosCanvas chaosCanvas;
   private Complex c = new Complex(-0.835, 0.2321);
   private final Canvas canvas;
@@ -57,9 +57,10 @@ public class ExplorePage extends StackPane {
   private HomeButton homeButton;
 
 
-  public ExplorePage(MainController mainController) {
+  public ExplorePage(ExploreGameController exploreGameController) {
+    this.exploreGameController = exploreGameController;
     homeButton = new HomeButton();
-    homeButton.setOnAction(e-> mainController.homeButtonClicked());
+    homeButton.setOnAction(e-> exploreGameController.homeButtonClicked());
     
     exploreGame = new ExploreGame(description, 1500, 1000);
     chaosCanvas = exploreGame.getCanvas();
@@ -240,10 +241,6 @@ this.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
 //  });
   }
 
-  public StackPane getExploreContent() {
-    return this;
-  }
-
   public void updateCanvas() {
     chaosCanvas = exploreGame.getCanvas();
     gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -270,10 +267,6 @@ this.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
     gc.drawImage(offScreenImage, 0, 0, cellWidth * chaosCanvas.getWidth(), cellHeight * chaosCanvas.getHeight());
 
     long end = System.currentTimeMillis();
-//    System.out.println("Time taken to display: " + (end - start) + "ms");
-  }
-
-  public Button getHomeButton() {
-    return homeButton;
+    System.out.println("Time taken to display: " + (end - start) + "ms");
   }
 }

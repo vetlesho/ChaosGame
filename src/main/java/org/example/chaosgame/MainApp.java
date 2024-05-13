@@ -2,12 +2,11 @@ package org.example.chaosgame;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.example.chaosgame.controller.ChaosGameController;
 import org.example.chaosgame.controller.ExploreGameController;
-import org.example.chaosgame.controller.MainController;
+import org.example.chaosgame.controller.PageController;
 import org.example.chaosgame.view.ChaosPage;
 import org.example.chaosgame.view.ExplorePage;
 import org.example.chaosgame.view.HomePage;
@@ -19,16 +18,14 @@ public class MainApp extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     StackPane mainPane = new StackPane();
-
-    MainController mainController = new MainController(mainPane);
-    ExplorePage explorePage = mainController.getExplorePage();
-    ChaosPage chaosPage = mainController.getChaosPage();
-
-    ExploreGameController exploreGameController = new ExploreGameController(explorePage);
-    ChaosGameController chaosGameController = new ChaosGameController(chaosPage);
-
-    HomePage homePage = mainController.getHomePage();
-
+    PageController pageController = new PageController(mainPane);
+    ExploreGameController exploreGameController = new ExploreGameController(pageController);
+    ChaosGameController chaosGameController = new ChaosGameController(pageController);
+    ExplorePage explorePage = exploreGameController.getExplorePage();
+    ChaosPage chaosPage = chaosGameController.getChaosPage();
+    pageController.setChaosPage(chaosPage);
+    pageController.setExplorePage(explorePage);
+    HomePage homePage = pageController.getHomePage();
     mainPane.getChildren().add(homePage);
 
     Scene scene = new Scene(mainPane, 1200, 800);
