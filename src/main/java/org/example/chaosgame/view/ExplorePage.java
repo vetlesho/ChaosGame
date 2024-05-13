@@ -10,10 +10,12 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ZoomEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.example.chaosgame.controller.ChaosGameController;
+import org.example.chaosgame.controller.MainController;
 import org.example.chaosgame.model.chaos.ChaosCanvas;
 import org.example.chaosgame.model.chaos.ChaosGameDescription;
 import org.example.chaosgame.model.chaos.ExploreGame;
@@ -21,11 +23,12 @@ import org.example.chaosgame.model.linalg.Complex;
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.ExploreJulia;
 import org.example.chaosgame.model.transformations.Transform2D;
+import org.example.chaosgame.view.components.HomeButton;
 
 import java.util.List;
 
-public class ExplorePage {
-  private final StackPane exploreContent;
+
+public class ExplorePage extends StackPane {
   private ExploreGame exploreGame;
   private ChaosCanvas chaosCanvas;
   private Complex c = new Complex(-0.835, 0.2321);
@@ -51,17 +54,18 @@ public class ExplorePage {
   private PixelWriter pixelWriter;
   private Vector2D dragDistance;
 
+  private HomeButton homeButton;
 
-  public ExplorePage() {
 
-    exploreContent = new StackPane();
-
+  public ExplorePage(MainController mainController) {
+    homeButton = new HomeButton();
+    homeButton.setOnAction(e-> mainController.homeButtonClicked());
     
     exploreGame = new ExploreGame(description, 1500, 1000);
     chaosCanvas = exploreGame.getCanvas();
     canvas = new Canvas(1200, 800);
-    canvas.widthProperty().bind(exploreContent.widthProperty());
-    canvas.heightProperty().bind(exploreContent.heightProperty());
+    canvas.widthProperty().bind(this.widthProperty());
+    canvas.heightProperty().bind(this.heightProperty());
     canvas.requestFocus();
     offScreenImage = new WritableImage(chaosCanvas.getWidth(), chaosCanvas.getHeight());
     pixelWriter = offScreenImage.getPixelWriter();
@@ -133,7 +137,7 @@ public class ExplorePage {
       }
     });
 
-    exploreContent.setOnScroll(event -> {
+    this.setOnScroll(event -> {
       double scaleFactor = (event.getDeltaY() > 0) ? (1.0 / 1.01) : 1.01;
       double mouseX = event.getX() - (double) chaosCanvas.getWidth() / 2;
       double mouseY = event.getY() - (double) chaosCanvas.getHeight() / 2;
@@ -149,7 +153,7 @@ public class ExplorePage {
       canvas.setTranslateY(canvas.getTranslateY() - newTranslateY);
     });
 
-    exploreContent.setOnScrollFinished(event -> {
+    this.setOnScrollFinished(event -> {
       double mouseX = event.getX() - (double) chaosCanvas.getWidth() / 2;
       double mouseY = - (event.getY() - (double) chaosCanvas.getHeight() / 2);
 //      System.out.println("Mouse position: " + mouseX + ", " + mouseY);
@@ -167,10 +171,12 @@ public class ExplorePage {
     buttons.setAlignment(Pos.CENTER_RIGHT);
     buttons.setSpacing(10);
 
-    exploreContent.getChildren().addAll(canvas, buttons);
+    setAlignment(homeButton, Pos.TOP_LEFT);
+
+    this.getChildren().addAll(canvas, buttons, homeButton);
 
 
-    exploreContent.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+    this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
       try {
 
         double mouseX = event.getX();
@@ -186,7 +192,7 @@ public class ExplorePage {
     }
 });
 
-exploreContent.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
+this.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
 
   Vector2D dragEnd = new Vector2D(event.getX(), event.getY());
   dragDistance = dragEnd.subtract(dragStart);
@@ -198,7 +204,7 @@ exploreContent.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
 
 });
 
-    exploreContent.setOnMouseReleased(event -> {
+    this.setOnMouseReleased(event -> {
       dragDistance = new Vector2D(event.getX(), canvas.getHeight() - event.getY()).subtract(dragStartTemp);
 //       Reset the position where the drag started
       Vector2D fractalRange = description.getMaxCoords().subtract(description.getMinCoords());
@@ -215,7 +221,7 @@ exploreContent.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
       canvas.setTranslateY(0);
     });
 
-//exploreContent.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
+//this.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
 //    Vector2D currentMousePosition = new Vector2D(event.getX(), canvas.getHeight() - event.getY());
 //    Vector2D dragDistance = currentMousePosition.subtract(initialMousePosition);
 //
@@ -235,7 +241,7 @@ exploreContent.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
   }
 
   public StackPane getExploreContent() {
-    return exploreContent;
+    return this;
   }
 
   public void updateCanvas() {
@@ -265,5 +271,9 @@ exploreContent.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
 
     long end = System.currentTimeMillis();
 //    System.out.println("Time taken to display: " + (end - start) + "ms");
+  }
+
+  public Button getHomeButton() {
+    return homeButton;
   }
 }

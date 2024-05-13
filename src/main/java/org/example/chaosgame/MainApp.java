@@ -3,14 +3,14 @@ package org.example.chaosgame;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import org.example.chaosgame.model.chaos.ChaosGameDescription;
-import org.example.chaosgame.model.chaos.ChaosGameFileHandler;
+import org.example.chaosgame.controller.ChaosGameController;
+import org.example.chaosgame.controller.ExploreGameController;
+import org.example.chaosgame.controller.MainController;
 import org.example.chaosgame.view.ChaosPage;
 import org.example.chaosgame.view.ExplorePage;
-import org.example.chaosgame.view.MenuView;
+import org.example.chaosgame.view.HomePage;
 
 import java.util.Objects;
 
@@ -18,30 +18,20 @@ import java.util.Objects;
 public class MainApp extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
-    ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
-    ChaosGameDescription description = null;
+    StackPane mainPane = new StackPane();
 
-    BorderPane borderPane = new BorderPane();
-    ChaosPage chaosPage = new ChaosPage();
-    ExplorePage explorePage = new ExplorePage();
-    MenuView menuView = new MenuView();
+    MainController mainController = new MainController(mainPane);
+    ExplorePage explorePage = mainController.getExplorePage();
+    ChaosPage chaosPage = mainController.getChaosPage();
 
+    ExploreGameController exploreGameController = new ExploreGameController(explorePage);
+    ChaosGameController chaosGameController = new ChaosGameController(chaosPage);
 
-    borderPane.setCenter(chaosPage.getChaosContent());
-    Button chaosButton = menuView.getChaosButton();
-    chaosButton.setOnAction(e -> {
-      borderPane.setCenter(chaosPage.getChaosContent());
-    });
-    Button exploreButton = menuView.getExploreButton();
-    exploreButton.setOnAction(e-> {
-      borderPane.setCenter(explorePage.getExploreContent());
-    });
-    HBox menuBar = menuView.getMenuBar();
+    HomePage homePage = mainController.getHomePage();
 
-    borderPane.setTop(menuBar);
+    mainPane.getChildren().add(homePage);
 
-
-    Scene scene = new Scene(borderPane, 1200, 800);
+    Scene scene = new Scene(mainPane, 1200, 800);
     scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/global.css")).toExternalForm());
     primaryStage.setScene(scene);
     primaryStage.setTitle("Chaos Game Canvas");

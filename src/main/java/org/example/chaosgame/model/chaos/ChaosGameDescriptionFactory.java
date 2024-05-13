@@ -11,24 +11,19 @@ import org.example.chaosgame.model.transformations.JuliaTransform;
  * Factory class for creating ChaosGameDescription objects.
  */
 public class ChaosGameDescriptionFactory {
-  enum ChaosGameType {
-    JULIA,
-    BARNSLEY,
-    SIERPINSKI
-  }
 
   /**
    * Returns a ChaosGameDescription object based on the description and complex number.
    *
-   * @param description The description of the chaos game
+   * @param type The description of the chaos game
    * @return A ChaosGameDescription object
    */
-  public static ChaosGameDescription get(String description) {
-    ChaosGameType type = ChaosGameType.valueOf(description.toUpperCase().trim());
+  public static ChaosGameDescription get(ChaosGameType type) {
     return switch (type) {
       case JULIA -> createJulia();
       case BARNSLEY-> createBarnsley();
       case SIERPINSKI -> createSierpinski();
+      case MAKE_YOUR_OWN -> null;
     };
   }
 

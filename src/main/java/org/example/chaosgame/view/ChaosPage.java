@@ -9,21 +9,22 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.example.chaosgame.controller.ChaosGameController;
+import org.example.chaosgame.controller.MainController;
 import org.example.chaosgame.model.chaos.*;
 import org.example.chaosgame.model.linalg.Complex;
 import java.io.File;
 import java.io.IOException;
 import javafx.stage.FileChooser;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import org.example.chaosgame.view.components.HomeButton;
 
-public class ChaosPage {
+
+public class ChaosPage extends StackPane{
   private ChaosGameController chaosGameController;
-  private final StackPane chaosContent;
   private ChaosGame chaosGame;
   private ChaosCanvas chaosCanvas;
   private final Button runStepsButton = new Button("Run Steps");
@@ -32,11 +33,13 @@ public class ChaosPage {
   private final Label errorLabel = new Label("Invalid input. Please enter a valid number.");
   private final VBox runStepsBox = new VBox();
 
-  public ChaosPage() {
+  private final Button homeButton = new HomeButton();
 
-    chaosContent = new StackPane();
+
+  public ChaosPage(MainController mainController) {
+
     gc = canvas.getGraphicsContext2D();
-    updateChaosGame("Julia");
+    updateChaosGame(ChaosGameType.JULIA);
     chaosCanvas = chaosGame.getCanvas();
     chaosGame.registerObserver(chaosGameController);
 
@@ -52,12 +55,13 @@ public class ChaosPage {
     contextMenu.getItems().addAll("Julia", "Sierpinski", "Barnsley", "Make your own");
 
     contextMenu.setOnAction(event -> {
-      String selectedGame = contextMenu.getValue();
-      if(selectedGame.equals("Make your own")) {
+      String selectedGame = contextMenu.getValue().trim().toUpperCase();
 
-        chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get("Julia"), 1200, 800);
+      if(selectedGame.equals("MAKE YOUR OWN")) {
+
+        chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get(ChaosGameType.MAKE_YOUR_OWN), 1200, 800);
       } else {
-        updateChaosGame(selectedGame);
+        updateChaosGame(ChaosGameType.valueOf(selectedGame));
       }
       updateCanvas();
     });
@@ -94,16 +98,19 @@ openFileButton.setOnAction(e -> {
     }
 });
 
-    runStepsBox.getChildren().addAll(contextMenu,stepsField, runStepsButton, openFileButton);
+    runStepsBox.getChildren().addAll(contextMenu, stepsField, runStepsButton, openFileButton);
     runStepsBox.setSpacing(10);
     runStepsBox.setPadding(new Insets(10));
     runStepsBox.setAlignment(Pos.CENTER_RIGHT);
-    chaosContent.getChildren().addAll(canvas, runStepsBox);
+    setAlignment(homeButton, Pos.TOP_LEFT);
+
+    homeButton.setOnAction(e -> mainController.homeButtonClicked());
+    this.getChildren().addAll(canvas, runStepsBox, homeButton);
 
   }
 
   public StackPane getChaosContent() {
-    return chaosContent;
+    return this;
   }
 
   public void updateCanvas() {
@@ -131,18 +138,21 @@ openFileButton.setOnAction(e -> {
     gc.drawImage(offScreenImage, 0, 0, cellWidth * chaosCanvas.getWidth(), cellHeight * chaosCanvas.getHeight());
 
     long end = System.currentTimeMillis();
+    System.out.println("Time to draw: " + (end - start) + " ms");
   }
 
-  private void updateChaosGame(String chaosGameType) {
-    chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get(chaosGameType), 1200, 800);
-    chaosGameController = new ChaosGameController(chaosGame);
+  private void updateChaosGame(ChaosGameType type) {
+    chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get(type), 1200, 800);
     chaosCanvas = chaosGame.getCanvas();
     gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
   }
   private void updateChaosGame(ChaosGameDescription description){
     chaosGame = new ChaosGame(description, 1200, 800);
-    chaosGameController = new ChaosGameController(chaosGame);
     chaosCanvas = chaosGame.getCanvas();
     gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+  }
+
+  public Button getHomeButton() {
+    return homeButton;
   }
 }

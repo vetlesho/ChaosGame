@@ -105,20 +105,20 @@ public class ChaosGame implements Subject {
 
   @Override
   public void registerObserver(Observer observer) {
-    observers.add(observer);
+//    observers.add(observer);
     System.out.println("Observer added");
   }
 
   @Override
   public void removeObserver(Observer observer) {
-    observers.remove(observer);
+//    observers.remove(observer);
     System.out.println("Observer removed");
   }
 
   @Override
   public void notifyObservers() {
     for (Observer observer : observers) {
-      observer.update();
+//      observer.update();
       System.out.println("Observer notified");
     }
   }
