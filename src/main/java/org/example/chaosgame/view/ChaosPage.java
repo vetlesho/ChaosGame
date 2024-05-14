@@ -22,7 +22,6 @@ public class ChaosPage extends StackPane{
   private ChaosCanvas chaosCanvas;
   private final GraphicsContext gc;
 
-
     public ChaosPage(ChaosGameController chaosGameController) {
     this.chaosGameController = chaosGameController;
     this.chaosCanvas = chaosGameController.getChaosCanvas();
@@ -64,6 +63,7 @@ public class ChaosPage extends StackPane{
 
   public void updateCanvas() {
     chaosCanvas = chaosGameController.getChaosCanvas();
+    gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
     double[][] canvasArray = chaosCanvas.getCanvasArray();
     double cellWidth = gc.getCanvas().getWidth() / chaosCanvas.getWidth();
     double cellHeight = gc.getCanvas().getHeight() / chaosCanvas.getHeight();

@@ -7,17 +7,14 @@ import javafx.scene.text.Text;
 import org.example.chaosgame.controller.PageController;
 
 public class HomePage extends VBox {
-  private final Text header;
-  private final Button chaosGameButton;
-  private final Button exploreGameButton;
+  public HomePage(PageController pageController) {
+    Text header = new Text("Welcome to Chaos Game");
+    Button chaosGameButton = new Button("Chaos Game");
+    Button exploreGameButton = new Button("Explore Game");
 
+    chaosGameButton.setOnAction(e -> pageController.goToPage("chaos"));
+    exploreGameButton.setOnAction(e -> pageController.goToPage("explore"));
 
-  public HomePage(StackPane mainPane, PageController pageController) {
-    header = new Text("Welcome to Chaos Game");
-    chaosGameButton = new Button("Chaos Game");
-    exploreGameButton = new Button("Explore Game");
-    chaosGameButton.setOnAction(e -> pageController.chaosGameButtonClicked());
-    exploreGameButton.setOnAction(e -> pageController.exploreGameButtonClicked());
     getChildren().addAll(header, chaosGameButton, exploreGameButton);
   }
 }

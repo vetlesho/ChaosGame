@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.example.chaosgame.controller.Subject;
-import org.example.chaosgame.controller.Observer;
+import org.example.chaosgame.observer.Subject;
+import org.example.chaosgame.observer.Observer;
 import org.example.chaosgame.model.linalg.Vector2D;
 
 /**

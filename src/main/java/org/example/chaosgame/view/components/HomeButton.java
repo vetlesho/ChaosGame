@@ -4,7 +4,6 @@ import javafx.scene.control.Button;
 
 public class HomeButton extends Button {
   public HomeButton(){
-    super();
-    this.setText("Home");
+    super("Home");
   }
 }

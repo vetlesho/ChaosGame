@@ -1,35 +1,31 @@
 package org.example.chaosgame.controller;
 
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import org.example.chaosgame.model.chaos.*;
+import org.example.chaosgame.observer.Observer;
+import org.example.chaosgame.observer.PageObserver;
+import org.example.chaosgame.observer.PageSubject;
 import org.example.chaosgame.view.ChaosPage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ChaosGameController implements Observer{
+public class ChaosGameController implements Observer, PageSubject {
   private ChaosGame chaosGame;
-  private final PageController pageController;
   private ChaosCanvas chaosCanvas;
   private final ChaosPage chaosPage;
+  private final List<PageObserver> pageObservers;
 
-
-
-
-  public ChaosGameController(PageController pageController) {
+  public ChaosGameController() {
     this.chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get(ChaosGameType.JULIA), 1200, 800);
     this.chaosCanvas = chaosGame.getCanvas();
-    this.pageController = pageController;
-    chaosGame.registerObserver(this);
     this.chaosPage = new ChaosPage(this);
-  }
-
-  @Override
-  public void update() {
-    chaosPage.updateCanvas();
-    System.out.println("ChaosGameController.update");
+    this.pageObservers = new ArrayList<>();
+    chaosGame.registerObserver(this);
   }
 
   public ChaosPage getChaosPage() {
@@ -38,9 +34,7 @@ public class ChaosGameController implements Observer{
   public ChaosCanvas getChaosCanvas(){
     return chaosCanvas;
   }
-  public void homeButtonClicked() {
-    pageController.homeButtonClicked();
-  }
+
   private void updateChaosGame(ChaosGameDescription description){
     chaosGame = new ChaosGame(description, 1200, 800);
     chaosCanvas = chaosGame.getCanvas();
@@ -86,5 +80,29 @@ public class ChaosGameController implements Observer{
     }
   }
 
+  public void homeButtonClicked() {
+    notifyObservers(chaosPage);
+  }
 
+  @Override
+  public void update() {
+    chaosPage.updateCanvas();
+  }
+
+  @Override
+  public void registerObserver(PageObserver observer) {
+    pageObservers.add(observer);
+  }
+
+  @Override
+  public void removeObserver(PageObserver observer) {
+    pageObservers.remove(observer);
+  }
+
+  @Override
+  public void notifyObservers(Node chaosPage) {
+    for (PageObserver pageObserver : pageObservers) {
+      pageObserver.update(chaosPage);
+    }
+  }
 }

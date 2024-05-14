@@ -1,4 +1,4 @@
-package org.example.chaosgame.controller;
+package org.example.chaosgame.observer;
 
 public interface Observer {
   void update();
