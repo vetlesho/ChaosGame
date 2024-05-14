@@ -1,6 +1,9 @@
 package org.example.chaosgame.controller;
 
+import javafx.event.Event;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TextField;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import org.example.chaosgame.model.chaos.*;
@@ -87,4 +90,23 @@ public class ChaosGameController implements Observer{
   }
 
 
+  public void zoomIn(ScrollEvent event, Canvas canvas) {
+    double scaleFactor = (event.getDeltaY() > 0) ? (1.0 / 1.05) : 1.05;
+    double mouseX = event.getX() - (double) chaosCanvas.getWidth() / 2;
+    double mouseY = event.getY() - (double) chaosCanvas.getHeight() / 2;
+    double translateX = canvas.getTranslateX();
+    double translateY = canvas.getTranslateY();
+
+
+    canvas.setScaleX(canvas.getScaleX() * scaleFactor);
+    canvas.setScaleY(canvas.getScaleY() * scaleFactor);
+
+
+    double newTranslateX = (mouseX - translateX) * (scaleFactor - 1);
+    double newTranslateY = (mouseY - translateY) * (scaleFactor - 1);
+    double setTranslateX = translateX - newTranslateX;
+    double setTranslateY = translateY - newTranslateY;
+    canvas.setTranslateX(setTranslateX);
+    canvas.setTranslateY(setTranslateY);
+  }
 }

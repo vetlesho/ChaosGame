@@ -34,7 +34,7 @@ public class ExploreGame{
    */
   public void exploreFractals(){
 
-    long start = System.currentTimeMillis();
+//    long start = System.currentTimeMillis();
 
     IntStream yStream = IntStream.range(0, canvas.getHeight());
     yStream.parallel().forEach(y -> {
@@ -54,8 +54,8 @@ public class ExploreGame{
       }
     });
 
-    long end = System.currentTimeMillis();
-    System.out.println("Time taken: " + (end - start) + "ms");
+//    long end = System.currentTimeMillis();
+//    System.out.println("Time taken: " + (end - start) + "ms");
   }
 
   public void setGameDescription(ChaosGameDescription description) {
@@ -64,5 +64,9 @@ public class ExploreGame{
 
   public ChaosCanvas getCanvas() {
     return canvas;
+  }
+
+  public ChaosGameDescription getDescription() {
+    return description;
   }
 }

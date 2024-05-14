@@ -39,10 +39,14 @@ public class PageController implements Observer{
 
   public void setChaosPage(ChaosPage chaosPage) {
     this.chaosPage = chaosPage;
+    this.chaosPage.prefWidthProperty().bind(mainPane.widthProperty());
+    this.chaosPage.prefHeightProperty().bind(mainPane.heightProperty());
   }
 
   public void setExplorePage(ExplorePage explorePage) {
     this.explorePage = explorePage;
+    this.explorePage.prefWidthProperty().bind(mainPane.widthProperty());
+    this.explorePage.prefHeightProperty().bind(mainPane.heightProperty());
   }
 
   @Override
