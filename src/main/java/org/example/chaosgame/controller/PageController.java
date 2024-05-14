@@ -2,7 +2,7 @@ package org.example.chaosgame.controller;
 
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
-import org.example.chaosgame.observer.PageObserver;
+import org.example.chaosgame.controller.observer.PageObserver;
 import org.example.chaosgame.view.HomePage;
 
 import java.util.HashMap;

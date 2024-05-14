@@ -7,10 +7,6 @@ import javafx.stage.Stage;
 import org.example.chaosgame.controller.ChaosGameController;
 import org.example.chaosgame.controller.ExploreGameController;
 import org.example.chaosgame.controller.PageController;
-import org.example.chaosgame.observer.PageObserver;
-import org.example.chaosgame.view.ChaosPage;
-import org.example.chaosgame.view.ExplorePage;
-import org.example.chaosgame.view.HomePage;
 
 import java.util.Objects;
 

@@ -7,15 +7,15 @@ import org.example.chaosgame.model.linalg.Complex;
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.ExploreJulia;
 import org.example.chaosgame.model.transformations.Transform2D;
-import org.example.chaosgame.observer.Observer;
-import org.example.chaosgame.observer.PageObserver;
-import org.example.chaosgame.observer.PageSubject;
+import org.example.chaosgame.controller.observer.GameObserver;
+import org.example.chaosgame.controller.observer.PageObserver;
+import org.example.chaosgame.controller.observer.PageSubject;
 import org.example.chaosgame.view.ExplorePage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExploreGameController implements Observer, PageSubject {
+public class ExploreGameController implements GameObserver, PageSubject {
   private final ExploreGame exploreGame;
   private final ExplorePage explorePage;
   private final List<PageObserver> pageObservers;

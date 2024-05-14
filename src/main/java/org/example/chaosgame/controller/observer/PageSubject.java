@@ -1,7 +1,6 @@
-package org.example.chaosgame.observer;
+package org.example.chaosgame.controller.observer;
 
 import javafx.scene.Node;
-import org.example.chaosgame.view.ChaosPage;
 
 public interface PageSubject {
   void registerObserver(PageObserver observer);

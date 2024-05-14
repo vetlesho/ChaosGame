@@ -4,25 +4,24 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import org.example.chaosgame.model.chaos.*;
-import org.example.chaosgame.observer.Observer;
-import org.example.chaosgame.observer.PageObserver;
-import org.example.chaosgame.observer.PageSubject;
+import org.example.chaosgame.controller.observer.GameObserver;
+import org.example.chaosgame.controller.observer.PageObserver;
+import org.example.chaosgame.controller.observer.PageSubject;
 import org.example.chaosgame.view.ChaosPage;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class ChaosGameController implements Observer, PageSubject {
-  private ChaosGame chaosGame;
-  private ChaosCanvas chaosCanvas;
+public class ChaosGameController implements GameObserver, PageSubject {
+  private final ChaosGame chaosGame;
   private final ChaosPage chaosPage;
   private final List<PageObserver> pageObservers;
 
   public ChaosGameController() {
-    this.chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get(ChaosGameType.JULIA), 1200, 800);
-    this.chaosCanvas = chaosGame.getCanvas();
+    this.chaosGame = new ChaosGame(Objects.requireNonNull(ChaosGameDescriptionFactory.get(ChaosGameType.JULIA)), 1200, 800);
     this.chaosPage = new ChaosPage(this);
     this.pageObservers = new ArrayList<>();
     chaosGame.registerObserver(this);
@@ -31,13 +30,10 @@ public class ChaosGameController implements Observer, PageSubject {
   public ChaosPage getChaosPage() {
     return chaosPage;
   }
-  public ChaosCanvas getChaosCanvas(){
-    return chaosCanvas;
-  }
 
   private void updateChaosGame(ChaosGameDescription description){
-    chaosGame = new ChaosGame(description, 1200, 800);
-    chaosCanvas = chaosGame.getCanvas();
+    chaosGame.setChaosGameDescription(description);
+    chaosGame.setChaosCanvas(description.getMinCoords(), description.getMaxCoords());
   }
 
   public void gameSelection(String selectedGame){
@@ -46,14 +42,12 @@ public class ChaosGameController implements Observer, PageSubject {
     } else {
       updateChaosGame(ChaosGameDescriptionFactory.get(ChaosGameType.valueOf(selectedGame)));
     }
-    chaosPage.updateCanvas();
   }
 
   public void runSteps(TextField stepsField){
     if (!stepsField.getText().isEmpty()) {
       try {
         chaosGame.runSteps(Integer.parseInt(stepsField.getText()));
-        chaosPage.updateCanvas();
         stepsField.getStyleClass().remove("text-field-invalid");
         stepsField.getStyleClass().add("text-field");
       } catch (NumberFormatException ex) {
@@ -86,7 +80,7 @@ public class ChaosGameController implements Observer, PageSubject {
 
   @Override
   public void update() {
-    chaosPage.updateCanvas();
+    chaosPage.updateCanvas(chaosGame.getCanvas());
   }
 
   @Override

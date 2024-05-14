@@ -19,9 +19,9 @@ public class ChaosCanvas {
   private final int width;
   private final int height;
   private final double[][] canvas;
-  private final Vector2D minCoords;
-  private final Vector2D maxCoords;
-  private final AffineTransform2D transformCoordsToIndices;
+  private Vector2D minCoords;
+  private Vector2D maxCoords;
+  private AffineTransform2D transformCoordsToIndices;
 
   /**
    * Creates a new ChaosCanvas with the given width, height, minimum and maximum coordinates.
@@ -46,16 +46,20 @@ public class ChaosCanvas {
     this.height = height;
     this.minCoords = minCoords;
     this.maxCoords = maxCoords;
-    this.transformCoordsToIndices = new AffineTransform2D(
-        new Matrix2x2(0.0, ((height - 1)
-                / (minCoords.getY() - maxCoords.getY())),
-                ((width - 1) / (maxCoords.getX() - minCoords.getX())), 0.0),
-
-            new Vector2D((((height - 1.0) * maxCoords.getY())
-                    / (maxCoords.getY() - minCoords.getY())),
-                    ((width - 1.0) * minCoords.getX()) / (minCoords.getX() - maxCoords.getX())
-  ));
+    this.transformCoordsToIndices = calculateTransformCoordsToIndices();
     this.canvas = new double[height][width];
+  }
+
+  public AffineTransform2D calculateTransformCoordsToIndices() {
+    return new AffineTransform2D(
+            new Matrix2x2(
+                    0.0, ((height - 1) / (minCoords.getY() - maxCoords.getY())),
+                    ((width - 1) / (maxCoords.getX() - minCoords.getX())), 0.0),
+
+            new Vector2D(
+                    ((height - 1.0) * maxCoords.getY()) / (maxCoords.getY() - minCoords.getY()),
+                    ((width - 1.0) * minCoords.getX()) / (minCoords.getX() - maxCoords.getX())
+            ));
   }
 
   public double getPixel(Vector2D point){
@@ -132,6 +136,17 @@ public class ChaosCanvas {
 
   public Vector2D getMaxCoords() {
     return maxCoords;
+  }
+
+  public void setMinCoords(Vector2D minCoords) {
+    this.minCoords = minCoords;
+  }
+  public void setMaxCoords(Vector2D maxCoords) {
+    this.maxCoords = maxCoords;
+  }
+
+  public void setTransformCoordsToIndices() {
+    this.transformCoordsToIndices = calculateTransformCoordsToIndices();
   }
 
   public void clearCanvas() {

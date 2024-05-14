@@ -1,4 +1,4 @@
-package org.example.chaosgame.observer;
+package org.example.chaosgame.controller.observer;
 
 import javafx.scene.Node;
 
