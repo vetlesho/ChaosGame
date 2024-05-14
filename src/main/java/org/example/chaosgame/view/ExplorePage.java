@@ -61,6 +61,8 @@ public class ExplorePage extends StackPane {
 
   public ExplorePage(ExploreGameController exploreGameController) {
     this.exploreGameController = exploreGameController;
+    this.setPrefWidth(1200);
+    this.setPrefHeight(800);
     Button homeButton = new HomeButton();
     homeButton.setOnAction(e -> exploreGameController.homeButtonClicked());
 
@@ -68,6 +70,7 @@ public class ExplorePage extends StackPane {
     description = exploreGame.getDescription();
     chaosCanvas = exploreGame.getCanvas();
     canvas = new Canvas(1200, 800);
+
     canvas.widthProperty().bind(this.prefWidthProperty());
     canvas.heightProperty().bind(this.prefWidthProperty().multiply((float) 800 / 1200));
 
@@ -147,15 +150,10 @@ public class ExplorePage extends StackPane {
       }
     });
 
-    PauseTransition pause = new PauseTransition(Duration.millis(200));
-    this.setOnScrollStarted(event -> {
-      System.out.println("Scroll started");
-    });
-
     this.setOnScroll(event -> {
       mouseX = event.getX();
       mouseY = event.getY();
-      pause.playFromStart();
+
       deltaY = event.getDeltaY();
 
 

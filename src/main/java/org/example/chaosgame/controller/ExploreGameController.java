@@ -34,13 +34,13 @@ public class ExploreGameController implements GameObserver, PageSubject {
   private final List<PageObserver> pageObservers;
 
   public ExploreGameController() {
-    this.exploreGame = new ExploreGame(description, 1200, 800);
-    this.explorePage = new ExplorePage(this);
+    this.c = new Complex(-0.835, 0.2321);
+    this.trans = List.of(new ExploreJulia(c));
     this.description  = new ChaosGameDescription(
             new Vector2D(-1.6, -1),
             new Vector2D(1.6, 1), trans);
-    this.c = new Complex(-0.835, 0.2321);
-    this.trans = List.of(new ExploreJulia(c));
+    this.exploreGame = new ExploreGame(description, 1200, 800);
+    this.explorePage = new ExplorePage(this);
     this.pageObservers = new ArrayList<>();
   }
 
@@ -49,6 +49,10 @@ public class ExploreGameController implements GameObserver, PageSubject {
   }
   public ExplorePage getExplorePage() {
     return explorePage;
+  }
+
+  public ExploreGame getExploreGame() {
+    return exploreGame;
   }
   @Override
   public void update() {
