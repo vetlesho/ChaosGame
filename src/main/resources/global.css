@@ -65,3 +65,26 @@
     -fx-font: 22 arial;
     -fx-background-radius: 20;
 }
+
+.game-button {
+    -fx-text-fill: white;
+    -fx-font: 30 arial;
+    -fx-background-color: #0d2d3a;
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-max-height: 100;
+    -fx-max-width: 300;
+    -fx-background-insets: 1;
+    -fx-alignment: center;
+    -fx-padding: 10;
+}
+
+.game-header {
+    -fx-font: 50 arial;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0d2d3a;
+}
+
+

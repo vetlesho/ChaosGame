@@ -1,55 +1,51 @@
 package org.example.chaosgame.controller;
 
-import javafx.scene.control.Button;
+import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
-import org.example.chaosgame.view.ChaosPage;
-import org.example.chaosgame.view.ExplorePage;
+import org.example.chaosgame.controller.observer.PageObserver;
 import org.example.chaosgame.view.HomePage;
-import org.example.chaosgame.view.components.HomeButton;
 
-public class PageController implements Observer{
-  private HomePage homePage;
+import java.util.HashMap;
+import java.util.Map;
+
+public class PageController implements PageObserver {
   private final StackPane mainPane;
-  private ChaosPage chaosPage;
-  private ExplorePage explorePage;
+  private final Map<String, Node> pages = new HashMap<>();
 
-  public PageController(StackPane mainPane){
+  public PageController(StackPane mainPane, ChaosGameController chaosGameController, ExploreGameController exploreGameController) {
     this.mainPane = mainPane;
-    this.homePage = new HomePage(mainPane, this);
+    initPages(chaosGameController, exploreGameController);
+    chaosGameController.registerObserver(this);
+    exploreGameController.registerObserver(this);
   }
-  public void chaosGameButtonClicked() {
+
+  private void initPages(ChaosGameController chaosGameController, ExploreGameController exploreGameController) {
+    pages.put("home", new HomePage(this));
+    pages.put("chaos", chaosGameController.getChaosPage());
+    pages.put("explore", exploreGameController.getExplorePage());
+    goToPage("home");
+  }
+
+  public void goToPage(String pageName) {
+    Node page = pages.get(pageName);
+    if (page != null) {
+      navigateToPage(page);
+    } else {
+      navigateToPage(pages.get("home"));
+    }
+  }
+
+  private void navigateToPage(Node page) {
     mainPane.getChildren().clear();
-    mainPane.getChildren().add(chaosPage);
-  }
-
-  public void exploreGameButtonClicked() {
-    mainPane.getChildren().clear();
-    mainPane.getChildren().add(explorePage);
-  }
-
-  public void homeButtonClicked() {
-    mainPane.getChildren().clear();
-    mainPane.getChildren().add(homePage);
-  }
-
-  public HomePage getHomePage() {
-    return homePage;
-  }
-
-
-  public void setChaosPage(ChaosPage chaosPage) {
-    this.chaosPage = chaosPage;
-    this.chaosPage.prefWidthProperty().bind(mainPane.widthProperty());
-    this.chaosPage.prefHeightProperty().bind(mainPane.heightProperty());
-  }
-
-  public void setExplorePage(ExplorePage explorePage) {
-    this.explorePage = explorePage;
-    this.explorePage.prefWidthProperty().bind(mainPane.widthProperty());
-    this.explorePage.prefHeightProperty().bind(mainPane.heightProperty());
+    mainPane.getChildren().add(page);
   }
 
   @Override
-  public void update() {
+  public void update(Node page) {
+    if (page != pages.get("home")) {
+      navigateToPage(pages.get("home"));
+      return;
+    }
+    navigateToPage(page);
   }
 }

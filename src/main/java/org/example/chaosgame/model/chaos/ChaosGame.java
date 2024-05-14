@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.example.chaosgame.controller.Subject;
-import org.example.chaosgame.controller.Observer;
+import javafx.scene.canvas.Canvas;
+import org.example.chaosgame.controller.observer.GameSubject;
+import org.example.chaosgame.controller.observer.GameObserver;
 import org.example.chaosgame.model.linalg.Vector2D;
 
 /**
@@ -17,15 +18,12 @@ import org.example.chaosgame.model.linalg.Vector2D;
  * The new point is then drawn on the canvas.
  * This process is repeated a selected amount of steps.
  */
-public class ChaosGame implements Subject {
-  private final ChaosCanvas canvas;
-
+public class ChaosGame implements GameSubject {
+  private ChaosCanvas canvas;
   private ChaosGameDescription description;
-
-  private Vector2D currentPoint = new Vector2D(0.0, 0.0);
-
+  private Vector2D currentPoint; //endret her
   private final Random random = new Random();
-  private List<Observer> observers;
+  private final List<GameObserver> gameObservers;
 
   /**
    * Constructor for ChaosGame.
@@ -36,14 +34,13 @@ public class ChaosGame implements Subject {
    *
    * @param height Height of the canvas
    */
-
   public ChaosGame(ChaosGameDescription description, int width, int height) {
     this.description = description;
     this.canvas = new ChaosCanvas(width, height,
             description.getMinCoords(), description.getMaxCoords());
-    this.observers = new ArrayList<>();
+    this.currentPoint = new Vector2D(0.0, 0.0);
+    this.gameObservers = new ArrayList<>();
   }
-
 
   public ChaosCanvas getCanvas() {
     return canvas;
@@ -63,6 +60,7 @@ public class ChaosGame implements Subject {
     }
     notifyObservers();
   }
+
   private void runStepsUniform(int steps) {
     for (int i = 0; i < steps; i++) {
       int transformIndex = random.nextInt(description.getTransforms().size());
@@ -100,25 +98,39 @@ public class ChaosGame implements Subject {
 
   public void setChaosGameDescription(ChaosGameDescription description) {
     this.description = description;
+    System.out.println("Min Coords" + description.getMinCoords().getX() + ", " + description.getMinCoords().getY());
+    System.out.println("Max Coords" + description.getMaxCoords().getX() + ", " + description.getMaxCoords().getY());
+    canvas.clearCanvas();
+
     notifyObservers();
   }
 
+  public void setChaosCanvas(Vector2D minCoords, Vector2D maxCoords) {
+    this.canvas.setMinCoords(minCoords);
+    this.canvas.setMaxCoords(maxCoords);
+    this.canvas.setTransformCoordsToIndices();
+  }
+
+  public ChaosCanvas getChaosCanvas() {
+    return canvas;
+  }
+
   @Override
-  public void registerObserver(Observer observer) {
-//    observers.add(observer);
+  public void registerObserver(GameObserver gameObserver) {
+    gameObservers.add(gameObserver);
     System.out.println("Observer added");
   }
 
   @Override
-  public void removeObserver(Observer observer) {
-//    observers.remove(observer);
+  public void removeObserver(GameObserver gameObserver) {
+    gameObservers.remove(gameObserver);
     System.out.println("Observer removed");
   }
 
   @Override
   public void notifyObservers() {
-    for (Observer observer : observers) {
-//      observer.update();
+    for (GameObserver gameObserver : gameObservers) {
+      gameObserver.update();
       System.out.println("Observer notified");
     }
   }

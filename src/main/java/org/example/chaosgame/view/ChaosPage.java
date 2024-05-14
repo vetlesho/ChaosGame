@@ -18,16 +18,13 @@ import org.example.chaosgame.view.components.HomeButton;
 
 
 public class ChaosPage extends StackPane{
-  private final ChaosGameController chaosGameController;
-  private ChaosCanvas chaosCanvas;
   private final GraphicsContext gc;
 
-
-    public ChaosPage(ChaosGameController chaosGameController) {
-    this.chaosGameController = chaosGameController;
-    this.chaosCanvas = chaosGameController.getChaosCanvas();
+  public ChaosPage(ChaosGameController chaosGameController) {
     Canvas canvas = new Canvas(1200, 800);
     this.gc = canvas.getGraphicsContext2D();
+    setUpUI();
+
     Button runStepsButton = new Button("Run Steps");
 
     TextField stepsField = new TextField();
@@ -59,15 +56,17 @@ public class ChaosPage extends StackPane{
 
     homeButton.setOnAction(e -> chaosGameController.homeButtonClicked());
     this.getChildren().addAll(canvas, runStepsBox, homeButton);
+  }
+
+  private void setUpUI() {
 
   }
 
-  public void updateCanvas() {
-    chaosCanvas = chaosGameController.getChaosCanvas();
+  public void updateCanvas(ChaosCanvas chaosCanvas) {
+    gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
     double[][] canvasArray = chaosCanvas.getCanvasArray();
     double cellWidth = gc.getCanvas().getWidth() / chaosCanvas.getWidth();
     double cellHeight = gc.getCanvas().getHeight() / chaosCanvas.getHeight();
-    long start = System.currentTimeMillis();
 
     // Create an off-screen image
     WritableImage offScreenImage = new WritableImage(chaosCanvas.getWidth(), chaosCanvas.getHeight());
@@ -84,8 +83,5 @@ public class ChaosPage extends StackPane{
 
     // Draw the off-screen image on the canvas
     gc.drawImage(offScreenImage, 0, 0, cellWidth * chaosCanvas.getWidth(), cellHeight * chaosCanvas.getHeight());
-
-    long end = System.currentTimeMillis();
-    System.out.println("Time to draw: " + (end - start) + " ms");
   }
 }

@@ -1,52 +1,39 @@
 package org.example.chaosgame.controller;
 
-import javafx.event.Event;
-import javafx.scene.canvas.Canvas;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import org.example.chaosgame.model.chaos.*;
+import org.example.chaosgame.controller.observer.GameObserver;
+import org.example.chaosgame.controller.observer.PageObserver;
+import org.example.chaosgame.controller.observer.PageSubject;
 import org.example.chaosgame.view.ChaosPage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-public class ChaosGameController implements Observer{
-  private ChaosGame chaosGame;
-  private final PageController pageController;
-  private ChaosCanvas chaosCanvas;
+public class ChaosGameController implements GameObserver, PageSubject {
+  private final ChaosGame chaosGame;
   private final ChaosPage chaosPage;
+  private final List<PageObserver> pageObservers;
 
-
-
-
-  public ChaosGameController(PageController pageController) {
-    this.chaosGame = new ChaosGame(ChaosGameDescriptionFactory.get(ChaosGameType.JULIA), 1200, 800);
-    this.chaosCanvas = chaosGame.getCanvas();
-    this.pageController = pageController;
-    chaosGame.registerObserver(this);
+  public ChaosGameController() {
+    this.chaosGame = new ChaosGame(Objects.requireNonNull(ChaosGameDescriptionFactory.get(ChaosGameType.JULIA)), 1200, 800);
     this.chaosPage = new ChaosPage(this);
-  }
-
-  @Override
-  public void update() {
-    chaosPage.updateCanvas();
-    System.out.println("ChaosGameController.update");
+    this.pageObservers = new ArrayList<>();
+    chaosGame.registerObserver(this);
   }
 
   public ChaosPage getChaosPage() {
     return chaosPage;
   }
-  public ChaosCanvas getChaosCanvas(){
-    return chaosCanvas;
-  }
-  public void homeButtonClicked() {
-    pageController.homeButtonClicked();
-  }
+
   private void updateChaosGame(ChaosGameDescription description){
-    chaosGame = new ChaosGame(description, 1200, 800);
-    chaosCanvas = chaosGame.getCanvas();
+    chaosGame.setChaosGameDescription(description);
+    chaosGame.setChaosCanvas(description.getMinCoords(), description.getMaxCoords());
   }
 
   public void gameSelection(String selectedGame){
@@ -55,14 +42,12 @@ public class ChaosGameController implements Observer{
     } else {
       updateChaosGame(ChaosGameDescriptionFactory.get(ChaosGameType.valueOf(selectedGame)));
     }
-    chaosPage.updateCanvas();
   }
 
   public void runSteps(TextField stepsField){
     if (!stepsField.getText().isEmpty()) {
       try {
         chaosGame.runSteps(Integer.parseInt(stepsField.getText()));
-        chaosPage.updateCanvas();
         stepsField.getStyleClass().remove("text-field-invalid");
         stepsField.getStyleClass().add("text-field");
       } catch (NumberFormatException ex) {
@@ -89,24 +74,29 @@ public class ChaosGameController implements Observer{
     }
   }
 
+  public void homeButtonClicked() {
+    notifyObservers(chaosPage);
+  }
 
-  public void zoomIn(ScrollEvent event, Canvas canvas) {
-    double scaleFactor = (event.getDeltaY() > 0) ? (1.0 / 1.05) : 1.05;
-    double mouseX = event.getX() - (double) chaosCanvas.getWidth() / 2;
-    double mouseY = event.getY() - (double) chaosCanvas.getHeight() / 2;
-    double translateX = canvas.getTranslateX();
-    double translateY = canvas.getTranslateY();
+  @Override
+  public void update() {
+    chaosPage.updateCanvas(chaosGame.getCanvas());
+  }
 
+  @Override
+  public void registerObserver(PageObserver observer) {
+    pageObservers.add(observer);
+  }
 
-    canvas.setScaleX(canvas.getScaleX() * scaleFactor);
-    canvas.setScaleY(canvas.getScaleY() * scaleFactor);
+  @Override
+  public void removeObserver(PageObserver observer) {
+    pageObservers.remove(observer);
+  }
 
-
-    double newTranslateX = (mouseX - translateX) * (scaleFactor - 1);
-    double newTranslateY = (mouseY - translateY) * (scaleFactor - 1);
-    double setTranslateX = translateX - newTranslateX;
-    double setTranslateY = translateY - newTranslateY;
-    canvas.setTranslateX(setTranslateX);
-    canvas.setTranslateY(setTranslateY);
+  @Override
+  public void notifyObservers(Node chaosPage) {
+    for (PageObserver pageObserver : pageObservers) {
+      pageObserver.update(chaosPage);
+    }
   }
 }

@@ -1,23 +1,26 @@
 package org.example.chaosgame.view;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.example.chaosgame.controller.PageController;
+import org.example.chaosgame.view.components.GameButton;
+import org.example.chaosgame.view.components.GameHeader;
 
 public class HomePage extends VBox {
-  private final Text header;
-  private final Button chaosGameButton;
-  private final Button exploreGameButton;
+  public HomePage(PageController pageController) {
+    Text header = new GameHeader("Welcome to ChaosGame");
+    Button chaosGameButton = new GameButton("Chaos Game");
+    Button exploreGameButton = new GameButton("Explore Game");
 
+    setAlignment(Pos.CENTER);
+    setSpacing(20);
 
-  public HomePage(StackPane mainPane, PageController pageController) {
-    header = new Text("Welcome to Chaos Game");
-    chaosGameButton = new Button("Chaos Game");
-    exploreGameButton = new Button("Explore Game");
-    chaosGameButton.setOnAction(e -> pageController.chaosGameButtonClicked());
-    exploreGameButton.setOnAction(e -> pageController.exploreGameButtonClicked());
+    chaosGameButton.setOnAction(e -> pageController.goToPage("chaos"));
+    exploreGameButton.setOnAction(e -> pageController.goToPage("explore"));
+
     getChildren().addAll(header, chaosGameButton, exploreGameButton);
   }
 }
