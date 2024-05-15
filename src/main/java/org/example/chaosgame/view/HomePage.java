@@ -6,14 +6,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.example.chaosgame.controller.PageController;
-import org.example.chaosgame.view.components.GameButton;
+import org.example.chaosgame.view.components.ChooseGameButton;
+import org.example.chaosgame.view.components.ChooseGameButton;
 import org.example.chaosgame.view.components.GameHeader;
 
 public class HomePage extends VBox {
   public HomePage(PageController pageController) {
     Text header = new GameHeader("Welcome to ChaosGame");
-    Button chaosGameButton = new GameButton("Chaos Game");
-    Button exploreGameButton = new GameButton("Explore Game");
+    Button chaosGameButton = new ChooseGameButton("Chaos Game");
+    Button exploreGameButton = new ChooseGameButton("Explore Game");
 
     setAlignment(Pos.CENTER);
     setSpacing(20);

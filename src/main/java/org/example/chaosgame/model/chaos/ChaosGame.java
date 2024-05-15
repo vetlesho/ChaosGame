@@ -19,7 +19,7 @@ import org.example.chaosgame.model.linalg.Vector2D;
  * This process is repeated a selected amount of steps.
  */
 public class ChaosGame implements GameSubject {
-  private ChaosCanvas canvas;
+  private final ChaosCanvas canvas;
   private ChaosGameDescription description;
   private Vector2D currentPoint; //endret her
   private final Random random = new Random();
@@ -98,10 +98,7 @@ public class ChaosGame implements GameSubject {
 
   public void setChaosGameDescription(ChaosGameDescription description) {
     this.description = description;
-    System.out.println("Min Coords" + description.getMinCoords().getX() + ", " + description.getMinCoords().getY());
-    System.out.println("Max Coords" + description.getMaxCoords().getX() + ", " + description.getMaxCoords().getY());
     canvas.clearCanvas();
-
     notifyObservers();
   }
 
@@ -109,10 +106,6 @@ public class ChaosGame implements GameSubject {
     this.canvas.setMinCoords(minCoords);
     this.canvas.setMaxCoords(maxCoords);
     this.canvas.setTransformCoordsToIndices();
-  }
-
-  public ChaosCanvas getChaosCanvas() {
-    return canvas;
   }
 
   @Override
@@ -131,7 +124,7 @@ public class ChaosGame implements GameSubject {
   public void notifyObservers() {
     for (GameObserver gameObserver : gameObservers) {
       gameObserver.update();
-      System.out.println("Observer notified");
+      System.out.println("Observer notified drawed");
     }
   }
 }

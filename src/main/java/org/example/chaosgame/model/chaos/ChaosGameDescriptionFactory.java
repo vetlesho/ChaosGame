@@ -23,7 +23,6 @@ public class ChaosGameDescriptionFactory {
       case JULIA -> createJulia();
       case BARNSLEY-> createBarnsley();
       case SIERPINSKI -> createSierpinski();
-      case MAKE_YOUR_OWN -> null;
     };
   }
 

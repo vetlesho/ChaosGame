@@ -27,6 +27,10 @@ public class ChaosGameController implements GameObserver, PageSubject {
     chaosGame.registerObserver(this);
   }
 
+  public ChaosGame getChaosGame() {
+    return chaosGame;
+  }
+
   public ChaosPage getChaosPage() {
     return chaosPage;
   }
@@ -37,24 +41,22 @@ public class ChaosGameController implements GameObserver, PageSubject {
   }
 
   public void gameSelection(String selectedGame){
-    if(selectedGame.equals("MAKE YOUR OWN")) {
-      updateChaosGame(ChaosGameDescriptionFactory.get(ChaosGameType.MAKE_YOUR_OWN));
-    } else {
-      updateChaosGame(ChaosGameDescriptionFactory.get(ChaosGameType.valueOf(selectedGame)));
-    }
+    updateChaosGame(ChaosGameDescriptionFactory.get(ChaosGameType.valueOf(selectedGame)));
   }
 
-  public void runSteps(TextField stepsField){
-    if (!stepsField.getText().isEmpty()) {
-      try {
-        chaosGame.runSteps(Integer.parseInt(stepsField.getText()));
-        stepsField.getStyleClass().remove("text-field-invalid");
-        stepsField.getStyleClass().add("text-field");
-      } catch (NumberFormatException ex) {
-        stepsField.clear();
-        stepsField.getStyleClass().add("text-field-invalid");
-        stepsField.setPromptText("Invalid input. Please enter a valid number.");
+  public void runStepsValidation(TextField stepsField){
+    String input = stepsField.getText();
+    try {
+      int steps = Integer.parseInt(input);
+      if (steps < 1 || steps > 10000000) {
+        throw new NumberFormatException();
       }
+      chaosGame.runSteps(steps);
+      stepsField.getStyleClass().remove("text-field-invalid");
+    } catch (NumberFormatException ex) {
+      stepsField.clear();
+      stepsField.getStyleClass().add("text-field-invalid");
+      stepsField.setPromptText("Write a number between 1 - 10 000 000.");
     }
   }
 

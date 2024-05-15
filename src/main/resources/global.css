@@ -6,8 +6,11 @@
     -fx-background-radius: 20;
     -fx-border-color: black;
     -fx-border-width: 2;
-    -fx-max-height: 50;
     -fx-background-insets: 1;
+}
+
+.button:hover {
+    -fx-opacity: 0.8;
 }
 
 .home-button {
@@ -18,30 +21,23 @@
     -fx-background-radius: 20;
     -fx-border-color: black;
     -fx-border-width: 2;
-    -fx-max-height: 50;
     -fx-background-insets: 1;
 }
 
 .text-field {
-    -fx-font: 22 arial;
-    /*-fx-background-color: white;*/
-    /*-fx-border-radius: 20;*/
-    /*-fx-background-radius: 20;*/
+    -fx-font: 10 arial;
     -fx-border-color: black;
     -fx-border-width: 2;
     -fx-background-insets: 1;
 }
 
 .text-field-invalid {
-    -fx-font: 22 arial;
     -fx-prompt-text-fill: gray;
-    /*-fx-background-color: white;*/
-    /*-fx-border-radius: 20;*/
-    /*-fx-background-radius: 20;*/
     -fx-border-color: red;
     -fx-border-width: 2;
     -fx-background-insets: 1;
 }
+
 .combo-box {
     -fx-font: 22 arial;
     -fx-background-color: #0d2d3a;
@@ -50,10 +46,6 @@
     -fx-border-color: black;
     -fx-border-width: 2;
     -fx-background-insets: 1;
-}
-
-.button:hover {
-    -fx-opacity: 0.8;
 }
 
 .combo-box:hover {
@@ -66,7 +58,7 @@
     -fx-background-radius: 20;
 }
 
-.game-button {
+.choose-game-button {
     -fx-text-fill: white;
     -fx-font: 30 arial;
     -fx-background-color: #0d2d3a;
