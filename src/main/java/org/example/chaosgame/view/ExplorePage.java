@@ -33,26 +33,18 @@ public class ExplorePage extends StackPane {
 
   private final ExploreGameController exploreGameController;
   private ExploreGame exploreGame;
-
   private ChaosCanvas chaosCanvas;
-
   private ChaosGameDescription description;
-
   private final Canvas canvas;
   private final GraphicsContext gc;
-  private Vector2D dragStart;
-  private Vector2D dragStartTemp;
   private final Button zoomInButton;
   private final Button zoomOutButton;
-  private double scaleFactor;
-  double mouseX;
-  double mouseY;
   private WritableImage offScreenImage;
   private PixelWriter pixelWriter;
-  private Vector2D dragDistance;
 
 
   public ExplorePage(ExploreGameController exploreGameController) {
+    this.setStyle("-fx-background-color: black;");
     this.exploreGameController = exploreGameController;
     this.setPrefWidth(1200);
     this.setPrefHeight(800);
@@ -62,31 +54,23 @@ public class ExplorePage extends StackPane {
     exploreGame = exploreGameController.getExploreGame();
     description = exploreGame.getDescription();
     chaosCanvas = exploreGame.getCanvas();
-    canvas = new Canvas(1200, 800);
+    canvas = exploreGameController.getCanvas();
 
     canvas.widthProperty().bind(this.prefWidthProperty());
     canvas.heightProperty().bind(this.prefWidthProperty().multiply((float) 800 / 1200));
 
 
-    this.widthProperty().addListener((observable, oldValue, newValue) -> {
-      updateCanvas();
-    });
-
     offScreenImage = new WritableImage(chaosCanvas.getWidth(), chaosCanvas.getHeight());
     pixelWriter = offScreenImage.getPixelWriter();
     gc = canvas.getGraphicsContext2D();
     exploreGame.exploreFractals();
-    updateCanvas();
+    updateCanvas(this.chaosCanvas);
 
-    Button removeImage = new Button("Remove Image");
-    removeImage.setOnAction(event -> {
-      gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-    });
-
+    Button removeImage = new Button("Reset");
+    removeImage.setOnAction(exploreGameController::resetImage);
 
     zoomInButton = new Button("Zoom In");
     zoomOutButton = new Button("Zoom Out");
-
 
     zoomInButton.setOnMousePressed(event -> {
       AnimationTimer zoomInTimer = new AnimationTimer() {
@@ -101,7 +85,7 @@ public class ExplorePage extends StackPane {
           description.setMaxCoords(newMaxCoords);
           exploreGame = new ExploreGame(description, (int) canvas.getWidth(), (int) canvas.getHeight());
           exploreGame.exploreFractals();
-          updateCanvas();
+          updateCanvas(chaosCanvas);
 
         }
       };
@@ -118,6 +102,7 @@ public class ExplorePage extends StackPane {
 
     zoomOutButton.setOnMousePressed(event -> {
       AnimationTimer zoomOutTimer = new AnimationTimer() {
+
         @Override
         public void handle(long now) {
 
@@ -129,7 +114,7 @@ public class ExplorePage extends StackPane {
           description.setMaxCoords(newMaxCoords);
           exploreGame = new ExploreGame(description, chaosCanvas.getWidth(), chaosCanvas.getHeight());
           exploreGame.exploreFractals();
-          updateCanvas();
+          updateCanvas(chaosCanvas);
         }
       };
       zoomOutTimer.start();
@@ -143,91 +128,20 @@ public class ExplorePage extends StackPane {
       }
     });
 
-    this.setOnScroll(event -> {
-      mouseX = event.getX();
-      mouseY = event.getY();
-      double maxSubMinX = description.getMaxCoords().getX() - description.getMinCoords().getX();
-      double scaleBase = event.isControlDown() ? 2 : 1.1;
-      scaleFactor = (event.getDeltaY() < 0 && maxSubMinX > 0.00000001) ? 1 / scaleBase : scaleBase;
-      double middleMouseX = mouseX - (double) chaosCanvas.getWidth() / 2;
-      double middleMouseY = mouseY - (double) chaosCanvas.getHeight() / 2;
-      double translateX = canvas.getTranslateX();
-      double translateY = canvas.getTranslateY();
-
-      canvas.setScaleX(canvas.getScaleX() * scaleFactor);
-      canvas.setScaleY(canvas.getScaleY() * scaleFactor);
-
-
-      double newTranslateX = (middleMouseX - translateX) * (scaleFactor - 1);
-      double newTranslateY = (middleMouseY - translateY) * (scaleFactor - 1);
-      double setTranslateX = translateX - newTranslateX;
-      double setTranslateY = translateY - newTranslateY;
-      canvas.setTranslateX(setTranslateX);
-      canvas.setTranslateY(setTranslateY);
-
-      Vector2D canvasCenter = chaosCanvas.transformIndicesToCoords((int) mouseX, (int) mouseY);
-      Vector2D newMinCoords = canvasCenter.subtract(canvasCenter.subtract(description.getMinCoords()).scale(scaleFactor));
-      Vector2D newMaxCoords = canvasCenter.add(description.getMaxCoords().subtract(canvasCenter).scale(scaleFactor));
-      description.setMinCoords(newMinCoords);
-      description.setMaxCoords(newMaxCoords);
-      exploreGame = new ExploreGame(description, (int) canvas.getWidth(), (int) canvas.getHeight());
-      exploreGame.exploreFractals();
-      canvas.setTranslateX(0);
-      canvas.setTranslateY(0);
-      canvas.setScaleY(1);
-      canvas.setScaleX(1);
-      updateCanvas();
-    });
-
-
-
+    this.setOnScroll(exploreGameController::onScroll);
     VBox buttons = new VBox(zoomInButton, zoomOutButton, removeImage);
     buttons.setAlignment(Pos.CENTER_RIGHT);
     buttons.setSpacing(10);
-
     setAlignment(homeButton, Pos.TOP_LEFT);
-
     this.getChildren().addAll(canvas, buttons, homeButton);
+    this.setOnMousePressed(exploreGameController::mousePressed);
+    this.setOnMouseDragged(exploreGameController::mouseDragged);
+    this.setOnMouseReleased(exploreGameController::mouseReleased);
 
-
-    this.setOnMousePressed(event -> {
-        mouseX = event.getX();
-        mouseY = event.getY();
-        dragStart = new Vector2D(mouseX, mouseY);
-        dragStartTemp = new Vector2D(mouseX, canvas.getHeight() - mouseY);
-    });
-
-    this.setOnMouseDragged(event -> {
-      Vector2D dragEnd = new Vector2D(event.getX(), event.getY());
-      dragDistance = dragEnd.subtract(dragStart);
-
-      canvas.setTranslateX(canvas.getTranslateX() + dragDistance.getX());
-      canvas.setTranslateY(canvas.getTranslateY() + dragDistance.getY());
-
-      dragStart = dragEnd;
-
-    });
-
-    this.setOnMouseReleased(event -> {
-      dragDistance = new Vector2D(event.getX(), canvas.getHeight() - event.getY()).subtract(dragStartTemp);
-//       Reset the position where the drag started
-      Vector2D fractalRange = description.getMaxCoords().subtract(description.getMinCoords());
-      Vector2D adjustedDragDistance = dragDistance.multiply(fractalRange).divide(new Vector2D(canvas.getWidth(), canvas.getHeight()));
-      Vector2D newMinCoords = description.getMinCoords().subtract(adjustedDragDistance);
-      Vector2D newMaxCoords = description.getMaxCoords().subtract(adjustedDragDistance);
-      description.setMinCoords(newMinCoords);
-      description.setMaxCoords(newMaxCoords);
-      exploreGame = new ExploreGame(description, 1500,1000);
-      exploreGame.exploreFractals();
-      updateCanvas();
-      canvas.setTranslateX(0);
-      canvas.setTranslateY(0);
-    });
 
   }
 
-  public void updateCanvas() {
-    chaosCanvas = exploreGame.getCanvas();
+  public void updateCanvas(ChaosCanvas chaosCanvas) {
     gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     double[][] canvasArray = chaosCanvas.getCanvasArray();
     double cellWidth = gc.getCanvas().getWidth() / chaosCanvas.getWidth();
@@ -242,8 +156,9 @@ public class ExplorePage extends StackPane {
         double color = Math.min(canvasArray[i][j] * 3, 255);
         if (color >= 0 && color <= 255) {
           pixelWriter.setColor(j, i, Color.rgb((int) color, 0, 0));
+        }else{
+          pixelWriter.setColor(j, i, Color.rgb(0, 0, 0));
         }
-
       }
     }
 

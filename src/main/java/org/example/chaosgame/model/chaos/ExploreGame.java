@@ -58,6 +58,14 @@ public class ExploreGame{
 //    System.out.println("Time taken: " + (end - start) + "ms");
   }
 
+
+  public void setChaosCanvas(Vector2D minCoords, Vector2D maxCoords, int width, int height) {
+    this.canvas.setMinCoords(minCoords);
+    this.canvas.setMaxCoords(maxCoords);
+    this.canvas.setWidth(width);
+    this.canvas.setHeight(height);
+    this.canvas.setTransformCoordsToIndices();
+  }
   public void setGameDescription(ChaosGameDescription description) {
     this.description = description;
   }

@@ -16,8 +16,8 @@ import org.example.chaosgame.model.transformations.AffineTransform2D;
  */
 
 public class ChaosCanvas {
-  private final int width;
-  private final int height;
+  private int width;
+  private int height;
   private final double[][] canvas;
   private Vector2D minCoords;
   private Vector2D maxCoords;
@@ -155,5 +155,13 @@ public class ChaosCanvas {
         canvas[i][j] = 0;
       }
     }
+  }
+
+  public void setWidth(int width) {
+    this.width = width;
+  }
+
+  public void setHeight(int height) {
+    this.height = height;
   }
 }
