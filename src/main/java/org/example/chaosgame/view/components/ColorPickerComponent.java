@@ -9,8 +9,8 @@ public class ColorPickerComponent extends ColorPicker {
   public ColorPickerComponent(Consumer<Color> colorChangeHandler) {
     super();
     this.getStyleClass().add("color-picker");
-    this.setMaxWidth(210);
-    this.setMinWidth(210);
+    this.setMaxWidth(200);
+    this.setMinWidth(200);
     this.setOnAction(event -> colorChangeHandler.accept(this.getValue() ));
   }
 }

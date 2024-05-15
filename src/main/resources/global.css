@@ -1,6 +1,6 @@
 .button {
     -fx-text-fill: white;
-    -fx-font: 22 arial;
+    -fx-font: 20 arial;
     -fx-background-color: #0d2d3a;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
@@ -16,7 +16,7 @@
 
 .home-button {
     -fx-text-fill: white;
-    -fx-font: 22 arial;
+    -fx-font: 20 arial;
     -fx-background-color: #0d2d3a;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
@@ -40,7 +40,7 @@
 }
 
 .combo-box {
-    -fx-font: 22 arial;
+    -fx-font: 20 arial;
     -fx-background-color: #0d2d3a;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
@@ -56,7 +56,6 @@
 
 .combo-box .indexed-cell:selected {
     -fx-text-fill: white;
-    -fx-font: 22 arial;
     -fx-background-radius: 20;
 }
 
@@ -82,7 +81,7 @@
 }
 
 .color-picker {
-    -fx-font: 22 arial;
+    -fx-font: 20 arial;
     -fx-background-color: #0d2d3a;
     -fx-border-radius: 20;
     -fx-background-radius: 20;

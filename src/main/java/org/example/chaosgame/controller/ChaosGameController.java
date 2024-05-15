@@ -1,20 +1,30 @@
 package org.example.chaosgame.controller;
 
 import javafx.scene.Node;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.util.Pair;
 import org.example.chaosgame.model.chaos.*;
 import org.example.chaosgame.controller.observer.GameObserver;
 import org.example.chaosgame.controller.observer.PageObserver;
 import org.example.chaosgame.controller.observer.PageSubject;
+import org.example.chaosgame.model.linalg.Complex;
+import org.example.chaosgame.model.linalg.Vector2D;
+import org.example.chaosgame.model.transformations.AffineTransform2D;
+import org.example.chaosgame.model.transformations.JuliaTransform;
+import org.example.chaosgame.model.transformations.Transform2D;
 import org.example.chaosgame.view.ChaosPage;
+import org.example.chaosgame.view.components.CreateJuliaDialog;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ChaosGameController implements GameObserver, PageSubject {
   private final ChaosGame chaosGame;
@@ -36,16 +46,15 @@ public class ChaosGameController implements GameObserver, PageSubject {
     return chaosPage;
   }
 
-  private void updateChaosGame(ChaosGameDescription description){
+  private void updateChaosGame(ChaosGameDescription description) {
     chaosGame.setChaosGameDescription(description);
-    chaosGame.setChaosCanvas(description.getMinCoords(), description.getMaxCoords());
   }
 
-  public void gameSelection(String selectedGame){
+  public void gameSelection(String selectedGame) {
     updateChaosGame(ChaosGameDescriptionFactory.get(ChaosGameType.valueOf(selectedGame)));
   }
 
-  public void runStepsValidation(TextField stepsField){
+  public void runStepsValidation(TextField stepsField) {
     String input = stepsField.getText();
     try {
       int steps = Integer.parseInt(input);
@@ -61,7 +70,7 @@ public class ChaosGameController implements GameObserver, PageSubject {
     }
   }
 
-  public void openFromFile(){
+  public void openFromFile() {
     FileChooser fileChooser = new FileChooser();
     fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
     File selectedFile = fileChooser.showOpenDialog(null);
@@ -69,17 +78,45 @@ public class ChaosGameController implements GameObserver, PageSubject {
     if (selectedFile != null) {
       try {
         ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
-        ChaosGameDescription description = fileHandler.readFromFile(selectedFile.getAbsolutePath());
-        updateChaosGame(description);
+        chaosGame.setChaosGameDescription(fileHandler.readFromFile(selectedFile.getAbsolutePath()));
       } catch (IOException ex) {
         ex.printStackTrace();
       }
     }
   }
 
-  public void updateFractalColor(Color color){
+  public void updateFractalColor(Color color) {
     chaosPage.setFractalColor(color);
     chaosPage.updateCanvas(chaosGame.getCanvas());
+  }
+
+  public void createOwnJuliaFractal() {
+    CreateJuliaDialog dialog = new CreateJuliaDialog();
+    Optional<Pair<Double, Double>> result = dialog.showAndWait();
+
+    if (result.isPresent()) {
+      double real = result.get().getKey();
+      double imaginary = result.get().getValue();
+      chaosGame.setChaosGameDescription(new ChaosGameDescription(new Vector2D(-1.6, -1), new Vector2D(1.6, 1.0), List.of(new JuliaTransform(new Complex(real, imaginary), 1))));
+    } else {
+      dialog.showInvalidInputDialog();
+    }
+  }
+
+  public void saveFractal() {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
+    File selectedFile = fileChooser.showSaveDialog(null);
+
+    if (selectedFile != null) {
+      try {
+        ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
+        ChaosGameDescription description = chaosGame.getDescription();
+        fileHandler.writeToFile(description, selectedFile.getAbsolutePath());
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    }
   }
 
   public void homeButtonClicked() {
