@@ -68,11 +68,12 @@ public class ExploreGame extends Task<Task> implements GameSubject {
   }
 
 
-  public void setChaosCanvas(Vector2D minCoords, Vector2D maxCoords, int width, int height) {
+  public void setChaosCanvas(int width, int height, Vector2D minCoords, Vector2D maxCoords) {
     this.canvas = new ChaosCanvas(width, height, minCoords, maxCoords);
   }
-  public void setGameDescription(ChaosGameDescription description) {
+  public void setGameDescription(ChaosGameDescription description, int width, int height) {
     this.description = description;
+    setChaosCanvas(width, height, description.getMinCoords(), description.getMaxCoords());
     notifyObservers();
   }
 

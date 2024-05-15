@@ -35,6 +35,11 @@ public abstract class GamePage extends StackPane {
     drawCanvas(chaosCanvas);
   }
 
+  public void setCanvasSize(double width, double height) {
+    gc.getCanvas().setWidth(width);
+    gc.getCanvas().setHeight(height);
+  }
+
   private void clearCanvas() {
     gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
   }

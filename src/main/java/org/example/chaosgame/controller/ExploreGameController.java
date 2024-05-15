@@ -45,10 +45,12 @@ public class ExploreGameController implements GameObserver, PageSubject {
   private double mouseX;
   private double mouseY;
   private double scaleFactor;
+  private double real = -0.835;
+    private double img = 0.2321;
 
   public ExploreGameController() {
     this.canvas = new Canvas(1200, 800);
-    this.c = new Complex(-0.835, 0.2321);
+    this.c = new Complex(real, img);
     this.trans = List.of(new ExploreJulia(c));
     this.description  = new ChaosGameDescription(
             new Vector2D(-1.6, -1),
@@ -85,6 +87,8 @@ public class ExploreGameController implements GameObserver, PageSubject {
     Vector2D newMaxCoords = description.getMaxCoords().subtract(adjustedDragDistance);
     description.setMinCoords(newMinCoords);
     description.setMaxCoords(newMaxCoords);
+   /* exploreGame.setGameDescription(new ChaosGameDescription(newMinCoords, newMaxCoords, trans),
+            (int) canvas.getWidth(),(int) canvas.getHeight());*/
     exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
     exploreGame.exploreFractals();
     this.chaosCanvas = exploreGame.getCanvas();
@@ -195,9 +199,11 @@ public class ExploreGameController implements GameObserver, PageSubject {
   }
 
   public void updateExploreGame(ChaosGameDescription description) {
-    this.exploreGame.setGameDescription(description);
+
+
+    /*this.exploreGame.setGameDescription(description);
     this.exploreGame.setChaosCanvas(description.getMinCoords(), description.getMaxCoords()
-            , (int) canvas.getWidth(), (int) canvas.getHeight());
+            , (int) canvas.getWidth(), (int) canvas.getHeight());*/
   }
 
   public void resetImage() {
@@ -216,5 +222,16 @@ public class ExploreGameController implements GameObserver, PageSubject {
 
   public void setCanvas(Canvas canvas) {
     this.canvas = canvas;
+  }
+
+
+
+  public void updateJuliaValue(double part, boolean ifReal) {
+    if (ifReal) {
+      this.real = part;
+    } else {
+      this.img = part;
+    }
+    c = new Complex(this.real, this.img);
   }
 }

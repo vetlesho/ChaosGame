@@ -37,38 +37,32 @@ public class HomePage extends StackPane {
   private MediaPlayer exploreVideo;
   private MediaPlayer chaosVideo;
   public HomePage(PageController pageController) {
+    HBox videoBox = new HBox();
+    videoBox.prefWidthProperty().bind(this.prefWidthProperty());
+    videoBox.prefHeightProperty().bind(this.prefHeightProperty());
+    /*videoBox.setStyle("-fx-background-color: black;");*/
     Text header = new GameHeader("Welcome to ChaosGame");
-//    Button chaosGameButton = new ChooseGameButton("Chaos Game");
-//    Button exploreGameButton = new ChooseGameButton("Explore Game");
     Button exitButton = new ChooseGameButton("Exit");
 
-//    chaosGameButton.setOnAction(e -> pageController.goToPage("chaos"));
-//    exploreGameButton.setOnAction(e -> pageController.goToPage("explore"));
     exitButton.setOnAction(e -> pageController.exitGame());
-
-
     ColorAdjust colorAdjust = new ColorAdjust();
-    colorAdjust.setBrightness(-0.5);
+    colorAdjust.setBrightness(-0.8);
 
     chaosVideo = new MediaPlayer(new Media(explorePath));
-    chaosVideo.setOnEndOfMedia(() -> chaosVideo.seek(Duration.ZERO));
+    chaosVideo.setAutoPlay(true);
 
     exploreVideo = new MediaPlayer(new Media(explorePath));
-    exploreVideo.setOnStopped(() -> exploreVideo.seek(Duration.ZERO));
+    chaosVideo.setAutoPlay(true);
 
     MediaView chaosView = new MediaView(chaosVideo);
     chaosView.setEffect(colorAdjust);
-    chaosView.setViewport(new Rectangle2D(1150, 700, 600, 800));
-
-
-
+    System.out.printf("Width: %f, Height: %f\n", this.getWidth() / 2, this.getHeight());
+    chaosView.setViewport(new Rectangle2D(1150, 700, 600, 800));//this.getWidth() / 2, this.getHeight()));
 
     MediaView exploreView = new MediaView(exploreVideo);
     exploreView.setEffect(colorAdjust);
-    exploreView.setViewport(new Rectangle2D(1150, 700, 600, 800));
-    
+    exploreView.setViewport(new Rectangle2D(1150, 700, 600, 800));//this.getWidth() / 2, this.getHeight()));
 
-    
 
     StackPane chaosPane = new StackPane();
     Text chaosHeader = new GameHeader("Chaos Game");
@@ -77,10 +71,15 @@ public class HomePage extends StackPane {
     chaosPane.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
       chaosVideo.play();
       chaosView.setEffect(null);
+      chaosHeader.setEffect(colorAdjust);
+      chaosHeader.setOpacity(0.5);
     });
     chaosPane.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
+      chaosVideo.seek(Duration.seconds(0));
       chaosVideo.pause();
       chaosView.setEffect(colorAdjust);
+      chaosHeader.setEffect(null);
+      chaosHeader.setOpacity(1);
     });
 
     StackPane explorePane = new StackPane();
@@ -91,15 +90,20 @@ public class HomePage extends StackPane {
     explorePane.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
       exploreVideo.play();
       exploreView.setEffect(null);
+      exploreHeader.setEffect(colorAdjust);
+      exploreHeader.setOpacity(0.5);
     });
     explorePane.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
+      exploreVideo.seek(Duration.seconds(0));
       exploreVideo.pause();
       exploreView.setEffect(colorAdjust);
+      exploreHeader.setEffect(null);
+      exploreHeader.setOpacity(1);
     });
     // Play the video
     StackPane.setAlignment(header, Pos.TOP_CENTER);
     StackPane.setAlignment(exitButton, Pos.BOTTOM_CENTER);
-    HBox videoBox = new HBox();
+
     videoBox.getChildren().addAll(chaosPane, explorePane);
     videoBox.setAlignment(Pos.CENTER);
     getChildren().addAll(videoBox, header, exitButton);

@@ -78,7 +78,7 @@
 .game-header {
     -fx-font: 50 arial;
     -fx-font-weight: bold;
-    -fx-text-fill: #0d2d3a;
+    -fx-fill: #b1b1b1;
 }
 
 .color-picker {
