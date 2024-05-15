@@ -13,11 +13,12 @@ public class SideBar extends VBox {
     TextField numberOfStepsInput = new NumberOfStepsInput();
     Button runStepsButton = new GameButton("Run steps");
     Button openFileButton = new GameButton("Open file");
+    ColorPickerComponent colorPicker = new ColorPickerComponent(chaosGameController::updateFractalColor);
 
     runStepsButton.setOnAction(event -> chaosGameController.runStepsValidation(numberOfStepsInput));
     openFileButton.setOnAction(event -> chaosGameController.openFromFile());
 
-    this.getChildren().addAll(gameSelectionBox, numberOfStepsInput, runStepsButton, openFileButton);
+    this.getChildren().addAll(gameSelectionBox, colorPicker, numberOfStepsInput, runStepsButton, openFileButton);
     this.setSpacing(10);
     this.setPadding(new Insets(10));
     this.setAlignment(Pos.CENTER_RIGHT);

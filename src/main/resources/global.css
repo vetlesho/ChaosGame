@@ -11,6 +11,7 @@
 
 .button:hover {
     -fx-opacity: 0.8;
+    -fx-cursor: hand;
 }
 
 .home-button {
@@ -50,6 +51,7 @@
 
 .combo-box:hover {
     -fx-opacity: 0.8;
+    -fx-cursor: hand;
 }
 
 .combo-box .indexed-cell:selected {
@@ -77,6 +79,25 @@
     -fx-font: 50 arial;
     -fx-font-weight: bold;
     -fx-text-fill: #0d2d3a;
+}
+
+.color-picker {
+    -fx-font: 22 arial;
+    -fx-background-color: #0d2d3a;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-background-insets: 1;
+}
+
+.color-picker .text {
+    -fx-fill: white;
+}
+
+.color-picker:hover {
+    -fx-opacity: 0.8;
+    -fx-cursor: hand;
 }
 
 

@@ -2,6 +2,7 @@ package org.example.chaosgame.controller;
 
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import org.example.chaosgame.model.chaos.*;
 import org.example.chaosgame.controller.observer.GameObserver;
@@ -74,6 +75,11 @@ public class ChaosGameController implements GameObserver, PageSubject {
         ex.printStackTrace();
       }
     }
+  }
+
+  public void updateFractalColor(Color color){
+    chaosPage.setFractalColor(color);
+    chaosPage.updateCanvas(chaosGame.getCanvas());
   }
 
   public void homeButtonClicked() {
