@@ -100,4 +100,9 @@
     -fx-cursor: hand;
 }
 
+.text {
+    -fx-font: 22 arial;
+    -fx-fill: #d2d2d2;
+}
+
 

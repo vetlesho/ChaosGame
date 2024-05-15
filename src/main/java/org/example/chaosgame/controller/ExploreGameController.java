@@ -55,7 +55,6 @@ public class ExploreGameController implements GameObserver, PageSubject {
             new Vector2D(1.6, 1), trans);
 
     exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
-    exploreGame.registerObserver(this);
     this.chaosCanvas = exploreGame.getCanvas();
     this.explorePage = new ExplorePage(this);
     this.pageObservers = new ArrayList<>();
@@ -86,9 +85,7 @@ public class ExploreGameController implements GameObserver, PageSubject {
     Vector2D newMaxCoords = description.getMaxCoords().subtract(adjustedDragDistance);
     description.setMinCoords(newMinCoords);
     description.setMaxCoords(newMaxCoords);
-    exploreGame.removeObserver(this);
     exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
-    exploreGame.registerObserver(this);
     exploreGame.exploreFractals();
     this.chaosCanvas = exploreGame.getCanvas();
     explorePage.updateCanvas(this.chaosCanvas);
@@ -169,6 +166,11 @@ public class ExploreGameController implements GameObserver, PageSubject {
   }
   public ExplorePage getExplorePage() {
     return explorePage;
+  }
+
+  public void updateFractalColor(Color color){
+    explorePage.setFractalColor(color);
+    explorePage.updateCanvas(exploreGame.getCanvas());
   }
   @Override
   public void update() {

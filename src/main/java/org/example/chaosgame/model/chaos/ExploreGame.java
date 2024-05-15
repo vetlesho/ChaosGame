@@ -98,9 +98,6 @@ public class ExploreGame extends Task<Task> implements GameSubject {
 
   @Override
   public void notifyObservers() {
-    if (gameObservers.isEmpty()) {
-      System.out.println("No observers");
-    }
     for (GameObserver gameObserver : gameObservers) {
       gameObserver.update();
       System.out.println("Observer notified");

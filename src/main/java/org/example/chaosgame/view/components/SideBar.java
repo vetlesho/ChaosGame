@@ -28,12 +28,14 @@ public class SideBar extends VBox {
     Button zoomInButton = new GameButton("Zoom in");
     Button zoomOutButton = new GameButton("Zoom out");
     Button resetImage = new GameButton("Reset");
+    ColorPickerComponent colorPicker = new ColorPickerComponent(exploreGameController::updateFractalColor);
+
 
     zoomInButton.setOnAction(event -> exploreGameController.zoomButtonClicked(1 / 1.05));
     zoomOutButton.setOnAction(event -> exploreGameController.zoomButtonClicked(1.05));
     resetImage.setOnAction(event -> exploreGameController.resetImage());
 
-    this.getChildren().addAll(zoomInButton, zoomOutButton, resetImage);
+    this.getChildren().addAll(zoomInButton, zoomOutButton, colorPicker, resetImage);
     this.setAlignment(Pos.CENTER_RIGHT);
     this.setSpacing(10);
   }
