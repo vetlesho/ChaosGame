@@ -2,13 +2,10 @@ package org.example.chaosgame.view;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.example.chaosgame.controller.PageController;
 import org.example.chaosgame.view.components.ChooseGameButton;
-import org.example.chaosgame.view.components.ChooseGameButton;
-import org.example.chaosgame.view.components.GameButton;
 import org.example.chaosgame.view.components.GameHeader;
 
 public class HomePage extends VBox {

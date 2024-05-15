@@ -21,7 +21,7 @@ import org.example.chaosgame.model.linalg.Vector2D;
 public class ChaosGame implements GameSubject {
   private final ChaosCanvas canvas;
   private ChaosGameDescription description;
-  private Vector2D currentPoint; //endret her
+  private Vector2D currentPoint;
   private final Random random = new Random();
   private final List<GameObserver> gameObservers;
 
@@ -44,6 +44,10 @@ public class ChaosGame implements GameSubject {
 
   public ChaosCanvas getCanvas() {
     return canvas;
+  }
+
+  public ChaosGameDescription getDescription() {
+    return description;
   }
 
   /**
@@ -99,6 +103,7 @@ public class ChaosGame implements GameSubject {
   public void setChaosGameDescription(ChaosGameDescription description) {
     this.description = description;
     canvas.clearCanvas();
+    setChaosCanvas(description.getMinCoords(), description.getMaxCoords());
     notifyObservers();
   }
 
