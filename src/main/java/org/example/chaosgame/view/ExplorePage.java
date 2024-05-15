@@ -42,18 +42,11 @@ public class ExplorePage extends StackPane {
   private final GraphicsContext gc;
   private Vector2D dragStart;
   private Vector2D dragStartTemp;
-
-
   private final Button zoomInButton;
   private final Button zoomOutButton;
-  private double deltaY;
-  private double scaleFactor = 1.0;
-
+  private double scaleFactor;
   double mouseX;
   double mouseY;
-
-  double newMouseX;
-  double newMouseY;
   private WritableImage offScreenImage;
   private PixelWriter pixelWriter;
   private Vector2D dragDistance;
@@ -153,13 +146,11 @@ public class ExplorePage extends StackPane {
     this.setOnScroll(event -> {
       mouseX = event.getX();
       mouseY = event.getY();
-
-      deltaY = event.getDeltaY();
-
-
-      scaleFactor = (event.getDeltaY() > 0) ? (1.0 / 1.05) : 1.05;
-      double middleMouseX = event.getX() - (double) chaosCanvas.getWidth() / 2;
-      double middleMouseY = event.getY() - (double) chaosCanvas.getHeight() / 2;
+      double maxSubMinX = description.getMaxCoords().getX() - description.getMinCoords().getX();
+      double scaleBase = event.isControlDown() ? 2 : 1.1;
+      scaleFactor = (event.getDeltaY() < 0 && maxSubMinX > 0.00000001) ? 1 / scaleBase : scaleBase;
+      double middleMouseX = mouseX - (double) chaosCanvas.getWidth() / 2;
+      double middleMouseY = mouseY - (double) chaosCanvas.getHeight() / 2;
       double translateX = canvas.getTranslateX();
       double translateY = canvas.getTranslateY();
 
@@ -189,6 +180,7 @@ public class ExplorePage extends StackPane {
     });
 
 
+
     VBox buttons = new VBox(zoomInButton, zoomOutButton, removeImage);
     buttons.setAlignment(Pos.CENTER_RIGHT);
     buttons.setSpacing(10);
@@ -199,45 +191,35 @@ public class ExplorePage extends StackPane {
 
 
     this.setOnMousePressed(event -> {
-      try {
-        double mouseX = event.getX();
-        double mouseY = event.getY();
+        mouseX = event.getX();
+        mouseY = event.getY();
         dragStart = new Vector2D(mouseX, mouseY);
-
-
-
         dragStartTemp = new Vector2D(mouseX, canvas.getHeight() - mouseY);
-//        initialMousePosition = new Vector2D(mouseX, canvas.getHeight() - mouseY);
-      } catch (Exception e) {
-        e.printStackTrace();
-    }
-});
+    });
 
-this.setOnMouseDragged(event -> {
+    this.setOnMouseDragged(event -> {
+      Vector2D dragEnd = new Vector2D(event.getX(), event.getY());
+      dragDistance = dragEnd.subtract(dragStart);
 
-  Vector2D dragEnd = new Vector2D(event.getX(), event.getY());
-  dragDistance = dragEnd.subtract(dragStart);
+      canvas.setTranslateX(canvas.getTranslateX() + dragDistance.getX());
+      canvas.setTranslateY(canvas.getTranslateY() + dragDistance.getY());
 
-  canvas.setTranslateX(canvas.getTranslateX() + dragDistance.getX());
-  canvas.setTranslateY(canvas.getTranslateY() + dragDistance.getY());
+      dragStart = dragEnd;
 
-  dragStart = dragEnd;
-
-});
+    });
 
     this.setOnMouseReleased(event -> {
       dragDistance = new Vector2D(event.getX(), canvas.getHeight() - event.getY()).subtract(dragStartTemp);
 //       Reset the position where the drag started
       Vector2D fractalRange = description.getMaxCoords().subtract(description.getMinCoords());
-    Vector2D adjustedDragDistance = dragDistance.multiply(fractalRange).divide(new Vector2D(canvas.getWidth(), canvas.getHeight()));
-    Vector2D newMinCoords = description.getMinCoords().subtract(adjustedDragDistance);
-    Vector2D newMaxCoords = description.getMaxCoords().subtract(adjustedDragDistance);
-    description.setMinCoords(newMinCoords);
-    description.setMaxCoords(newMaxCoords);
-    exploreGame = new ExploreGame(description, 1500,1000);
-    exploreGame.exploreFractals();
-    updateCanvas();
-      dragStart = null;
+      Vector2D adjustedDragDistance = dragDistance.multiply(fractalRange).divide(new Vector2D(canvas.getWidth(), canvas.getHeight()));
+      Vector2D newMinCoords = description.getMinCoords().subtract(adjustedDragDistance);
+      Vector2D newMaxCoords = description.getMaxCoords().subtract(adjustedDragDistance);
+      description.setMinCoords(newMinCoords);
+      description.setMaxCoords(newMaxCoords);
+      exploreGame = new ExploreGame(description, 1500,1000);
+      exploreGame.exploreFractals();
+      updateCanvas();
       canvas.setTranslateX(0);
       canvas.setTranslateY(0);
     });
