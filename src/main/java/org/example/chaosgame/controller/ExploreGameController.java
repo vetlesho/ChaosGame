@@ -3,9 +3,6 @@ package org.example.chaosgame.controller;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
@@ -34,7 +31,7 @@ public class ExploreGameController implements GameObserver, PageSubject {
   private ExploreGame exploreGame;
   private final ExplorePage explorePage;
   private ChaosCanvas chaosCanvas;
-  private final Canvas canvas;
+  private Canvas canvas;
   private Complex c;
   private final List<Transform2D> trans;
   private ChaosGameDescription description;
@@ -56,10 +53,13 @@ public class ExploreGameController implements GameObserver, PageSubject {
     this.description  = new ChaosGameDescription(
             new Vector2D(-1.6, -1),
             new Vector2D(1.6, 1), trans);
-    this.exploreGame = new ExploreGame(description, 1200, 800);
+
+    exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
+    exploreGame.registerObserver(this);
     this.chaosCanvas = exploreGame.getCanvas();
     this.explorePage = new ExplorePage(this);
     this.pageObservers = new ArrayList<>();
+
   }
   public void mousePressed(MouseEvent event) {
     double mouseX = event.getX();
@@ -72,8 +72,8 @@ public class ExploreGameController implements GameObserver, PageSubject {
     Vector2D dragEnd = new Vector2D(event.getX(), event.getY());
     Vector2D dragDistance = dragEnd.subtract(dragStart);
 
-    canvas.setTranslateX(canvas.getTranslateX() + dragDistance.getX());
-    canvas.setTranslateY(canvas.getTranslateY() + dragDistance.getY());
+    this.canvas.setTranslateX(canvas.getTranslateX() + dragDistance.getX());
+    this.canvas.setTranslateY(canvas.getTranslateY() + dragDistance.getY());
 
     dragStart = dragEnd;
   }
@@ -86,7 +86,9 @@ public class ExploreGameController implements GameObserver, PageSubject {
     Vector2D newMaxCoords = description.getMaxCoords().subtract(adjustedDragDistance);
     description.setMinCoords(newMinCoords);
     description.setMaxCoords(newMaxCoords);
-    exploreGame = new ExploreGame(description, 1200,800);
+    exploreGame.removeObserver(this);
+    exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
+    exploreGame.registerObserver(this);
     exploreGame.exploreFractals();
     this.chaosCanvas = exploreGame.getCanvas();
     explorePage.updateCanvas(this.chaosCanvas);
@@ -94,7 +96,26 @@ public class ExploreGameController implements GameObserver, PageSubject {
     this.canvas.setTranslateY(0);
   }
 
-  public void onScroll(ScrollEvent event) {
+  public void zoomButtonClicked(double scaleFactor) {
+    cumulativeScaleFactor *= scaleFactor;
+    Vector2D canvasCenter = chaosCanvas.transformIndicesToCoords(chaosCanvas.getWidth() / 2, chaosCanvas.getHeight() / 2);
+    Vector2D newMinCoords = canvasCenter.subtract(canvasCenter.subtract(description.getMinCoords()).scale(scaleFactor));
+    Vector2D newMaxCoords = canvasCenter.add(description.getMaxCoords().subtract(canvasCenter).scale(scaleFactor));
+
+    description.setMinCoords(newMinCoords);
+    description.setMaxCoords(newMaxCoords);
+    exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
+    this.chaosCanvas = exploreGame.getCanvas();
+    exploreGame.exploreFractals();
+    canvas.setTranslateX(0);
+    canvas.setTranslateY(0);
+    canvas.setScaleY(1);
+    canvas.setScaleX(1);
+    explorePage.updateCanvas(this.chaosCanvas);
+  }
+
+  public void onScroll(ScrollEvent event) throws Exception {
+//    exploreGame.stopTask();
     mouseX = event.getX();
     mouseY = event.getY();
     double scaleBase = event.isControlDown() ? 2 : 1.1;
@@ -132,14 +153,14 @@ public class ExploreGameController implements GameObserver, PageSubject {
     Vector2D newMaxCoords = canvasCenter.add(description.getMaxCoords().subtract(canvasCenter).scale(scaleFactor));
     description.setMinCoords(newMinCoords);
     description.setMaxCoords(newMaxCoords);
-//      exploreGame = exploreGameController.updateExploreGame(description, exploreGame, canvas);
-    exploreGame = new ExploreGame(description, (int) canvas.getWidth(), (int) canvas.getHeight());
+    exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
+
     this.chaosCanvas = exploreGame.getCanvas();
-    exploreGame.exploreFractals();
     canvas.setTranslateX(0);
     canvas.setTranslateY(0);
     canvas.setScaleY(1);
     canvas.setScaleX(1);
+    exploreGame.exploreFractals();
     explorePage.updateCanvas(this.chaosCanvas);
   }
 
@@ -149,16 +170,9 @@ public class ExploreGameController implements GameObserver, PageSubject {
   public ExplorePage getExplorePage() {
     return explorePage;
   }
-
-  public ExploreGame getExploreGame() {
-    return exploreGame;
-  }
-
-  public Canvas getCanvas() {
-    return canvas;
-  }
   @Override
   public void update() {
+    explorePage.updateCanvas(exploreGame.getCanvas());
   }
 
   @Override
@@ -178,22 +192,27 @@ public class ExploreGameController implements GameObserver, PageSubject {
     }
   }
 
-  public ExploreGame updateExploreGame(ChaosGameDescription description, ExploreGame exploreGame, Canvas canvas) {
-    exploreGame.setGameDescription(description);
-    exploreGame.setChaosCanvas(description.getMinCoords(), description.getMaxCoords(),
-            (int) canvas.getWidth(), (int) canvas.getHeight());
-
-    return exploreGame;
+  public void updateExploreGame(ChaosGameDescription description) {
+    this.exploreGame.setGameDescription(description);
+    this.exploreGame.setChaosCanvas(description.getMinCoords(), description.getMaxCoords()
+            , (int) canvas.getWidth(), (int) canvas.getHeight());
   }
 
-  public void resetImage(ActionEvent event) {
+  public void resetImage() {
     description = new ChaosGameDescription(
             new Vector2D(-1.6, -1),
             new Vector2D(1.6, 1), trans);
-    exploreGame = new ExploreGame(description, 1200, 800);
+//    exploreGame.removeObserver(this);
+    exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
+//    exploreGame.registerObserver(this);
+//    updateExploreGame(description);
     cumulativeScaleFactor = 1;
     this.chaosCanvas = exploreGame.getCanvas();
     exploreGame.exploreFractals();
     explorePage.updateCanvas(this.chaosCanvas);
+  }
+
+  public void setCanvas(Canvas canvas) {
+    this.canvas = canvas;
   }
 }
