@@ -11,9 +11,13 @@ import java.util.Map;
 public class PageController implements PageObserver {
   private final StackPane mainPane;
   private final Map<String, Node> pages = new HashMap<>();
+  private final ChaosGameController chaosGameController;
+  private final ExploreGameController exploreGameController;
 
   public PageController(StackPane mainPane, ChaosGameController chaosGameController, ExploreGameController exploreGameController) {
     this.mainPane = mainPane;
+    this.chaosGameController = chaosGameController;
+    this.exploreGameController = exploreGameController;
     initPages(chaosGameController, exploreGameController);
     chaosGameController.registerObserver(this);
     exploreGameController.registerObserver(this);
@@ -38,6 +42,12 @@ public class PageController implements PageObserver {
   private void navigateToPage(Node page) {
     mainPane.getChildren().clear();
     mainPane.getChildren().add(page);
+  }
+
+  public void exitGame() {
+    chaosGameController.removeObserver(this);
+    exploreGameController.removeObserver(this);
+    System.exit(0);
   }
 
   @Override

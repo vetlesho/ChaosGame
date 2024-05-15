@@ -18,9 +18,11 @@ public abstract class GamePage extends StackPane {
   private static final int CANVAS_HEIGHT = 800;
   private static final int COLOR_FACTOR = 3;
   private static final int MAX_COLOR_VALUE = 255;
+  protected Color fractalColor;
 
   public GamePage() {
     this.gc = createCanvas();
+    this.fractalColor = Color.WHITE;
   }
 
   private GraphicsContext createCanvas() {
@@ -43,7 +45,7 @@ public abstract class GamePage extends StackPane {
     double cellHeight = gc.getCanvas().getHeight() / chaosCanvas.getHeight();
 
     // Create an off-screen image
-    WritableImage offScreenImage =createOffScreenImage(chaosCanvas, canvasArray);
+    WritableImage offScreenImage = createOffScreenImage(chaosCanvas, canvasArray);
     // Draw the off-screen image on the canvas
     gc.drawImage(offScreenImage, 0, 0, cellWidth * chaosCanvas.getWidth(), cellHeight * chaosCanvas.getHeight());
   }
@@ -53,16 +55,27 @@ public abstract class GamePage extends StackPane {
     WritableImage offScreenImage = new WritableImage(chaosCanvas.getWidth(), chaosCanvas.getHeight());
     PixelWriter pixelWriter = offScreenImage.getPixelWriter();
 
+    Color minColor = Color.BLACK;
+    Color maxColor = fractalColor;
+
     for (int i = 0; i < chaosCanvas.getHeight(); i++) {
       for (int j = 0; j < chaosCanvas.getWidth(); j++) {
-        double color = Math.min(canvasArray[i][j] * COLOR_FACTOR, MAX_COLOR_VALUE);
-        if (color != 0) {
-          pixelWriter.setColor(j, i, Color.rgb((int) (color), 0, 0));
+        double iterationCount = Math.min(canvasArray[i][j] * COLOR_FACTOR, MAX_COLOR_VALUE);
+        if (iterationCount > 0 && iterationCount <= MAX_COLOR_VALUE) {
+          double t = iterationCount / MAX_COLOR_VALUE;
+          double red = (1 - t) * minColor.getRed() + t * maxColor.getRed();
+          double green = (1 - t) * minColor.getGreen() + t * maxColor.getGreen();
+          double blue = (1 - t) * minColor.getBlue() + t * maxColor.getBlue();
+          pixelWriter.setColor(j, i, Color.color(red, green, blue));
         }
       }
     }
 
     return offScreenImage;
+  }
+
+  public void setFractalColor(Color newFractalColor) {
+    this.fractalColor = newFractalColor;
   }
 
   protected Button createHomeButton(EventHandler<ActionEvent> eventHandler) {
