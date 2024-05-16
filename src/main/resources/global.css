@@ -26,7 +26,7 @@
 }
 
 .text-field {
-    -fx-font: 10 arial;
+    -fx-font: 14 arial;
     -fx-border-color: black;
     -fx-border-width: 2;
     -fx-background-insets: 1;
