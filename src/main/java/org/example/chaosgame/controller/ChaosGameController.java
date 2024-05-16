@@ -34,7 +34,7 @@ public class ChaosGameController implements GameObserver, PageSubject {
   private final List<PageObserver> pageObservers;
 
   public ChaosGameController() {
-    this.chaosGame = new ChaosGame(Objects.requireNonNull(ChaosGameDescriptionFactory.get(ChaosGameType.JULIA)), 1200, 800);
+    this.chaosGame = new ChaosGame(Objects.requireNonNull(ChaosGameDescriptionFactory.get(ChaosGameType.SIERPINSKI)), 1200, 800);
     this.chaosPage = new ChaosPage(this);
     this.pageObservers = new ArrayList<>();
     chaosGame.registerObserver(this);
@@ -139,21 +139,12 @@ public class ChaosGameController implements GameObserver, PageSubject {
     }
   }
 
-  public void updateJuliaImValue(double reValue, double imValue) {
-
+  public void updateJuliaValue(double reValue, double imValue) {
     chaosGame.setChaosGameDescription(new ChaosGameDescription(
             new Vector2D(-1.6, -1),
             new Vector2D(1.6, 1.0),
             List.of(new JuliaTransform(new Complex(reValue, imValue), 1))));
-    chaosGame.runSteps(100000);
-  }
-
-  public void updateJuliaReValue(double reValue, double imValue) {
-    chaosGame.setChaosGameDescription(new ChaosGameDescription(
-            new Vector2D(-1.6, -1),
-            new Vector2D(1.6, 1.0),
-            List.of(new JuliaTransform(new Complex(reValue, imValue), 1))));
-    chaosGame.runSteps(100000);
+    runStepsValidation(new TextField("10000"));
   }
 
   public boolean isJuliaShowing() {
@@ -182,6 +173,7 @@ public class ChaosGameController implements GameObserver, PageSubject {
 
   @Override
   public void update() {
+    chaosPage.setSliderVisibility(isJuliaShowing());
     chaosPage.updateCanvas(chaosGame.getCanvas());
   }
 

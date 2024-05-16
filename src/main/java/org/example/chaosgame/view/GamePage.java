@@ -7,17 +7,19 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.StackPane;
+
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import org.example.chaosgame.model.chaos.ChaosCanvas;
 import org.example.chaosgame.view.components.HomeButton;
 
-public abstract class GamePage extends StackPane {
+public abstract class GamePage extends BorderPane {
   protected final GraphicsContext gc;
-  private static final int CANVAS_WIDTH = 1200;
-  private static final int CANVAS_HEIGHT = 800;
+  private static final int CANVAS_WIDTH = 900;
+  private static final int CANVAS_HEIGHT = 600;
   private static final int COLOR_FACTOR = 3;
   private static final int MAX_COLOR_VALUE = 255;
+
   protected Color fractalColor;
 
   public GamePage() {
@@ -29,6 +31,7 @@ public abstract class GamePage extends StackPane {
     Canvas canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     return canvas.getGraphicsContext2D();
   }
+
 
   public void updateCanvas(ChaosCanvas chaosCanvas) {
     clearCanvas();

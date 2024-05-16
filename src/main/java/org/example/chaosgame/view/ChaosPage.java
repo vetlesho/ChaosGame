@@ -1,20 +1,29 @@
 package org.example.chaosgame.view;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import org.example.chaosgame.controller.ChaosGameController;
-import org.example.chaosgame.model.chaos.*;
+import org.example.chaosgame.model.chaos.ChaosCanvas;
 import org.example.chaosgame.view.components.*;
 
 public class ChaosPage extends GamePage {
+  private final BottomBar bottomBar;
+
   public ChaosPage(ChaosGameController chaosGameController) {
     super();
-    VBox sidebar = new SideBar(chaosGameController);
+    SideBar sidebar = new SideBar(chaosGameController);
     Button homeButton = createHomeButton(event -> chaosGameController.homeButtonClicked());
-    this.getChildren().addAll(gc.getCanvas(), sidebar, homeButton);
+    this.bottomBar = new BottomBar(chaosGameController);
+
+    this.setRight(sidebar);
+    this.setBottom(bottomBar);
+    this.setTop(homeButton);
+    this.setCenter(gc.getCanvas());
+  }
+
+  public void setSliderVisibility(boolean isVisible) {
+    bottomBar.setSliderVisibility(isVisible);
   }
 }

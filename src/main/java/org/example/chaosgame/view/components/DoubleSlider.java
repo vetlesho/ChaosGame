@@ -4,6 +4,8 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import org.example.chaosgame.controller.ChaosGameController;
 
+import java.util.List;
+
 public class DoubleSlider extends Slider {
   public DoubleSlider(ChaosGameController chaosGameController) {
     //min value -1 and max is 1
