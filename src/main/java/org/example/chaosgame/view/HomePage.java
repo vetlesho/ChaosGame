@@ -20,8 +20,6 @@ import org.example.chaosgame.controller.PageController;
 import org.example.chaosgame.model.chaos.ChaosGameDescription;
 import org.example.chaosgame.model.chaos.ChaosGameFileHandler;
 import org.example.chaosgame.view.components.ChooseGameButton;
-import org.example.chaosgame.view.components.ChooseGameButton;
-import org.example.chaosgame.view.components.GameButton;
 import org.example.chaosgame.view.components.GameHeader;
 import javafx.scene.media.Media;
 
