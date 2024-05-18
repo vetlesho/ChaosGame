@@ -1,6 +1,7 @@
 package org.example.chaosgame.model.chaos;
 
 import javafx.concurrent.Task;
+import javafx.scene.canvas.Canvas;
 import org.example.chaosgame.controller.observer.GameObserver;
 import org.example.chaosgame.controller.observer.GameSubject;
 import org.example.chaosgame.model.linalg.Vector2D;
@@ -12,7 +13,7 @@ import java.util.stream.IntStream;
 /**
  * Class for exploring julia sets.
  */
-public class ExploreGame extends Task<Task> implements GameSubject {
+public class ExploreGame extends Task implements GameSubject {
   private final int MAX_ITER = 256;
 
   private ChaosCanvas canvas;
@@ -48,6 +49,9 @@ public class ExploreGame extends Task<Task> implements GameSubject {
     yStream.parallel().forEach(y -> {
 //    for (int y = 0; y < canvas.getHeight(); y++) {
       for (int x = 0; x < canvas.getWidth(); x++) {
+        if (isCancelled()) {
+          break;
+        }
         int iter = 0;
         currentPoint = canvas.transformIndicesToCoords(x, y);
         Vector2D tempPoint = currentPoint;
@@ -68,13 +72,12 @@ public class ExploreGame extends Task<Task> implements GameSubject {
   }
 
 
-  public void setChaosCanvas(int width, int height, Vector2D minCoords, Vector2D maxCoords) {
-    this.canvas = new ChaosCanvas(width, height, minCoords, maxCoords);
+  public void setChaosCanvas(Vector2D minCoords, Vector2D maxCoords) {
+    this.canvas.setMaxCoords(maxCoords);
+    this.canvas.setMinCoords(minCoords);
   }
-  public void setGameDescription(ChaosGameDescription description, int width, int height) {
+  public void setGameDescription(ChaosGameDescription description) {
     this.description = description;
-    setChaosCanvas(width, height, description.getMinCoords(), description.getMaxCoords());
-    notifyObservers();
   }
 
   public ChaosCanvas getCanvas() {
@@ -105,14 +108,17 @@ public class ExploreGame extends Task<Task> implements GameSubject {
     }
   }
 
-  @Override
-  public Task<Void> call() throws Exception {
+  public Task call(Canvas canvas) throws Exception {
     exploreFractals();
-    return null;
+    return this;
+  }
+  protected Task call() {
+    exploreFractals();
+    return this;
   }
   public void stopTask() {
     if (this != null) {
-      System.out.println("Task cancelled");
+
       this.cancel();
     }
   }

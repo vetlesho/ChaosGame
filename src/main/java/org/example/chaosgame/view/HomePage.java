@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
@@ -20,6 +21,7 @@ import org.example.chaosgame.controller.PageController;
 import org.example.chaosgame.model.chaos.ChaosGameDescription;
 import org.example.chaosgame.model.chaos.ChaosGameFileHandler;
 import org.example.chaosgame.view.components.ChooseGameButton;
+import org.example.chaosgame.view.components.ExitButton;
 import org.example.chaosgame.view.components.GameHeader;
 import javafx.scene.media.Media;
 
@@ -30,59 +32,62 @@ import java.util.Stack;
 
 public class HomePage extends StackPane {
 
-  private final String explorePath = getClass().getResource("/ExploreVideo.mp4").toString();;
-  private String chaosPath;
+  private final String explorePath = getClass().getResource("/ExploreVideoFinal.mp4").toString();
+  private String chaosPath = getClass().getResource("/ChaosVideoFinal.mp4").toString();
   private MediaPlayer exploreVideo;
   private MediaPlayer chaosVideo;
+
+  private MediaView exploreView;
+  private MediaView chaosView;
+  private StackPane explorePane;
+  private StackPane chaosPane;
   public HomePage(PageController pageController) {
     HBox videoBox = new HBox();
     videoBox.prefWidthProperty().bind(this.prefWidthProperty());
     videoBox.prefHeightProperty().bind(this.prefHeightProperty());
     /*videoBox.setStyle("-fx-background-color: black;");*/
     Text header = new GameHeader("Welcome to ChaosGame");
-    Button exitButton = new ChooseGameButton("Exit");
+    Button exitButton = new ExitButton();
 
     exitButton.setOnAction(e -> pageController.exitGame());
     ColorAdjust colorAdjust = new ColorAdjust();
     colorAdjust.setBrightness(-0.8);
 
-    chaosVideo = new MediaPlayer(new Media(explorePath));
-    chaosVideo.setAutoPlay(true);
+    chaosVideo = new MediaPlayer(new Media(chaosPath));
 
     exploreVideo = new MediaPlayer(new Media(explorePath));
-    chaosVideo.setAutoPlay(true);
 
-    MediaView chaosView = new MediaView(chaosVideo);
+    chaosView = new MediaView(chaosVideo);
     chaosView.setEffect(colorAdjust);
-    System.out.printf("Width: %f, Height: %f\n", this.getWidth() / 2, this.getHeight());
-    chaosView.setViewport(new Rectangle2D(1150, 700, 600, 800));//this.getWidth() / 2, this.getHeight()));
 
-    MediaView exploreView = new MediaView(exploreVideo);
+    exploreView = new MediaView(exploreVideo);
     exploreView.setEffect(colorAdjust);
-    exploreView.setViewport(new Rectangle2D(1150, 700, 600, 800));//this.getWidth() / 2, this.getHeight()));
+//    exploreView.setViewport(new Rectangle2D(100, 100, 100, 100));
 
 
-    StackPane chaosPane = new StackPane();
+    chaosPane = new StackPane();
+    chaosPane.setStyle("-fx-background-color: transparent;");
     Text chaosHeader = new GameHeader("Chaos Game");
     chaosPane.getChildren().addAll(chaosView, chaosHeader);
     chaosPane.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> pageController.goToPage("chaos"));
     chaosPane.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
       chaosVideo.play();
       chaosView.setEffect(null);
-      chaosHeader.setEffect(colorAdjust);
+      chaosHeader.setEffect(null);
       chaosHeader.setOpacity(0.5);
     });
     chaosPane.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
       chaosVideo.seek(Duration.seconds(0));
       chaosVideo.pause();
-      chaosView.setEffect(colorAdjust);
-      chaosHeader.setEffect(null);
+//      chaosView.setEffect(colorAdjust);
+      chaosHeader.setEffect(colorAdjust);
       chaosHeader.setOpacity(1);
     });
 
-    StackPane explorePane = new StackPane();
+    explorePane = new StackPane();
     Text exploreHeader = new GameHeader("Explore Game");
     explorePane.getChildren().addAll(exploreView, exploreHeader);
+    explorePane.setStyle("-fx-background-color: black;");
 
     explorePane.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> pageController.goToPage("explore"));
     explorePane.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
@@ -105,5 +110,12 @@ public class HomePage extends StackPane {
     videoBox.getChildren().addAll(chaosPane, explorePane);
     videoBox.setAlignment(Pos.CENTER);
     getChildren().addAll(videoBox, header, exitButton);
+  }
+
+  public void setBind(Pane pane) {
+    explorePane.prefWidthProperty().bind(pane.widthProperty());
+    chaosPane.prefWidthProperty().bind(pane.widthProperty());
+    exploreView.fitHeightProperty().bind(pane.heightProperty());
+    chaosView.fitHeightProperty().bind(pane.heightProperty());
   }
 }

@@ -1,6 +1,7 @@
 package org.example.chaosgame.view;
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -25,5 +26,9 @@ public class ChaosPage extends GamePage {
 
   public void setSliderVisibility(boolean isVisible) {
     bottomBar.setSliderVisibility(isVisible);
+  }
+
+  public GraphicsContext getGraphicsContex() {
+    return gc;
   }
 }

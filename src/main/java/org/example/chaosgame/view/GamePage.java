@@ -15,9 +15,9 @@ import org.example.chaosgame.view.components.HomeButton;
 
 public abstract class GamePage extends BorderPane {
   protected final GraphicsContext gc;
-  private static final int CANVAS_WIDTH = 900;
-  private static final int CANVAS_HEIGHT = 600;
-  private static final int COLOR_FACTOR = 3;
+  private static final int CANVAS_WIDTH = 1020;
+  private static final int CANVAS_HEIGHT = 680;
+  private static final int COLOR_FACTOR = 5;
   private static final int MAX_COLOR_VALUE = 255;
 
   protected Color fractalColor;

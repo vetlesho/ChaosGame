@@ -3,6 +3,8 @@ package org.example.chaosgame.view.components;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import org.example.chaosgame.controller.ChaosGameController;
+import org.example.chaosgame.controller.ExploreGameController;
+import org.example.chaosgame.model.chaos.ExploreGame;
 
 import java.util.List;
 
@@ -18,4 +20,16 @@ public class DoubleSlider extends Slider {
     this.setMaxWidth(200);
 
   }
+
+  public DoubleSlider(ExploreGameController exploreGameController) {
+    //min value -1 and max is 1
+    super();
+    this.setMin(-1);
+    this.setMax(1);
+    this.setValue(0);
+    this.setShowTickLabels(true);
+    this.setShowTickMarks(true);
+    this.setMaxWidth(200);
+  }
+
 }
