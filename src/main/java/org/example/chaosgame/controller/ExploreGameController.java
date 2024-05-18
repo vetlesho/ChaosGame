@@ -46,10 +46,6 @@ public class ExploreGameController implements GameObserver, PageSubject {
   private double mouseX;
   private double mouseY;
   private double scaleFactor;
-  private double real = -0.835;
-    private double img = 0.2321;
-
-//  private SetJuliaTask juliaTask;
   private Task task;
 
   public ExploreGameController() {
