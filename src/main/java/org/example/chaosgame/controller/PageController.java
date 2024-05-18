@@ -14,12 +14,14 @@ public class PageController implements PageObserver {
   private final ChaosGameController chaosGameController;
   private final ExploreGameController exploreGameController;
   private final HomePage homePage;
+  private final HomeController homeController;
 
-  public PageController(StackPane mainPane, ChaosGameController chaosGameController, ExploreGameController exploreGameController) {
+  public PageController(StackPane mainPane,  ChaosGameController chaosGameController, ExploreGameController exploreGameController) {
     this.mainPane = mainPane;
     this.chaosGameController = chaosGameController;
     this.exploreGameController = exploreGameController;
-    this.homePage = new HomePage(this);
+    this.homeController = new HomeController(this);
+    this.homePage = homeController.getHomePage();
     this.homePage.setBind(mainPane);
     this.exploreGameController.setBind(mainPane);
     this.chaosGameController.setBind(mainPane);
