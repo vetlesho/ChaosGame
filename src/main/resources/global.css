@@ -1,6 +1,6 @@
 .button {
     -fx-text-fill: white;
-    -fx-font: 20 arial;
+    -fx-font: 14 arial;
     -fx-background-color: #0d2d3a;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
@@ -100,8 +100,9 @@
 }
 
 .text {
-    -fx-font: 22 arial;
+    -fx-font: 20 arial;
     -fx-fill: #d2d2d2;
 }
+
 
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javafx.scene.canvas.Canvas;
 import org.example.chaosgame.controller.observer.GameSubject;
 import org.example.chaosgame.controller.observer.GameObserver;
 import org.example.chaosgame.model.linalg.Vector2D;
@@ -16,17 +15,20 @@ import org.example.chaosgame.model.linalg.Vector2D;
  * selecting a transformation from a set of transformations.
  * The selected transformation is then applied to the current point.
  * The new point is then drawn on the canvas.
- * This process is repeated a selected amount of steps.
+ * This process is repeated a selected number of steps.
  */
 public class ChaosGame implements GameSubject {
+  private static ChaosGame instance = null;
   private final ChaosCanvas canvas;
   private ChaosGameDescription description;
   private Vector2D currentPoint;
   private final Random random = new Random();
   private final List<GameObserver> gameObservers;
+  private int steps;
+  private int totalSteps;
 
   /**
-   * Constructor for ChaosGame.
+   * Private constructor for ChaosGame.
    *
    * @param description Description of the chaos game
    *
@@ -34,12 +36,31 @@ public class ChaosGame implements GameSubject {
    *
    * @param height Height of the canvas
    */
-  public ChaosGame(ChaosGameDescription description, int width, int height) {
+  private ChaosGame(ChaosGameDescription description, int width, int height) {
     this.description = description;
     this.canvas = new ChaosCanvas(width, height,
             description.getMinCoords(), description.getMaxCoords());
     this.currentPoint = new Vector2D(0.0, 0.0);
     this.gameObservers = new ArrayList<>();
+    this.steps = 0;
+    this.totalSteps = 0;
+  }
+
+  /**
+   * Method for getting an instance of the ChaosGame.
+   * If an instance already exists, the existing instance is returned.
+   * If no instance exists, a new instance is created.
+   *
+   * @param description Description of the chaos game
+   * @param width Width of the canvas
+   * @param height Height of the canvas
+   * @return Instance of the ChaosGame
+   */
+  public static ChaosGame getInstance(ChaosGameDescription description, int width, int height) {
+    if (instance == null) {
+      instance = new ChaosGame(description, width, height);
+    }
+    return instance;
   }
 
   public ChaosCanvas getCanvas() {
@@ -50,13 +71,40 @@ public class ChaosGame implements GameSubject {
     return description;
   }
 
+  public int getSteps() {
+    return steps;
+  }
+
+  public int getTotalSteps() {
+    return totalSteps;
+  }
+
+  public void setSteps(int steps) {
+    this.steps = steps;
+  }
+
+  /**
+   * Method for adding steps to the total number of steps.
+   *
+   * @param newSteps Number of steps to add
+   */
+  public void addTotalSteps(int newSteps) {
+    this.totalSteps += newSteps;
+  }
+
+  /**
+   * Method for resetting the total number of steps.
+   */
+  public void resetTotalSteps() {
+    this.totalSteps = 0;
+  }
+
+
   /**
    * Method for running the chaos game. Randomly selects a transformation
    * from the description and applies it to the current point.
-   *
-   * @param steps Number of steps to run
    */
-  public void runSteps(int steps) {
+  public void runSteps() {
     if (description.getProbabilities() != null) {
       runStepsWithProbabilities(steps, description.getProbabilities());
     } else {
@@ -100,14 +148,18 @@ public class ChaosGame implements GameSubject {
     }
   }
 
-  public void setChaosGameDescription(ChaosGameDescription description) {
-    this.description = description;
-    canvas.clearCanvas();
+  public void setChaosGameDescription(ChaosGameDescription newDescription) {
+    if (!this.description.equals(newDescription)) {
+      this.resetTotalSteps();
+    }
+    this.description = newDescription;
+    this.totalSteps = 0;
     setChaosCanvas(description.getMinCoords(), description.getMaxCoords());
     notifyObservers();
   }
 
   public void setChaosCanvas(Vector2D minCoords, Vector2D maxCoords) {
+    this.canvas.clearCanvas();
     this.canvas.setMinCoords(minCoords);
     this.canvas.setMaxCoords(maxCoords);
     this.canvas.setTransformCoordsToIndices();

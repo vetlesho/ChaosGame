@@ -15,7 +15,7 @@ import org.example.chaosgame.view.components.HomeButton;
 
 public abstract class GamePage extends BorderPane {
   protected final GraphicsContext gc;
-  private static final int CANVAS_WIDTH = 900;
+  private static final int CANVAS_WIDTH = 800;
   private static final int CANVAS_HEIGHT = 600;
   private static final int COLOR_FACTOR = 3;
   private static final int MAX_COLOR_VALUE = 255;
@@ -32,7 +32,6 @@ public abstract class GamePage extends BorderPane {
     return canvas.getGraphicsContext2D();
   }
 
-
   public void updateCanvas(ChaosCanvas chaosCanvas) {
     clearCanvas();
     drawCanvas(chaosCanvas);
@@ -43,7 +42,7 @@ public abstract class GamePage extends BorderPane {
     gc.getCanvas().setHeight(height);
   }
 
-  private void clearCanvas() {
+  public void clearCanvas() {
     gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
   }
 

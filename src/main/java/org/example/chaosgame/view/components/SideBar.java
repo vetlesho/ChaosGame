@@ -1,49 +1,44 @@
 package org.example.chaosgame.view.components;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import org.example.chaosgame.controller.ChaosGameController;
 import org.example.chaosgame.controller.ExploreGameController;
-import javafx.beans.value.ChangeListener;
 
 public class SideBar extends VBox {
-
-  private TextField numberOfStepsInput;
   public SideBar(ChaosGameController chaosGameController) {
-    GameSelectionBox gameSelectionBox = new GameSelectionBox(chaosGameController);
-    numberOfStepsInput = new NumberOfStepsInput();
-
-    Button createOwnJuliaFractalButton = new GameButton("Create Julia fractal");
-    Button createOwnAffineFractalButton = new GameButton("Create Affine fractal");
-    Button saveFractalButton = new GameButton("Save fractal");
-    Button openFileButton = new GameButton("Open file");
+    Button coordinatesButton = new GameButton("Set coordinates");
+    FractalSelectionBox fractalSelectionBox = new FractalSelectionBox(chaosGameController);
     ColorPickerComponent colorPicker = new ColorPickerComponent(chaosGameController::updateFractalColor);
+    TextField numberOfStepsInput = new NumberOfStepsInput();
 
-    Button runStepsButton = new GameButton("Run ChaosGame");
+    Button createOwnFractal = new GameButton("Create own fractal");
+    Button openFileButton = new GameButton("Open file");
+    Button saveFractalButton = new GameButton("Save fractal");
 
+    Button runGame = new GameButton("Run ChaosGame");
+    Button resetGame = new GameButton("Reset ChaosGame");
+
+    coordinatesButton.setOnAction(event -> chaosGameController.setMaxMinCoords());
+    createOwnFractal.setOnAction(event -> chaosGameController.createOwnFractal());
     openFileButton.setOnAction(event -> chaosGameController.openFromFile());
-    createOwnJuliaFractalButton.setOnAction(event -> chaosGameController.createOwnJuliaFractal());
-    createOwnAffineFractalButton.setOnAction(event -> chaosGameController.createOwnAffineFractal());
     saveFractalButton.setOnAction(event -> chaosGameController.saveFractal());
-
-    runStepsButton.setOnAction(event -> chaosGameController.runStepsValidation(numberOfStepsInput));
+    runGame.setOnAction(event -> chaosGameController.runStepsValidation(numberOfStepsInput));
+    resetGame.setOnAction(event -> chaosGameController.resetGame());
 
     this.getChildren().addAll(
-            gameSelectionBox, colorPicker, numberOfStepsInput,
-            createOwnJuliaFractalButton, createOwnAffineFractalButton,
-            saveFractalButton, openFileButton, runStepsButton);
+            coordinatesButton, fractalSelectionBox, colorPicker, numberOfStepsInput,
+            createOwnFractal, saveFractalButton, openFileButton,
+            runGame, resetGame);
     this.setSpacing(10);
     this.setPadding(new Insets(10));
     this.setAlignment(Pos.CENTER_RIGHT);
 
-    VBox.setMargin(createOwnJuliaFractalButton, new Insets(50, 0, 0, 0));
-    VBox.setMargin(runStepsButton, new Insets(50, 0, 0, 0));
+    VBox.setMargin(createOwnFractal, new Insets(50, 0, 0, 0));
+    VBox.setMargin(runGame, new Insets(50, 0, 0, 0));
   }
 
   public SideBar(ExploreGameController exploreGameController) {
@@ -59,9 +54,5 @@ public class SideBar extends VBox {
     this.getChildren().addAll(zoomInButton, zoomOutButton, colorPicker, resetImage);
     this.setAlignment(Pos.CENTER_RIGHT);
     this.setSpacing(10);
-  }
-
-  public TextField getNumberOfStepsInput() {
-    return numberOfStepsInput;
   }
 }
