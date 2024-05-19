@@ -1,5 +1,7 @@
 package org.example.chaosgame.view.components;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -9,14 +11,19 @@ import org.example.chaosgame.model.linalg.Matrix2x2;
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.AffineTransform2D;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Pane for creating affine transformations.
+ */
 public class CreateAffinePane extends GridPane {
   private final List<List<TextField>> lines;
   private final List<HBox> matrixBoxes;
   private final List<HBox> vectorBoxes;
 
+  /**
+   * Constructor for the CreateAffinePane.
+   *
+   * <p>Creates a pane for creating affine transformations.
+   */
   public CreateAffinePane() {
     this.lines = new ArrayList<>();
     this.matrixBoxes = new ArrayList<>();
@@ -43,6 +50,9 @@ public class CreateAffinePane extends GridPane {
     this.add(buttonBox, 0, 4);
   }
 
+  /**
+   * Adds a line to the pane.
+   */
   private void addLine() {
     char[] labels = {'a', 'b', 'c', 'd', 'x', 'y'};
 
@@ -67,13 +77,16 @@ public class CreateAffinePane extends GridPane {
     }
 
     lines.add(fields);
-    matrixBox.setPadding(new Insets(0,30, 0, 0));
+    matrixBox.setPadding(new Insets(0, 30, 0, 0));
     matrixBoxes.add(matrixBox);
     vectorBoxes.add(vectorBox);
     this.add(matrixBox, 0, lines.size() - 1);
     this.add(vectorBox, 1, lines.size() - 1);
   }
 
+  /**
+   * Removes the last line from the pane.
+   */
   private void removeLine() {
     List<TextField> lastLine = lines.removeLast();
     for (TextField field : lastLine) {
@@ -87,6 +100,11 @@ public class CreateAffinePane extends GridPane {
     this.getChildren().remove(lastVectorBox);
   }
 
+  /**
+   * Returns the list of affine transformations created in the pane.
+   *
+   * @return The list of affine transformations.
+   */
   public List<AffineTransform2D> getResult() {
     List<AffineTransform2D> transformations = new ArrayList<>();
     for (List<TextField> fields : lines) {

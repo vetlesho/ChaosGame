@@ -36,7 +36,7 @@ public class ChaosPage extends GamePage {
     bottomBar.updateInformation(transformation);
   }
 
-  public GraphicsContext getGraphicsContex() {
+  public GraphicsContext getGraphicsContext() {
     return gc;
   }
 }

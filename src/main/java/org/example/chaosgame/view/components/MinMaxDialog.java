@@ -5,9 +5,8 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
-import org.example.chaosgame.model.linalg.Vector2D;
 
-public class MinMaxDialog extends Dialog<Pair<Vector2D, Vector2D>> {
+public class MinMaxDialog extends Dialog<Pair<String, String>> {
   private final TextField minXField;
   private final TextField minYField;
   private final TextField maxXField;
@@ -28,6 +27,7 @@ public class MinMaxDialog extends Dialog<Pair<Vector2D, Vector2D>> {
     minXField.setPromptText("Min X");
     minYField = new TextField();
     minYField.setPromptText("Min Y");
+
     maxXField = new TextField();
     maxXField.setPromptText("Max X");
     maxYField = new TextField();
@@ -42,9 +42,11 @@ public class MinMaxDialog extends Dialog<Pair<Vector2D, Vector2D>> {
 
     setResultConverter(dialogButton -> {
       if (dialogButton == okButtonType) {
-        Vector2D min = new Vector2D(Double.parseDouble(minXField.getText()), Double.parseDouble(minYField.getText()));
-        Vector2D max = new Vector2D(Double.parseDouble(maxXField.getText()), Double.parseDouble(maxYField.getText()));
-        return new Pair<>(min, max);
+        String minX = minXField.getText();
+        String minY = minYField.getText();
+        String maxX = maxXField.getText();
+        String maxY = maxYField.getText();
+        return new Pair<>(minX + "," + minY, maxX + "," + maxY);
       }
       return null;
     });

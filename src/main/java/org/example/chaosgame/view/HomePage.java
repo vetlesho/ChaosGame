@@ -21,7 +21,7 @@ import org.example.chaosgame.controller.HomeController;
 import org.example.chaosgame.controller.PageController;
 import org.example.chaosgame.model.chaos.ChaosGameDescription;
 import org.example.chaosgame.model.chaos.ChaosGameFileHandler;
-import org.example.chaosgame.view.components.ChooseGameButton;
+
 import org.example.chaosgame.view.components.ExitButton;
 import org.example.chaosgame.view.components.GameHeader;
 import javafx.scene.media.Media;
@@ -33,7 +33,6 @@ import java.util.Stack;
 
 
 public class HomePage extends StackPane {
-
   private final String EXPLORE_PATH = Objects.requireNonNull(getClass().getResource("/ExploreVideoFinal.mp4")).toString();
   private final String CHAOS_PATH = Objects.requireNonNull(getClass().getResource("/ChaosVideoFinal.mp4")).toString();
   private final MediaPlayer exploreVideo;
@@ -44,9 +43,9 @@ public class HomePage extends StackPane {
   private final StackPane explorePane;
   private final StackPane chaosPane;
 
-  private final HomeController homeController;
+  //private final HomeController homeController;
   public HomePage(PageController pageController, HomeController homeController) {
-    this.homeController = homeController;
+    //this.homeController = homeController;
     HBox videoBox = new HBox();
     videoBox.prefWidthProperty().bind(this.prefWidthProperty());
     videoBox.prefHeightProperty().bind(this.prefHeightProperty());
@@ -99,8 +98,6 @@ public class HomePage extends StackPane {
   }
 
   public void setBind(Pane pane) {
-
-
     explorePane.prefWidthProperty().bind(pane.widthProperty());
     chaosPane.prefWidthProperty().bind(pane.widthProperty());
     exploreView.fitHeightProperty().bind(pane.heightProperty());

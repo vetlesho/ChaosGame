@@ -9,6 +9,8 @@ import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Transform;
+import org.example.chaosgame.controller.observer.Observer;
+import org.example.chaosgame.controller.observer.Subject;
 import org.example.chaosgame.model.chaos.ChaosCanvas;
 import org.example.chaosgame.model.chaos.ChaosGame;
 import javafx.scene.Node;
@@ -18,10 +20,6 @@ import org.example.chaosgame.model.linalg.Complex;
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.ExploreJulia;
 import org.example.chaosgame.model.transformations.Transform2D;
-import org.example.chaosgame.view.ChaosPage;
-import org.example.chaosgame.controller.observer.GameObserver;
-import org.example.chaosgame.controller.observer.PageObserver;
-import org.example.chaosgame.controller.observer.PageSubject;
 import org.example.chaosgame.view.ExplorePage;
 
 import java.util.ArrayList;
@@ -29,14 +27,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-public class ExploreGameController implements GameObserver, PageSubject {
+public class ExploreGameController implements Observer, Subject {
   private ExploreGame exploreGame;
   private final ExplorePage explorePage;
   private ChaosCanvas chaosCanvas;
   private Canvas canvas;
   private List<Transform2D> trans;
   private ChaosGameDescription description;
-  private final List<PageObserver> pageObservers;
+  private final List<Observer> pageObservers;
 
   private Vector2D dragStart;
   private Vector2D dragStartTemp;
@@ -197,7 +195,7 @@ public class ExploreGameController implements GameObserver, PageSubject {
     explorePage.updateCanvas(this.chaosCanvas);
   }
   public void homeButtonClicked() {
-    notifyObservers(explorePage);
+    notifyObservers();
   }
   public ExplorePage getExplorePage() {
     return explorePage;
@@ -213,19 +211,19 @@ public class ExploreGameController implements GameObserver, PageSubject {
   }
 
   @Override
-  public void registerObserver(PageObserver observer) {
+  public void registerObserver(Observer observer) {
     pageObservers.add(observer);
   }
 
   @Override
-  public void removeObserver(PageObserver observer) {
+  public void removeObserver(Observer observer) {
     pageObservers.remove(observer);
   }
 
   @Override
-  public void notifyObservers(Node explorePage) {
-    for (PageObserver pageObserver : pageObservers) {
-      pageObserver.update(explorePage);
+  public void notifyObservers() {
+    for (Observer pageObserver : pageObservers) {
+      pageObserver.update();
     }
   }
 

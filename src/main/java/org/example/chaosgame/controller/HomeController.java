@@ -11,14 +11,15 @@ import org.example.chaosgame.view.HomePage;
 
 public class HomeController {
     private final HomePage homePage;
+
     public HomeController(PageController pageController) {
         this.homePage = new HomePage(pageController, this);
-
     }
 
     public HomePage getHomePage() {
         return homePage;
     }
+
 
     public void mouseEvent(EventType<MouseEvent> mouseEvent, MediaPlayer video, MediaView view, Text header, ColorAdjust colorAdjust, ColorAdjust headerAdjust) {
         if (mouseEvent == MouseEvent.MOUSE_ENTERED) {

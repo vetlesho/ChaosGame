@@ -5,19 +5,29 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import org.example.chaosgame.controller.ChaosGameController;
-
+import org.example.chaosgame.controller.ExploreGameController;
 import org.example.chaosgame.model.transformations.JuliaTransform;
 import org.example.chaosgame.model.transformations.Transform2D;
 
-import org.example.chaosgame.controller.ExploreGameController;
 
-
+/**
+ * Bottom bar of the GUI.
+ *
+ * <p>Contains sliders and labels for the real and imaginary part of the Julia value.
+ */
 public class BottomBar extends HBox {
   private Label realPartLabel;
   private Label imaginaryPartLabel;
   private SliderRealPart sliderRealPart;
   private SliderImaginaryPart sliderImaginaryPart;
 
+  /**
+   * Constructor for the bottom bar.
+   *
+   * <p>Initializes the labels and sliders for the real and imaginary part of the Julia value.
+   *
+   * @param chaosGameController the controller for the chaos game
+   */
   public BottomBar(ChaosGameController chaosGameController) {
     this.setSpacing(10);
     this.realPartLabel = new Label();
@@ -33,9 +43,9 @@ public class BottomBar extends HBox {
     this.setSpacing(40);
     this.setVisible(false);
     this.setAlignment(javafx.geometry.Pos.CENTER);
-    this.getChildren().addAll(realPartLabel, sliderRealPart, sliderImaginaryPart, imaginaryPartLabel);
+    this.getChildren().addAll(realPartLabel, sliderRealPart,
+            sliderImaginaryPart, imaginaryPartLabel);
   }
-
 
   public void updateInformation(Transform2D transformation) {
     if (transformation instanceof JuliaTransform juliaTransform) {

@@ -2,8 +2,8 @@ package org.example.chaosgame.model.chaos;
 
 import javafx.concurrent.Task;
 import javafx.scene.canvas.Canvas;
-import org.example.chaosgame.controller.observer.GameObserver;
-import org.example.chaosgame.controller.observer.GameSubject;
+import org.example.chaosgame.controller.observer.Observer;
+import org.example.chaosgame.controller.observer.Subject;
 import org.example.chaosgame.model.linalg.Vector2D;
 
 import java.util.ArrayList;
@@ -13,13 +13,13 @@ import java.util.stream.IntStream;
 /**
  * Class for exploring julia sets.
  */
-public class ExploreGame extends Task implements GameSubject {
+public class ExploreGame extends Task implements Subject {
   private final int MAX_ITER = 256;
 
   private ChaosCanvas canvas;
   private ChaosGameDescription description;
   private Vector2D currentPoint = new Vector2D(0.0, 0.0);
-  private final List<GameObserver> gameObservers;
+  private final List<Observer> gameObservers;
 
   /**
    * Constructor for ExploreGame.
@@ -89,20 +89,20 @@ public class ExploreGame extends Task implements GameSubject {
   }
 
   @Override
-  public void registerObserver(GameObserver gameObserver) {
+  public void registerObserver(Observer gameObserver) {
     gameObservers.add(gameObserver);
     System.out.println("Observer added 2");
   }
 
   @Override
-  public void removeObserver(GameObserver gameObserver) {
+  public void removeObserver(Observer gameObserver) {
     gameObservers.remove(gameObserver);
     System.out.println("Observer removed");
   }
 
   @Override
   public void notifyObservers() {
-    for (GameObserver gameObserver : gameObservers) {
+    for (Observer gameObserver : gameObservers) {
       gameObserver.update();
       System.out.println("Observer notified");
     }

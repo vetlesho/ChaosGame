@@ -10,10 +10,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
+import org.example.chaosgame.controller.observer.Observer;
+import org.example.chaosgame.controller.observer.Subject;
 import org.example.chaosgame.model.chaos.*;
-import org.example.chaosgame.controller.observer.GameObserver;
-import org.example.chaosgame.controller.observer.PageObserver;
-import org.example.chaosgame.controller.observer.PageSubject;
 import org.example.chaosgame.model.linalg.Complex;
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.AffineTransform2D;
@@ -31,10 +30,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class ChaosGameController implements GameObserver, PageSubject {
+public class ChaosGameController implements Observer, Subject {
   private final ChaosGame chaosGame;
   private final ChaosPage chaosPage;
-  private final List<PageObserver> pageObservers;
+  private final List<Observer> pageObservers;
   private static final int WIDTH = 1200;
   private static final int HEIGHT = 800;
   private Canvas canvas;
@@ -44,7 +43,7 @@ public class ChaosGameController implements GameObserver, PageSubject {
                     ChaosGameDescriptionFactory.get(ChaosGameType.SIERPINSKI)),
             WIDTH, HEIGHT);
     this.chaosPage = new ChaosPage(this);
-    setCanvas(chaosPage.getGraphicsContex().getCanvas());
+    setCanvas(chaosPage.getGraphicsContext().getCanvas());
     this.pageObservers = new ArrayList<>();
     chaosGame.registerObserver(this);
   }
@@ -89,14 +88,41 @@ public class ChaosGameController implements GameObserver, PageSubject {
 
   public void setMaxMinCoords() {
     MinMaxDialog dialog = new MinMaxDialog();
-    Optional<Pair<Vector2D, Vector2D>> result = dialog.showAndWait();
+    Optional<Pair<String, String>> result = dialog.showAndWait();
 
     if (result.isPresent()) {
-      Pair<Vector2D, Vector2D> minMax = result.get();
-      updateChaosGame(new ChaosGameDescription(
-              minMax.getKey(), minMax.getValue(),
-              chaosGame.getDescription().getTransforms()));
+      Pair<String, String> minMax = result.get();
+      String[] minCoords = minMax.getKey().split(",");
+      String[] maxCoords = minMax.getValue().split(",");
+
+      try {
+        Vector2D min = new Vector2D(Double.parseDouble(minCoords[0]), Double.parseDouble(minCoords[1]));
+        Vector2D max = new Vector2D(Double.parseDouble(maxCoords[0]), Double.parseDouble(maxCoords[1]));
+
+        if (validateCoordinates(min) && validateCoordinates(max)) {
+          updateChaosGame(new ChaosGameDescription(
+                  min, max,
+                  chaosGame.getDescription().getTransforms()));
+        } else {
+          AlertUtility.showErrorDialog("Invalid input", "Please enter a double between -50 and 50.");
+        }
+      } catch (NumberFormatException e) {
+        AlertUtility.showErrorDialog("Invalid input", "Please enter a valid number.");
+      }
     }
+  }
+
+  private boolean validateCoordinates(Vector2D vector) {
+    try {
+      double x = vector.getX();
+      double y = vector.getY();
+      if (x < -50 || x > 50 || y < -50 || y > 50) {
+        return false;
+      }
+    } catch (NumberFormatException e) {
+      return false;
+    }
+    return true;
   }
 
   public void openFromFile() {
@@ -188,7 +214,7 @@ public class ChaosGameController implements GameObserver, PageSubject {
   }
 
   public void homeButtonClicked() {
-    notifyObservers(chaosPage);
+    notifyObservers();
   }
 
   @Override
@@ -201,19 +227,19 @@ public class ChaosGameController implements GameObserver, PageSubject {
   }
 
   @Override
-  public void registerObserver(PageObserver observer) {
+  public void registerObserver(Observer observer) {
     pageObservers.add(observer);
   }
 
   @Override
-  public void removeObserver(PageObserver observer) {
+  public void removeObserver(Observer observer) {
     pageObservers.remove(observer);
   }
 
   @Override
-  public void notifyObservers(Node chaosPage) {
-    for (PageObserver pageObserver : pageObservers) {
-      pageObserver.update(chaosPage);
+  public void notifyObservers() {
+    for (Observer pageObserver : pageObservers) {
+      pageObserver.update();
     }
   }
 

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.example.chaosgame.controller.observer.GameSubject;
-import org.example.chaosgame.controller.observer.GameObserver;
+import org.example.chaosgame.controller.observer.Observer;
+import org.example.chaosgame.controller.observer.Subject;
 import org.example.chaosgame.model.linalg.Vector2D;
 
 /**
@@ -17,13 +17,13 @@ import org.example.chaosgame.model.linalg.Vector2D;
  * The new point is then drawn on the canvas.
  * This process is repeated a selected number of steps.
  */
-public class ChaosGame implements GameSubject {
+public class ChaosGame implements Subject {
   private static ChaosGame instance = null;
   private final ChaosCanvas canvas;
   private ChaosGameDescription description;
   private Vector2D currentPoint;
   private final Random random = new Random();
-  private final List<GameObserver> gameObservers;
+  private final List<Observer> gameObservers;
   private int steps;
   private int totalSteps;
 
@@ -166,20 +166,20 @@ public class ChaosGame implements GameSubject {
   }
 
   @Override
-  public void registerObserver(GameObserver gameObserver) {
+  public void registerObserver(Observer gameObserver) {
     gameObservers.add(gameObserver);
     System.out.println("Observer added");
   }
 
   @Override
-  public void removeObserver(GameObserver gameObserver) {
+  public void removeObserver(Observer gameObserver) {
     gameObservers.remove(gameObserver);
     System.out.println("Observer removed");
   }
 
   @Override
   public void notifyObservers() {
-    for (GameObserver gameObserver : gameObservers) {
+    for (Observer gameObserver : gameObservers) {
       gameObserver.update();
       System.out.println("Observer notified drawed");
     }

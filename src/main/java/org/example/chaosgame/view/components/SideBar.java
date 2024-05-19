@@ -10,11 +10,11 @@ import org.example.chaosgame.controller.ExploreGameController;
 
 public class SideBar extends VBox {
   public SideBar(ChaosGameController chaosGameController) {
-    Button coordinatesButton = new GameButton("Set coordinates");
     FractalSelectionBox fractalSelectionBox = new FractalSelectionBox(chaosGameController);
     ColorPickerComponent colorPicker = new ColorPickerComponent(chaosGameController::updateFractalColor);
     TextField numberOfStepsInput = new NumberOfStepsInput();
 
+    Button coordinatesButton = new GameButton("Set coordinates");
     Button createOwnFractal = new GameButton("Create own fractal");
     Button openFileButton = new GameButton("Open file");
     Button saveFractalButton = new GameButton("Save fractal");
@@ -30,14 +30,14 @@ public class SideBar extends VBox {
     resetGame.setOnAction(event -> chaosGameController.resetGame());
 
     this.getChildren().addAll(
-            coordinatesButton, fractalSelectionBox, colorPicker, numberOfStepsInput,
-            createOwnFractal, saveFractalButton, openFileButton,
+            fractalSelectionBox, colorPicker, numberOfStepsInput,
+            coordinatesButton, createOwnFractal, saveFractalButton, openFileButton,
             runGame, resetGame);
     this.setSpacing(10);
     this.setPadding(new Insets(10));
     this.setAlignment(Pos.CENTER_RIGHT);
 
-    VBox.setMargin(createOwnFractal, new Insets(50, 0, 0, 0));
+    VBox.setMargin(coordinatesButton, new Insets(50, 0, 0, 0));
     VBox.setMargin(runGame, new Insets(50, 0, 0, 0));
   }
 

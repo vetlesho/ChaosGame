@@ -50,7 +50,7 @@ public class ChaosCanvas {
     this.canvas = new double[height][width];
   }
 
-  public AffineTransform2D calculateTransformCoordsToIndices() {
+  private AffineTransform2D calculateTransformCoordsToIndices() {
     return new AffineTransform2D(
             new Matrix2x2(
                     0.0, ((height - 1) / (minCoords.getY() - maxCoords.getY())),

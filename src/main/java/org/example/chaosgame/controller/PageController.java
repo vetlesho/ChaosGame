@@ -2,13 +2,13 @@ package org.example.chaosgame.controller;
 
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
-import org.example.chaosgame.controller.observer.PageObserver;
+import org.example.chaosgame.controller.observer.Observer;
 import org.example.chaosgame.view.HomePage;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class PageController implements PageObserver {
+public class PageController implements Observer {
   private final StackPane mainPane;
   private final Map<String, Node> pages = new HashMap<>();
   private final ChaosGameController chaosGameController;
@@ -21,10 +21,12 @@ public class PageController implements PageObserver {
     this.chaosGameController = chaosGameController;
     this.exploreGameController = exploreGameController;
     this.homeController = new HomeController(this);
+
     this.homePage = homeController.getHomePage();
     this.homePage.setBind(mainPane);
     this.exploreGameController.setBind(mainPane);
     this.chaosGameController.setBind(mainPane);
+
     initPages(chaosGameController, exploreGameController);
     chaosGameController.registerObserver(this);
     exploreGameController.registerObserver(this);
@@ -37,18 +39,13 @@ public class PageController implements PageObserver {
     goToPage("home");
   }
 
-  public void goToPage(String pageName) {
-    Node page = pages.get(pageName);
-    if (page != null) {
-      navigateToPage(page);
-    } else {
-      navigateToPage(pages.get("home"));
-    }
-  }
-
-  private void navigateToPage(Node page) {
+  public void navigateToPage(Node page) {
     mainPane.getChildren().clear();
     mainPane.getChildren().add(page);
+  }
+
+  public void goToPage(String page) {
+    navigateToPage(pages.get(page));
   }
 
   public void exitGame() {
@@ -58,11 +55,7 @@ public class PageController implements PageObserver {
   }
 
   @Override
-  public void update(Node page) {
-    if (page != pages.get("home")) {
+  public void update() {
       navigateToPage(pages.get("home"));
-      return;
-    }
-    navigateToPage(page);
   }
 }
