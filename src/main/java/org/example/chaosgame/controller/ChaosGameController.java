@@ -73,6 +73,14 @@ public class ChaosGameController implements Observer, Subject, GameController {
       if (steps < 1 || steps > 10000000) {
         throw new NumberFormatException();
       }
+      if (chaosGame.getDescription().getTransforms().getFirst() instanceof JuliaTransform && steps > 250000) {
+        AlertUtility.showErrorDialog("Invalid input", "Please enter a lower amount of steps for Julia transformations.");
+        return;
+      }
+      if (chaosGame.getTotalSteps() > Math.pow(10, 8)) {
+        AlertUtility.showErrorDialog("Invalid input", "The total number of steps is too high. Please reset the game.");
+        return;
+      }
       chaosGame.setSteps(steps);
       chaosGame.addTotalSteps(steps);
       chaosGame.runSteps();
@@ -153,14 +161,33 @@ public class ChaosGameController implements Observer, Subject, GameController {
 
     if (result.isPresent()) {
       Object fractalData = result.get();
-
+      List<Transform2D> transforms = new ArrayList<>();
       if (fractalData instanceof List) {
-        List<AffineTransform2D> transformations = (List<AffineTransform2D>) fractalData;
-        List<Transform2D> transforms = new ArrayList<>(transformations);
-        updateChaosGame(new ChaosGameDescription(
-                new Vector2D(0, 0),
-                new Vector2D(1.0, 1.0),
-                transforms));
+        List<List<String>> userInput = (List<List<String>>) fractalData;
+        for(List<String> input : userInput) {
+          try {
+            double a = Double.parseDouble(input.get(0));
+            double b = Double.parseDouble(input.get(1));
+            double c = Double.parseDouble(input.get(2));
+            double d = Double.parseDouble(input.get(3));
+            double x = Double.parseDouble(input.get(4));
+            double y = Double.parseDouble(input.get(5));
+
+            if (a < -5 || a > 5 || b < -5 || b > 5 || c < -5 || c > 5 ||
+                    d < -5 || d > 5 || x < -5 || x > 5 || y < -5 || y > 5) {
+              throw new NumberFormatException();
+            } else {
+              transforms.add(new AffineTransform2D(new Matrix2x2(a, b, c, d), new Vector2D(x, y)));
+            }
+            updateChaosGame(new ChaosGameDescription(
+                    chaosGame.getDescription().getMinCoords(),
+                    chaosGame.getDescription().getMaxCoords(),
+                    transforms));
+          } catch (NumberFormatException e) {
+            AlertUtility.showErrorDialog("Invalid input", "Please enter a valid number.");
+          }
+        }
+//        List<Transform2D> transforms = new ArrayList<>(transformations);
       } else if (fractalData instanceof Pair) {
         Pair<String, String> userInput = (Pair<String, String>) fractalData;
         try { // Check if the input is a valid number
@@ -171,23 +198,12 @@ public class ChaosGameController implements Observer, Subject, GameController {
             AlertUtility.showErrorDialog("Invalid input", "Please enter a double between -1 and 1. No letters are allowed.");
           } else {
             updateChaosGame(new ChaosGameDescription(
-                    new Vector2D(-1.6, -1),
-                    new Vector2D(1.6, 1.0),
+                    chaosGame.getDescription().getMinCoords(),
+                    chaosGame.getDescription().getMaxCoords(),
                     List.of(new JuliaTransform(new Complex(real, imaginary), 1))));
           }
         } catch (NumberFormatException e) {
           AlertUtility.showErrorDialog("Invalid input", "Please enter a valid number.");
-        }
-        double real = Double.parseDouble(userInput.getKey());
-        double imaginary = Double.parseDouble(userInput.getValue());
-
-        if (real < -1 || real > 1 || imaginary < -1 || imaginary > 1) {
-          AlertUtility.showErrorDialog("Invalid input", "Please enter a double between -1 and 1. No letters are allowed.");
-        } else {
-          updateChaosGame(new ChaosGameDescription(
-                  new Vector2D(-1.6, -1),
-                  new Vector2D(1.6, 1.0),
-                  List.of(new JuliaTransform(new Complex(real, imaginary), 1))));
         }
       }
     }
