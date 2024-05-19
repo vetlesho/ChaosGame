@@ -7,9 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import org.example.chaosgame.model.linalg.Matrix2x2;
-import org.example.chaosgame.model.linalg.Vector2D;
-import org.example.chaosgame.model.transformations.AffineTransform2D;
 
 /**
  * Pane for creating affine transformations.
@@ -100,23 +97,15 @@ public class CreateAffinePane extends GridPane {
     this.getChildren().remove(lastVectorBox);
   }
 
-  /**
-   * Returns the list of affine transformations created in the pane.
-   *
-   * @return The list of affine transformations.
-   */
-  public List<AffineTransform2D> getResult() {
-    List<AffineTransform2D> transformations = new ArrayList<>();
-    for (List<TextField> fields : lines) {
-      double a = Double.parseDouble(fields.get(0).getText());
-      double b = Double.parseDouble(fields.get(1).getText());
-      double c = Double.parseDouble(fields.get(2).getText());
-      double d = Double.parseDouble(fields.get(3).getText());
-      double x = Double.parseDouble(fields.get(4).getText());
-      double y = Double.parseDouble(fields.get(5).getText());
-
-      transformations.add(new AffineTransform2D(new Matrix2x2(a, b, c, d), new Vector2D(x, y)));
+  public List<List<String>> getResult() {
+    List<List<String>> result = new ArrayList<>();
+    for (List<TextField> line : lines) {
+      List<String> lineResult = new ArrayList<>();
+      for (TextField field : line) {
+        lineResult.add(field.getText());
+      }
+      result.add(lineResult);
     }
-    return transformations;
+    return result;
   }
 }

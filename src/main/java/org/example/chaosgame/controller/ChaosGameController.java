@@ -1,12 +1,9 @@
 package org.example.chaosgame.controller;
 
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
@@ -15,14 +12,13 @@ import org.example.chaosgame.controller.observer.Subject;
 import org.example.chaosgame.controller.observer.GameController;
 import org.example.chaosgame.model.chaos.*;
 import org.example.chaosgame.model.linalg.Complex;
+import org.example.chaosgame.model.linalg.Matrix2x2;
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.AffineTransform2D;
 import org.example.chaosgame.model.transformations.JuliaTransform;
 import org.example.chaosgame.model.transformations.Transform2D;
 import org.example.chaosgame.view.ChaosPage;
-import org.example.chaosgame.view.components.AlertUtility;
-import org.example.chaosgame.view.components.CreateFractalDialog;
-import org.example.chaosgame.view.components.MinMaxDialog;
+import org.example.chaosgame.view.components.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,16 +85,13 @@ public class ChaosGameController implements Observer, Subject, GameController {
 
   public void setMaxMinCoords() {
     MinMaxDialog dialog = new MinMaxDialog();
-    Optional<Pair<String, String>> result = dialog.showAndWait();
+    Optional<List<String>> result = dialog.showAndWait();
 
     if (result.isPresent()) {
-      Pair<String, String> minMax = result.get();
-      String[] minCoords = minMax.getKey().split(",");
-      String[] maxCoords = minMax.getValue().split(",");
-
       try {
-        Vector2D min = new Vector2D(Double.parseDouble(minCoords[0]), Double.parseDouble(minCoords[1]));
-        Vector2D max = new Vector2D(Double.parseDouble(maxCoords[0]), Double.parseDouble(maxCoords[1]));
+        List<String> coords = result.get();
+        Vector2D min = new Vector2D(Double.parseDouble(coords.get(0)), Double.parseDouble(coords.get(1)));
+        Vector2D max = new Vector2D(Double.parseDouble(coords.get(2)), Double.parseDouble(coords.get(3)));
 
         if (validateCoordinates(min) && validateCoordinates(max)) {
           updateChaosGame(new ChaosGameDescription(
@@ -108,13 +101,18 @@ public class ChaosGameController implements Observer, Subject, GameController {
           AlertUtility.showErrorDialog("Invalid input", "Please enter a double between -50 and 50.");
         }
       } catch (NumberFormatException e) {
+
         AlertUtility.showErrorDialog("Invalid input", "Please enter a valid number.");
+      } catch (IndexOutOfBoundsException e) {
+        AlertUtility.showErrorDialog("Invalid input", "Please enter all coordinates.");
       }
+
     }
   }
 
   private boolean validateCoordinates(Vector2D vector) {
     try {
+      System.out.println("parsing" + vector.getX() + " " + vector.getY());
       double x = vector.getX();
       double y = vector.getY();
       if (x < -50 || x > 50 || y < -50 || y > 50) {
@@ -164,6 +162,21 @@ public class ChaosGameController implements Observer, Subject, GameController {
                 transforms));
       } else if (fractalData instanceof Pair) {
         Pair<String, String> userInput = (Pair<String, String>) fractalData;
+        try { // Check if the input is a valid number
+          double real = Double.parseDouble(userInput.getKey());
+          double imaginary = Double.parseDouble(userInput.getValue());
+
+          if (real < -1 || real > 1 || imaginary < -1 || imaginary > 1) {
+            AlertUtility.showErrorDialog("Invalid input", "Please enter a double between -1 and 1. No letters are allowed.");
+          } else {
+            updateChaosGame(new ChaosGameDescription(
+                    new Vector2D(-1.6, -1),
+                    new Vector2D(1.6, 1.0),
+                    List.of(new JuliaTransform(new Complex(real, imaginary), 1))));
+          }
+        } catch (NumberFormatException e) {
+          AlertUtility.showErrorDialog("Invalid input", "Please enter a valid number.");
+        }
         double real = Double.parseDouble(userInput.getKey());
         double imaginary = Double.parseDouble(userInput.getValue());
 
@@ -210,7 +223,6 @@ public class ChaosGameController implements Observer, Subject, GameController {
 
   public void resetGame() {
     chaosGame.resetTotalSteps();
-    //chaosGame.setChaosGameDescription(null);
     update();
     chaosPage.clearCanvas();
   }

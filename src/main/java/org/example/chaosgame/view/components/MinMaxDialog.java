@@ -5,8 +5,11 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
+import org.example.chaosgame.model.linalg.Vector2D;
 
-public class MinMaxDialog extends Dialog<Pair<String, String>> {
+import java.util.List;
+
+public class MinMaxDialog extends Dialog<List<String>> {
   private final TextField minXField;
   private final TextField minYField;
   private final TextField maxXField;
@@ -46,7 +49,7 @@ public class MinMaxDialog extends Dialog<Pair<String, String>> {
         String minY = minYField.getText();
         String maxX = maxXField.getText();
         String maxY = maxYField.getText();
-        return new Pair<>(minX + "," + minY, maxX + "," + maxY);
+        return List.of(minX, minY, maxX, maxY);
       }
       return null;
     });
