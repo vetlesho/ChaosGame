@@ -9,30 +9,49 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.example.chaosgame.view.HomePage;
 
+/**
+ * Controller for the home page.
+ * Handles mouse events for the home page.
+ */
 public class HomeController {
-    private final HomePage homePage;
+  private final HomePage homePage;
 
-    public HomeController(PageController pageController) {
-        this.homePage = new HomePage(pageController, this);
+  /**
+   * Constructor for the HomeController.
+   *
+   * @param pageController the page controller
+   */
+  public HomeController(PageController pageController) {
+    this.homePage = new HomePage(pageController, this);
+  }
+
+  public HomePage getHomePage() {
+    return homePage;
+  }
+
+  /**
+   * Handles mouse events for the home page.
+   *
+   * @param mouseEvent   the mouse event
+   * @param video        the video
+   * @param view         the media view
+   * @param header       the header text
+   * @param colorAdjust  the color adjust effect
+   * @param headerAdjust the header adjust effect
+   */
+  public void mouseEvent(EventType<MouseEvent> mouseEvent, MediaPlayer video, MediaView view,
+                         Text header, ColorAdjust colorAdjust, ColorAdjust headerAdjust) {
+    if (mouseEvent == MouseEvent.MOUSE_ENTERED) {
+      video.play();
+      view.setEffect(colorAdjust);
+      header.setEffect(headerAdjust);
+      header.setOpacity(0.2);
+    } else {
+      video.seek(Duration.seconds(0));
+      video.pause();
+      view.setEffect(colorAdjust);
+      header.setEffect(headerAdjust);
+      header.setOpacity(1.0);
     }
-
-    public HomePage getHomePage() {
-        return homePage;
-    }
-
-
-    public void mouseEvent(EventType<MouseEvent> mouseEvent, MediaPlayer video, MediaView view, Text header, ColorAdjust colorAdjust, ColorAdjust headerAdjust) {
-        if (mouseEvent == MouseEvent.MOUSE_ENTERED) {
-            video.play();
-            view.setEffect(colorAdjust);
-            header.setEffect(headerAdjust);
-            header.setOpacity(0.2);
-        } else {
-            video.seek(Duration.seconds(0));
-            video.pause();
-            view.setEffect(colorAdjust);
-            header.setEffect(headerAdjust);
-            header.setOpacity(1.0);
-        }
-    }
+  }
 }

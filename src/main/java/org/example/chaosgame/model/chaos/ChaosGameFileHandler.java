@@ -104,10 +104,10 @@ public class ChaosGameFileHandler {
       for (Transform2D transform : description.getTransforms()) {
         if (transform instanceof AffineTransform2D affine) {
           count++;
-          Matrix2x2 matrix = affine.getMatrix();
-          Vector2D vector = affine.getVector();
-          writer.write(matrix.getA() + ", " + matrix.getB() + ", "
-                  + matrix.getC() + ", " + matrix.getD() + ", "
+          Matrix2x2 matrix = affine.matrix();
+          Vector2D vector = affine.vector();
+          writer.write(matrix.a() + ", " + matrix.b() + ", "
+                  + matrix.c() + ", " + matrix.d() + ", "
                   + vector.getX() + ", " + vector.getY()
                   + "    # " + count + " transformation");
         } else if (transform instanceof JuliaTransform julia) {

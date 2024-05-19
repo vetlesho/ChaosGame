@@ -5,11 +5,10 @@ import org.example.chaosgame.model.linalg.Vector2D;
 
 /**
  * Class for the Julia transformation.
- * The transformation is given by the formula:
+ * This formula describes the transformation:
  * <br>
  * <span style="font-family: Courier">
- *  z → &#177;&radic;&#x305;z&#x305; &#x305;-&#x305; &#x305;c
- *</span>
+ *  z → &#177;&radic;&#x305;z&#x305; &#x305;-&#x305; &#x305;c</span>
  *
  */
 public class JuliaTransform implements Transform2D {
@@ -33,10 +32,10 @@ public class JuliaTransform implements Transform2D {
 
   /**
    * Method to transform a 2D vector using the Julia transformation.
-   * The transformation is given by the formula:
+   * This formula describes the transformation:
    * <br>
    * <span style="font-family: Courier">
-   *   z → &#177;&radic;&#x305;z&#x305; &#x305;-&#x305; &#x305;c
+   *   z → &#177;&radic;&#x305;z&#x305; &#x305;-&#x305; &#x305;c </span>
    *
    * @param point the 2D vector to transform
    * @return a new 2D vector
