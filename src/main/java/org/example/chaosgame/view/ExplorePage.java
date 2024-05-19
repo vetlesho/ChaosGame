@@ -23,11 +23,13 @@ public class ExplorePage extends GamePage {
     super();
     this.setStyle("-fx-background-color: black;");
     this.sidebar = new SideBar(exploreGameController);
+    this.sidebar.setStyle("-fx-background-color: black;");
     this.topBar = new TopBar(exploreGameController);
-    exploreGameController.setCanvas(this.gc.getCanvas());
+    this.topBar.setStyle("-fx-background-color: black;");
     this.bottomBar = new BottomBar(exploreGameController);
-
-    this.setLeft(this.gc.getCanvas());
+    this.bottomBar.setStyle("-fx-background-color: black;");
+    exploreGameController.setCanvas(this.gc.getCanvas());
+    this.setCenter(this.gc.getCanvas());
     this.setRight(sidebar);
     this.setBottom(bottomBar);
     this.setTop(topBar);

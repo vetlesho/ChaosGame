@@ -15,12 +15,12 @@ public class SideBar extends VBox {
     TextField numberOfStepsInput = new NumberOfStepsInput();
 
     Button coordinatesButton = new GameButton("Set coordinates");
-    Button createOwnFractal = new GameButton("Create own fractal");
+    Button createOwnFractal = new GameButton("Create fractal");
     Button openFileButton = new GameButton("Open file");
     Button saveFractalButton = new GameButton("Save fractal");
 
-    Button runGame = new GameButton("Run ChaosGame");
-    Button resetGame = new GameButton("Reset ChaosGame");
+    Button runGame = new GameButton("Run steps");
+    Button resetGame = new GameButton("Clear canvas");
 
     coordinatesButton.setOnAction(event -> chaosGameController.setMaxMinCoords());
     createOwnFractal.setOnAction(event -> chaosGameController.createOwnFractal());
@@ -33,15 +33,12 @@ public class SideBar extends VBox {
             fractalSelectionBox, colorPicker, numberOfStepsInput,
             coordinatesButton, createOwnFractal, saveFractalButton, openFileButton,
             runGame, resetGame);
-    this.setSpacing(10);
-    this.setPadding(new Insets(10));
     this.setAlignment(Pos.CENTER_RIGHT);
 
     VBox.setMargin(coordinatesButton, new Insets(50, 0, 0, 0));
     VBox.setMargin(runGame, new Insets(50, 0, 0, 0));
 
     this.getStyleClass().add("side-bar");
-    this.setStyle("-fx-background-color: #f0f0f0;");
   }
 
   public SideBar(ExploreGameController exploreGameController) {
@@ -56,7 +53,6 @@ public class SideBar extends VBox {
 
     this.getChildren().addAll(zoomInButton, zoomOutButton, colorPicker, resetImage);
     this.setAlignment(Pos.CENTER_RIGHT);
-    this.setSpacing(10);
     this.getStyleClass().add("side-bar");
   }
 }

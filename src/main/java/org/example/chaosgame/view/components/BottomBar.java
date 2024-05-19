@@ -46,7 +46,6 @@ public class BottomBar extends HBox {
             sliderImaginaryPart, imaginaryPartLabel);
 
     this.getStyleClass().add("top-bottom-bar");
-    this.setStyle("-fx-background-color: #f0f0f0;");
   }
 
   public void updateBottomBar(Transform2D transformation) {
@@ -72,5 +71,10 @@ public class BottomBar extends HBox {
     imaginaryPartLabel.setVisible(isVisible);
     sliderRealPart.setVisible(isVisible);
     sliderImaginaryPart.setVisible(isVisible);
+  }
+
+  public void setBottomBarStyle(String text) {
+    realPartLabel.getStyleClass().add(text);
+    imaginaryPartLabel.getStyleClass().add(text);
   }
 }
