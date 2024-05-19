@@ -13,18 +13,25 @@ public class PageController implements PageObserver {
   private final Map<String, Node> pages = new HashMap<>();
   private final ChaosGameController chaosGameController;
   private final ExploreGameController exploreGameController;
+  private final HomePage homePage;
+  private final HomeController homeController;
 
-  public PageController(StackPane mainPane, ChaosGameController chaosGameController, ExploreGameController exploreGameController) {
+  public PageController(StackPane mainPane,  ChaosGameController chaosGameController, ExploreGameController exploreGameController) {
     this.mainPane = mainPane;
     this.chaosGameController = chaosGameController;
     this.exploreGameController = exploreGameController;
+    this.homeController = new HomeController(this);
+    this.homePage = homeController.getHomePage();
+    this.homePage.setBind(mainPane);
+    this.exploreGameController.setBind(mainPane);
+    this.chaosGameController.setBind(mainPane);
     initPages(chaosGameController, exploreGameController);
     chaosGameController.registerObserver(this);
     exploreGameController.registerObserver(this);
   }
 
   private void initPages(ChaosGameController chaosGameController, ExploreGameController exploreGameController) {
-    pages.put("home", new HomePage(this));
+    pages.put("home", homePage);
     pages.put("chaos", chaosGameController.getChaosPage());
     pages.put("explore", exploreGameController.getExplorePage());
     goToPage("home");

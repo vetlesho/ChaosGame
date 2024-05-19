@@ -104,5 +104,23 @@
     -fx-fill: #d2d2d2;
 }
 
+.exit-button {
+    -fx-text-fill: white;
+    -fx-font: 24 garamond;
+    -fx-background-color: #3b3b3b;
+    -fx-border-radius: 20;
+    -fx-max-height: 50;
+    -fx-max-width: 100;
+    -fx-background-radius: 20;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-background-insets: 1;
+}
+.exit-button:hover {
+    -fx-background-color: #980007;
+    -fx-opacity: 1.0;
+    -fx-cursor: hand;
+}
+
 
 

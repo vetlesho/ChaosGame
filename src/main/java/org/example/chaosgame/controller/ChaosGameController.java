@@ -1,7 +1,12 @@
 package org.example.chaosgame.controller;
 
 import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
@@ -32,12 +37,14 @@ public class ChaosGameController implements GameObserver, PageSubject {
   private final List<PageObserver> pageObservers;
   private static final int WIDTH = 1200;
   private static final int HEIGHT = 800;
+  private Canvas canvas;
 
   public ChaosGameController() {
     this.chaosGame = ChaosGame.getInstance(Objects.requireNonNull(
                     ChaosGameDescriptionFactory.get(ChaosGameType.SIERPINSKI)),
             WIDTH, HEIGHT);
     this.chaosPage = new ChaosPage(this);
+    setCanvas(chaosPage.getGraphicsContex().getCanvas());
     this.pageObservers = new ArrayList<>();
     chaosGame.registerObserver(this);
   }
@@ -208,5 +215,14 @@ public class ChaosGameController implements GameObserver, PageSubject {
     for (PageObserver pageObserver : pageObservers) {
       pageObserver.update(chaosPage);
     }
+  }
+
+  public void setCanvas(Canvas canvas) {
+    this.canvas = canvas;
+  }
+
+  public void setBind(StackPane mainPane) {
+    canvas.widthProperty().bind(mainPane.widthProperty().multiply(0.85));
+    canvas.heightProperty().bind(mainPane.heightProperty().multiply(0.85));
   }
 }

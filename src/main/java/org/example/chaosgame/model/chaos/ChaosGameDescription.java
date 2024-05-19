@@ -13,7 +13,7 @@ import org.example.chaosgame.model.transformations.Transform2D;
 public class ChaosGameDescription {
   private Vector2D minCoords;
   private Vector2D maxCoords;
-  private final List<Transform2D> transforms;
+  private List<Transform2D> transforms;
 
   private final List<Integer> probabilities;
 
@@ -59,6 +59,9 @@ public class ChaosGameDescription {
 
   public List<Transform2D> getTransforms() {
     return transforms;
+  }
+  public void setTransforms(List<Transform2D> transforms) {
+    this.transforms = transforms;
   }
 
   public List<Integer> getProbabilities() {

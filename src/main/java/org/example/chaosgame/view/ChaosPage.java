@@ -1,6 +1,7 @@
 package org.example.chaosgame.view;
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -33,5 +34,9 @@ public class ChaosPage extends GamePage {
   public void updateInformation(Transform2D transformation, int steps, Vector2D min, Vector2D max) {
     topBar.updateInformation(transformation, steps, min, max);
     bottomBar.updateInformation(transformation);
+  }
+
+  public GraphicsContext getGraphicsContex() {
+    return gc;
   }
 }
