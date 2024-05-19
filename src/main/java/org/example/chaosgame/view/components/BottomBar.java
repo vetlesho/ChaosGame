@@ -22,6 +22,9 @@ public class BottomBar extends HBox {
     this.setSpacing(50);
     this.setAlignment(Pos.BOTTOM_CENTER);
     setSliderVisibility(false);
+
+    this.getStyleClass().add("top-bottom-bar");
+    this.setStyle("-fx-background-color: #f0f0f0;");
   }
 
   public BottomBar(ExploreGameController exploreGameController) {
@@ -45,6 +48,7 @@ public class BottomBar extends HBox {
     this.setSpacing(50);
     this.setAlignment(Pos.BOTTOM_CENTER);
     setSliderVisibility(true);
+    this.getStyleClass().add("top-bottom-bar");
   }
 
   public void setSliderVisibility(boolean isVisible) {

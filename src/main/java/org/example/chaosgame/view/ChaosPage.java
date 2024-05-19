@@ -21,7 +21,7 @@ public class ChaosPage extends GamePage {
     this.setRight(sidebar);
     this.setBottom(bottomBar);
     this.setTop(homeButton);
-    this.setCenter(gc.getCanvas());
+    this.setLeft(gc.getCanvas());
   }
 
   public void setSliderVisibility(boolean isVisible) {
