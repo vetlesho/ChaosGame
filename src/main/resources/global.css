@@ -1,7 +1,7 @@
 .button {
     -fx-text-fill: white;
-    -fx-font: 20 arial;
     -fx-background-color: #252525;
+    -fx-font: 14 arial;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
     -fx-border-color: #3b3b3b;
@@ -99,6 +99,11 @@
     -fx-cursor: hand;
 }
 
+.text {
+    -fx-font: 20 arial;
+    -fx-fill: #d2d2d2;
+}
+
 .exit-button {
     -fx-text-fill: white;
     -fx-font: 24 garamond;
@@ -131,6 +136,7 @@
     -fx-border-width: 0 2 0 2;
     -fx-background-insets: 1;
 }
+
 
 
 
