@@ -30,13 +30,17 @@ public class BottomBar extends HBox {
     realPartLabel.setAlignment(Pos.CENTER);
     imaginaryPartLabel.setAlignment(Pos.CENTER);
 
-    this.setSpacing(40);
-    this.setVisible(false);
     this.setAlignment(javafx.geometry.Pos.CENTER);
     this.getChildren().addAll(realPartLabel, sliderRealPart, sliderImaginaryPart, imaginaryPartLabel);
+
+    this.setSpacing(50);
+    this.setAlignment(Pos.BOTTOM_CENTER);
+    setSliderVisibility(false);
+
+    this.getStyleClass().add("top-bottom-bar");
+    this.setStyle("-fx-background-color: #f0f0f0;");
+
   }
-
-
   public void updateInformation(Transform2D transformation) {
     if (transformation instanceof JuliaTransform juliaTransform) {
       this.setVisible(true);
@@ -70,6 +74,7 @@ public class BottomBar extends HBox {
     this.setSpacing(50);
     this.setAlignment(Pos.BOTTOM_CENTER);
     setSliderVisibility(true);
+    this.getStyleClass().add("top-bottom-bar");
   }
 
   public void setSliderVisibility(boolean isVisible) {

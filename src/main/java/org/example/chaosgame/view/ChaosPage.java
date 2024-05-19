@@ -28,7 +28,8 @@ public class ChaosPage extends GamePage {
     this.setTop(topBar);
     this.setRight(sideBar);
     this.setBottom(bottomBar);
-    this.setCenter(gc.getCanvas());
+    this.setLeft(gc.getCanvas());
+
   }
 
   public void updateInformation(Transform2D transformation, int steps, Vector2D min, Vector2D max) {

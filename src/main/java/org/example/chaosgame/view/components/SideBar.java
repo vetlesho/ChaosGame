@@ -37,6 +37,8 @@ public class SideBar extends VBox {
     this.setPadding(new Insets(10));
     this.setAlignment(Pos.CENTER_RIGHT);
 
+    this.getStyleClass().add("side-bar");
+    this.setStyle("-fx-background-color: #f0f0f0;");
     VBox.setMargin(createOwnFractal, new Insets(50, 0, 0, 0));
     VBox.setMargin(runGame, new Insets(50, 0, 0, 0));
   }
@@ -54,5 +56,6 @@ public class SideBar extends VBox {
     this.getChildren().addAll(zoomInButton, zoomOutButton, colorPicker, resetImage);
     this.setAlignment(Pos.CENTER_RIGHT);
     this.setSpacing(10);
+    this.getStyleClass().add("side-bar");
   }
 }

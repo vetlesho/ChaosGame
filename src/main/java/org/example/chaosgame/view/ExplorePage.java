@@ -23,7 +23,7 @@ public class ExplorePage extends GamePage {
     exploreGameController.setCanvas(this.gc.getCanvas());
     this.bottomBar = new BottomBar(exploreGameController);
 
-    this.setCenter(this.gc.getCanvas());
+    this.setLeft(this.gc.getCanvas());
     this.setRight(sidebar);
     this.setBottom(bottomBar);
     this.setTop(homeButton);

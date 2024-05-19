@@ -1,10 +1,10 @@
 .button {
     -fx-text-fill: white;
+    -fx-background-color: #252525;
     -fx-font: 14 arial;
-    -fx-background-color: #0d2d3a;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
-    -fx-border-color: black;
+    -fx-border-color: #3b3b3b;
     -fx-border-width: 2;
     -fx-background-insets: 1;
 }
@@ -17,10 +17,10 @@
 .home-button {
     -fx-text-fill: white;
     -fx-font: 20 arial;
-    -fx-background-color: #0d2d3a;
+    -fx-background-color: #252525;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
-    -fx-border-color: black;
+    -fx-border-color: #3b3b3b;
     -fx-border-width: 2;
     -fx-background-insets: 1;
 }
@@ -41,10 +41,10 @@
 
 .combo-box {
     -fx-font: 20 arial;
-    -fx-background-color: #0d2d3a;
+    -fx-background-color: #252525;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
-    -fx-border-color: black;
+    -fx-border-color: #3b3b3b;
     -fx-border-width: 2;
     -fx-background-insets: 1;
 }
@@ -62,10 +62,10 @@
 .choose-game-button {
     -fx-text-fill: white;
     -fx-font: 30 arial;
-    -fx-background-color: #0d2d3a;
+    -fx-background-color: #252525;
     -fx-border-radius: 30;
     -fx-background-radius: 30;
-    -fx-border-color: black;
+    -fx-border-color: #3b3b3b;
     -fx-border-width: 2;
     -fx-max-height: 100;
     -fx-max-width: 300;
@@ -82,10 +82,10 @@
 
 .color-picker {
     -fx-font: 20 arial;
-    -fx-background-color: #0d2d3a;
+    -fx-background-color: #252525;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
-    -fx-border-color: black;
+    -fx-border-color: #3b3b3b;
     -fx-border-width: 2;
     -fx-background-insets: 1;
 }
@@ -107,12 +107,12 @@
 .exit-button {
     -fx-text-fill: white;
     -fx-font: 24 garamond;
-    -fx-background-color: #3b3b3b;
+    -fx-background-color: #252525;
     -fx-border-radius: 20;
     -fx-max-height: 50;
     -fx-max-width: 100;
     -fx-background-radius: 20;
-    -fx-border-color: black;
+    -fx-border-color: #3b3b3b;
     -fx-border-width: 2;
     -fx-background-insets: 1;
 }
@@ -121,6 +121,22 @@
     -fx-opacity: 1.0;
     -fx-cursor: hand;
 }
+
+.top-bottom-bar {
+    -fx-background-color: #000000;
+    -fx-border-color: #252525;
+    -fx-border-width: 2 0 2 0;
+    -fx-background-insets: 1;
+}
+
+.side-bar{
+    -fx-background-color: #000000;
+    -fx-padding: 10;
+    -fx-border-color: #252525;
+    -fx-border-width: 0 2 0 2;
+    -fx-background-insets: 1;
+}
+
 
 
 

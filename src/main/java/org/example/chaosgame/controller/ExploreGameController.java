@@ -46,10 +46,6 @@ public class ExploreGameController implements GameObserver, PageSubject {
   private double mouseX;
   private double mouseY;
   private double scaleFactor;
-  private double real = -0.835;
-    private double img = 0.2321;
-
-//  private SetJuliaTask juliaTask;
   private Task task;
 
   public ExploreGameController() {
@@ -257,8 +253,8 @@ public class ExploreGameController implements GameObserver, PageSubject {
   }
 
   public void setBind(StackPane mainPane) {
-    canvas.widthProperty().bind(mainPane.widthProperty().multiply(0.85));
-    canvas.heightProperty().bind(mainPane.heightProperty().multiply(0.85));
+    canvas.widthProperty().bind(mainPane.widthProperty().multiply(0.80));
+    canvas.heightProperty().bind(mainPane.heightProperty().multiply(0.80));
   }
 
   public void updateJuliaValue(double real, double img) {
