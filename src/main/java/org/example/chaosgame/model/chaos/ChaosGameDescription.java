@@ -15,7 +15,7 @@ public class ChaosGameDescription {
   private Vector2D maxCoords;
   private List<Transform2D> transforms;
 
-  private final List<Integer> probabilities;
+  private List<Integer> probabilities;
 
   /**
    * Constructor for ChaosGameDescription.
@@ -31,7 +31,6 @@ public class ChaosGameDescription {
     this.minCoords = minCoords;
     this.maxCoords = maxCoords;
     this.transforms = transforms;
-    this.probabilities = null;
   }
 
   public ChaosGameDescription(Vector2D minCoords, Vector2D maxCoords,

@@ -127,6 +127,8 @@
     -fx-border-color: #252525;
     -fx-border-width: 2 0 2 0;
     -fx-background-insets: 1;
+    -fx-padding: 10;
+
 }
 
 .side-bar{

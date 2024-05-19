@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
+import org.example.chaosgame.controller.observer.GameController;
 import org.example.chaosgame.model.chaos.*;
 import org.example.chaosgame.controller.observer.GameObserver;
 import org.example.chaosgame.controller.observer.PageObserver;
@@ -31,7 +32,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class ChaosGameController implements GameObserver, PageSubject {
+public class ChaosGameController implements GameObserver, PageSubject, GameController {
   private final ChaosGame chaosGame;
   private final ChaosPage chaosPage;
   private final List<PageObserver> pageObservers;
@@ -41,7 +42,7 @@ public class ChaosGameController implements GameObserver, PageSubject {
 
   public ChaosGameController() {
     this.chaosGame = ChaosGame.getInstance(Objects.requireNonNull(
-                    ChaosGameDescriptionFactory.get(ChaosGameType.SIERPINSKI)),
+                    ChaosGameDescriptionFactory.get(ChaosGameType.JULIA)),
             WIDTH, HEIGHT);
     this.chaosPage = new ChaosPage(this);
     setCanvas(chaosPage.getGraphicsContex().getCanvas());
@@ -53,7 +54,7 @@ public class ChaosGameController implements GameObserver, PageSubject {
     return chaosGame;
   }
 
-  public ChaosPage getChaosPage() {
+  public ChaosPage getGamePage() {
     return chaosPage;
   }
 
@@ -158,9 +159,10 @@ public class ChaosGameController implements GameObserver, PageSubject {
     double imaginaryPart = partType.equals("imaginary") ? value : juliaTransform.getComplex().getY();
 
     updateChaosGame(new ChaosGameDescription(
-            new Vector2D(-1.6, -1),
-            new Vector2D(1.6, 1.0),
+            new Vector2D(chaosGame.getDescription().getMinCoords().getX(), chaosGame.getDescription().getMinCoords().getY()),
+            new Vector2D(chaosGame.getDescription().getMaxCoords().getX(), chaosGame.getDescription().getMaxCoords().getY()),
             List.of(new JuliaTransform(new Complex(realPart, imaginaryPart), 1))));
+    chaosGame.setTotalSteps(chaosGame.getSteps());
     chaosGame.runSteps();
   }
 

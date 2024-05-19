@@ -16,10 +16,6 @@ public class JuliaTransform implements Transform2D {
   private final Complex point;
   private final int sign;
 
-  public Complex getComplex() {
-    return point;
-  }
-
   /**
    * Constructor for JuliaTransform.
    *
@@ -29,6 +25,10 @@ public class JuliaTransform implements Transform2D {
   public JuliaTransform(Complex point, int sign) {
     this.point = point;
     this.sign = sign;
+  }
+
+  public Complex getComplex() {
+    return point;
   }
 
   /**

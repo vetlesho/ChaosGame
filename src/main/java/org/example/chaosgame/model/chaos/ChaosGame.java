@@ -83,6 +83,17 @@ public class ChaosGame implements GameSubject {
     this.steps = steps;
   }
 
+
+  /**
+   * Method for setting the total number of steps.
+   *
+   * @param totalSteps Number of steps
+   */
+  public void setTotalSteps(int totalSteps) {
+    this.totalSteps = totalSteps;
+  }
+
+
   /**
    * Method for adding steps to the total number of steps.
    *

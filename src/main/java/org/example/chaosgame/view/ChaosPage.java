@@ -33,8 +33,8 @@ public class ChaosPage extends GamePage {
   }
 
   public void updateInformation(Transform2D transformation, int steps, Vector2D min, Vector2D max) {
-    topBar.updateInformation(transformation, steps, min, max);
-    bottomBar.updateInformation(transformation);
+    topBar.updateTopBar(transformation, steps, min, max);
+    bottomBar.updateBottomBar(transformation);
   }
 
   public GraphicsContext getGraphicsContex() {

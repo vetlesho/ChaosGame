@@ -32,8 +32,8 @@ public class PageController implements PageObserver {
 
   private void initPages(ChaosGameController chaosGameController, ExploreGameController exploreGameController) {
     pages.put("home", homePage);
-    pages.put("chaos", chaosGameController.getChaosPage());
-    pages.put("explore", exploreGameController.getExplorePage());
+    pages.put("chaos", chaosGameController.getGamePage());
+    pages.put("explore", exploreGameController.getGamePage());
     goToPage("home");
   }
 

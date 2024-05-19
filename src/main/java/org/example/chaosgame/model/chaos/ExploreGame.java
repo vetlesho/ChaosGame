@@ -2,9 +2,11 @@ package org.example.chaosgame.model.chaos;
 
 import javafx.concurrent.Task;
 import javafx.scene.canvas.Canvas;
+import org.example.chaosgame.controller.observer.GameController;
 import org.example.chaosgame.controller.observer.GameObserver;
 import org.example.chaosgame.controller.observer.GameSubject;
 import org.example.chaosgame.model.linalg.Vector2D;
+import org.example.chaosgame.model.transformations.Transform2D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ public class ExploreGame extends Task implements GameSubject {
   /**
    * Method for exploring fractals. Iterates over all pixels in the canvas
    * and applies the transformation to the current point.
+   *
    */
   public void exploreFractals(){
 //    stopTask();
@@ -49,9 +52,9 @@ public class ExploreGame extends Task implements GameSubject {
     yStream.parallel().forEach(y -> {
 //    for (int y = 0; y < canvas.getHeight(); y++) {
       for (int x = 0; x < canvas.getWidth(); x++) {
-        if (isCancelled()) {
-          break;
-        }
+//        if (isCancelled()) {
+//          break;
+//        }
         int iter = 0;
         currentPoint = canvas.transformIndicesToCoords(x, y);
         Vector2D tempPoint = currentPoint;
@@ -72,12 +75,16 @@ public class ExploreGame extends Task implements GameSubject {
   }
 
 
-  public void setChaosCanvas(Vector2D minCoords, Vector2D maxCoords) {
+  public void setChaosCanvas(Vector2D minCoords, Vector2D maxCoords, int width, int height) {
+    this.canvas.clearCanvas();
     this.canvas.setMaxCoords(maxCoords);
     this.canvas.setMinCoords(minCoords);
+    this.canvas.setWidth(width);
+    this.canvas.setHeight(height);
   }
-  public void setGameDescription(ChaosGameDescription description) {
+  public void setExploreGame(ChaosGameDescription description, int width, int height) {
     this.description = description;
+    setChaosCanvas(description.getMinCoords(), description.getMaxCoords(), width, height);
   }
 
   public ChaosCanvas getCanvas() {
@@ -91,29 +98,27 @@ public class ExploreGame extends Task implements GameSubject {
   @Override
   public void registerObserver(GameObserver gameObserver) {
     gameObservers.add(gameObserver);
-    System.out.println("Observer added 2");
   }
 
   @Override
   public void removeObserver(GameObserver gameObserver) {
     gameObservers.remove(gameObserver);
-    System.out.println("Observer removed");
   }
 
   @Override
   public void notifyObservers() {
+    List<GameObserver> gameObservers = new ArrayList<>(this.gameObservers);
     for (GameObserver gameObserver : gameObservers) {
-      gameObserver.update();
-      System.out.println("Observer notified");
+      try {
+        gameObserver.update();
+      } catch (Exception e) {
+        System.out.println("Message: " + e.getMessage());
+      }
     }
   }
 
-  public Task call(Canvas canvas) throws Exception {
-    exploreFractals();
-    return this;
-  }
-  protected Task call() {
-    exploreFractals();
+  public Task call() throws Exception {
+    System.out.println("Task called");
     return this;
   }
   public void stopTask() {

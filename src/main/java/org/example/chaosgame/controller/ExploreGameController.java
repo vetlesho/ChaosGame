@@ -9,6 +9,7 @@ import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Transform;
+import org.example.chaosgame.controller.observer.GameController;
 import org.example.chaosgame.model.chaos.ChaosCanvas;
 import org.example.chaosgame.model.chaos.ChaosGame;
 import javafx.scene.Node;
@@ -17,6 +18,7 @@ import org.example.chaosgame.model.chaos.ExploreGame;
 import org.example.chaosgame.model.linalg.Complex;
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.ExploreJulia;
+import org.example.chaosgame.model.transformations.JuliaTransform;
 import org.example.chaosgame.model.transformations.Transform2D;
 import org.example.chaosgame.view.ChaosPage;
 import org.example.chaosgame.controller.observer.GameObserver;
@@ -29,7 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-public class ExploreGameController implements GameObserver, PageSubject {
+public class ExploreGameController implements GameObserver, PageSubject, GameController {
   private ExploreGame exploreGame;
   private final ExplorePage explorePage;
   private ChaosCanvas chaosCanvas;
@@ -47,17 +49,24 @@ public class ExploreGameController implements GameObserver, PageSubject {
   private double mouseY;
   private double scaleFactor;
   private Task task;
+  private ExploreJulia exploreJulia;
+
+  private static final int WIDTH = 1200;
+  private static final int HEIGHT = 800;
 
   public ExploreGameController() {
-    this.trans = List.of(new ExploreJulia(new Complex(-0.835, 0.2321)));
+    this.exploreJulia = new ExploreJulia(new Complex(-0.835, 0.2321));
+    this.trans = List.of(exploreJulia);
     this.description  = new ChaosGameDescription(
             new Vector2D(-1.6, -1),
             new Vector2D(1.6, 1), trans);
-    this.explorePage = new ExplorePage(this);
-    exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
+    this.exploreGame = new ExploreGame(description, WIDTH, HEIGHT);
     this.chaosCanvas = exploreGame.getCanvas();
-
     this.pageObservers = new ArrayList<>();
+    exploreGame.registerObserver(this);
+    this.explorePage = new ExplorePage(this);
+//    exploreGame.exploreFractals();
+//    updateExploreGame();
 
   }
   public void mousePressed(MouseEvent event) {
@@ -83,16 +92,15 @@ public class ExploreGameController implements GameObserver, PageSubject {
     Vector2D adjustedDragDistance = dragDistance.multiply(fractalRange).divide(new Vector2D(canvas.getWidth(), canvas.getHeight()));
     Vector2D newMinCoords = description.getMinCoords().subtract(adjustedDragDistance);
     Vector2D newMaxCoords = description.getMaxCoords().subtract(adjustedDragDistance);
-    description.setMinCoords(newMinCoords);
-    description.setMaxCoords(newMaxCoords);
-   /* exploreGame.setGameDescription(new ChaosGameDescription(newMinCoords, newMaxCoords, trans),
-            (int) canvas.getWidth(),(int) canvas.getHeight());*/
-    exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
-    exploreGame.exploreFractals();
-    this.chaosCanvas = exploreGame.getCanvas();
-    explorePage.updateCanvas(this.chaosCanvas);
-    this.canvas.setTranslateX(0);
-    this.canvas.setTranslateY(0);
+    description = new ChaosGameDescription(newMinCoords, newMaxCoords, trans);
+//   /* exploreGame.setGameDescription(new ChaosGameDescription(newMinCoords, newMaxCoords, trans),
+//            (int) canvas.getWidth(),(int) canvas.getHeight());*/
+//    exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
+//    exploreGame.exploreFractals();
+//    this.chaosCanvas = exploreGame.getCanvas();
+
+    updateExplorePage();
+//    description = exploreGame.getDescription();
   }
 
   public void zoomButtonClicked(double scaleFactor) {
@@ -102,7 +110,8 @@ public class ExploreGameController implements GameObserver, PageSubject {
     Vector2D newMaxCoords = canvasCenter.add(description.getMaxCoords().subtract(canvasCenter).scale(scaleFactor));
 
     description = new ChaosGameDescription(newMinCoords, newMaxCoords, trans);
-    updateExplorePage(description);
+    updateExplorePage();
+//    description = exploreGame.getDescription();
   }
 
   private void stopTask() {
@@ -154,7 +163,8 @@ public class ExploreGameController implements GameObserver, PageSubject {
 
 //    task = exploreGame.call(canvas);
     description = new ChaosGameDescription(newMinCoords, newMaxCoords, trans);
-    updateExplorePage(description);
+    updateExplorePage();
+//    description = exploreGame.getDescription();
   }
 
 //  private class SetJuliaTask extends Task<Task> {
@@ -181,21 +191,25 @@ public class ExploreGameController implements GameObserver, PageSubject {
 //  }
 
 
-  private void updateExplorePage(ChaosGameDescription description) {
+  private void updateExplorePage() {
+//    System.out.println("Update Explore Game");
+//    exploreGame.setExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
+    exploreGame.removeObserver(this);
     exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
+    exploreGame.registerObserver(this);
     this.chaosCanvas = exploreGame.getCanvas();
     exploreGame.exploreFractals();
+    explorePage.updateCanvas(this.chaosCanvas);
 //    explorePage.updateCanvas(this.chaosCanvas);
     canvas.setTranslateX(0);
     canvas.setTranslateY(0);
     canvas.setScaleY(1);
     canvas.setScaleX(1);
-    explorePage.updateCanvas(this.chaosCanvas);
   }
   public void homeButtonClicked() {
     notifyObservers(explorePage);
   }
-  public ExplorePage getExplorePage() {
+  public ExplorePage getGamePage() {
     return explorePage;
   }
 
@@ -206,6 +220,7 @@ public class ExploreGameController implements GameObserver, PageSubject {
   @Override
   public void update() {
     explorePage.updateCanvas(exploreGame.getCanvas());
+    explorePage.updateInformation(description.getTransforms().getFirst(), description.getMinCoords(), description.getMaxCoords());
   }
 
   @Override
@@ -225,44 +240,43 @@ public class ExploreGameController implements GameObserver, PageSubject {
     }
   }
 
-  public void updateExploreGame(Vector2D newMinCoords, Vector2D newMaxCoords, List<Transform2D> trans) {
-    description = new ChaosGameDescription(newMinCoords, newMaxCoords, trans);
-    exploreGame.setGameDescription(description);
-    exploreGame.setChaosCanvas(newMinCoords, newMaxCoords);
-    chaosCanvas = exploreGame.getCanvas();
-    exploreGame.exploreFractals();
-    explorePage.updateCanvas(this.chaosCanvas);
-  }
-
   public void resetImage() {
+    Vector2D newMinCoords = new Vector2D(-1.6, -1);
+    Vector2D newMaxCoords = new Vector2D(1.6, 1);
     description = new ChaosGameDescription(
-            new Vector2D(-1.6, -1),
-            new Vector2D(1.6, 1), trans);
+            newMinCoords,
+            newMaxCoords, trans);
 //    exploreGame.removeObserver(this);
-    exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
+//    exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
 //    exploreGame.registerObserver(this);
 //    updateExploreGame(description);
     cumulativeScaleFactor = 1;
-    this.chaosCanvas = exploreGame.getCanvas();
-    exploreGame.exploreFractals();
-    explorePage.updateCanvas(this.chaosCanvas);
+    updateExplorePage();
+//    description = exploreGame.getDescription();
   }
 
   public void setCanvas(Canvas canvas) {
     this.canvas = canvas;
   }
 
+  @Override
   public void setBind(StackPane mainPane) {
     canvas.widthProperty().bind(mainPane.widthProperty().multiply(0.80));
     canvas.heightProperty().bind(mainPane.heightProperty().multiply(0.80));
   }
 
-  public void updateJuliaValue(double real, double img) {
-    trans = List.of(new ExploreJulia(new Complex(real, img)));
+  @Override
+  public void updateJuliaValue(String partType, double value) {
+    ExploreJulia exploreTransform = (ExploreJulia) exploreGame.getDescription().getTransforms().getFirst();
+    double realPart = partType.equals("real") ? value : exploreTransform.getComplex().getX();
+    double imaginaryPart = partType.equals("imaginary") ? value : exploreTransform.getComplex().getY();
+
+    trans = List.of(new ExploreJulia(new Complex(realPart, imaginaryPart)));
     description.setTransforms(trans);
-    exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
-    this.chaosCanvas = exploreGame.getCanvas();
-    exploreGame.exploreFractals();
-    explorePage.updateCanvas(this.chaosCanvas);
+    updateExplorePage();
+//    exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
+//    this.chaosCanvas = exploreGame.getCanvas();
+//    exploreGame.exploreFractals();
+//    explorePage.updateCanvas(this.chaosCanvas);
   }
 }
