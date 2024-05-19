@@ -39,6 +39,9 @@ public class SideBar extends VBox {
 
     VBox.setMargin(coordinatesButton, new Insets(50, 0, 0, 0));
     VBox.setMargin(runGame, new Insets(50, 0, 0, 0));
+
+    this.getStyleClass().add("side-bar");
+    this.setStyle("-fx-background-color: #f0f0f0;");
   }
 
   public SideBar(ExploreGameController exploreGameController) {
@@ -54,5 +57,6 @@ public class SideBar extends VBox {
     this.getChildren().addAll(zoomInButton, zoomOutButton, colorPicker, resetImage);
     this.setAlignment(Pos.CENTER_RIGHT);
     this.setSpacing(10);
+    this.getStyleClass().add("side-bar");
   }
 }

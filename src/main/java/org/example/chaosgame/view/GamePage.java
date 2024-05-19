@@ -5,6 +5,8 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
@@ -12,6 +14,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import org.example.chaosgame.model.chaos.ChaosCanvas;
 import org.example.chaosgame.view.components.HomeButton;
+
+import java.util.Objects;
 
 public abstract class GamePage extends BorderPane {
   protected final GraphicsContext gc;

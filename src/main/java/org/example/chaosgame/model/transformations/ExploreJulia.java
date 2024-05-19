@@ -15,6 +15,10 @@ public class ExploreJulia implements Transform2D{
     this.point = point;
   }
 
+  public Complex getComplex() {
+    return point;
+  }
+
   /**
    * Method to transform a 2D vector using the Julia transformation.
    * The transformation is given by the formula:
@@ -32,4 +36,5 @@ public class ExploreJulia implements Transform2D{
     double a = temp + this.point.getX();
     return new Vector2D(a, b);
   }
+
 }

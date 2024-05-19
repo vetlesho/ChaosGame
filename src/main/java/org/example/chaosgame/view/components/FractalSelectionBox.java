@@ -17,7 +17,7 @@ public class FractalSelectionBox extends ComboBox<String> {
    */
   public FractalSelectionBox(ChaosGameController chaosGameController) {
     this.setPrefWidth(200);
-    this.setPromptText("Sierpinski ");
+    this.setPromptText("Julia ");
     this.getItems().addAll("Sierpinski", "Barnsley", "Julia");
 
     this.setOnAction(event -> {
