@@ -8,6 +8,7 @@ public class SliderRealPart extends BaseSlider {
     super(gameController);
     this.setMin(-1);
     this.setMax(1);
+    this.getStyleClass().add("top-bottom-padding");
   }
 
   @Override

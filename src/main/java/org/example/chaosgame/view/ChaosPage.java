@@ -27,15 +27,14 @@ public class ChaosPage extends GamePage {
     this.bottomBar.getStyleClass().add("chaos-text");
     SideBar sideBar = new SideBar(chaosGameController);
 
+    this.setCenter(gc.getCanvas());
     this.setTop(topBar);
     this.setRight(sideBar);
     this.setBottom(bottomBar);
-    this.setLeft(gc.getCanvas());
-
   }
 
   public void updateInformation(Transform2D transformation, int steps, Vector2D min, Vector2D max) {
-    topBar.updateTopBar(transformation, steps, min, max);
+    topBar.updateTotalTopBar(transformation, steps, min, max);
     bottomBar.updateBottomBar(transformation);
   }
 

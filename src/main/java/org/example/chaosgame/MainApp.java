@@ -21,12 +21,10 @@ public class MainApp extends Application {
     new PageController(mainPane, chaosGameController, exploreGameController);
 
     Scene scene = new Scene(mainPane, 1200, 800);
-    mainPane.prefWidthProperty().bind(scene.widthProperty());
-    mainPane.prefHeightProperty().bind(scene.heightProperty());
     scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/global.css")).toExternalForm());
 
-    primaryStage.setMinWidth(800);
-    primaryStage.setMinHeight(600);
+    primaryStage.setMinWidth(1000);
+    primaryStage.setMinHeight(650);
 
     primaryStage.setScene(scene);
     primaryStage.setTitle("Chaos Game Canvas");

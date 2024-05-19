@@ -18,30 +18,29 @@ public class TopBar extends HBox {
   public TopBar(GameController gameController) {
     super();
     this.gameInfo = new Label();
+    this.gameInfo.getStyleClass().add("top-bottom-padding");
     this.stepsLabel = new Label();
+    this.stepsLabel.getStyleClass().add("top-bottom-padding");
     this.coordinatesLabel = new Label();
+    this.coordinatesLabel.getStyleClass().add("top-bottom-padding");
 
     Button homeButton = new HomeButton();
     homeButton.setOnAction(event -> gameController.homeButtonClicked());
 
     this.getChildren().addAll(homeButton, gameInfo, coordinatesLabel, stepsLabel);
-    this.setPadding(new javafx.geometry.Insets(10));
-
-    this.setSpacing(50);
     this.setAlignment(Pos.CENTER_LEFT);
     this.getStyleClass().add("top-bottom-bar");
   }
 
-  public void updateTopBar(Transform2D first, int totalSteps, Vector2D min, Vector2D max) {
+  public void updateTotalTopBar(Transform2D first, int totalSteps, Vector2D min, Vector2D max) {
     gameInfo.setText("Transformation: " + first.getClass().getSimpleName());
-    coordinatesLabel.setText("Min-Coordinate: " + min.getX() + ", " + min.getY() +
-            ". Max-Coordinate: " + max.getX() + ", " + max.getY());
+    updateTopBar(min, max);
     stepsLabel.setText("Total steps: " + totalSteps);
   }
 
   public void updateTopBar(Vector2D min, Vector2D max) {
-    coordinatesLabel.setText("Min-Coordinate: " + (double) Math.round(min.getX() * 100) / 100 + ", " + (double) Math.round(min.getY() * 100) / 100 +
-            ". Max-Coordinate: " + (double) Math.round(max.getX() * 100) / 100 + ", " + (double) Math.round(max.getY() * 100) / 100);
+    coordinatesLabel.setText("Coordinates: " + (double) Math.round(min.getX() * 100) / 100 + " , " + (double) Math.round(min.getY() * 100) / 100 +
+            " (min), " + (double) Math.round(max.getX() * 100) / 100 + ", " + (double) Math.round(max.getY() * 100) / 100 + " (max)");
   }
 
   public void setTopBarStyle(String text) {

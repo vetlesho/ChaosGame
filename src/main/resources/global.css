@@ -26,8 +26,12 @@
 }
 
 .text-field {
-    -fx-font: 14 arial;
-    -fx-border-color: black;
+    -fx-font: 20 arial;
+    -fx-background-color: #252525;
+    -fx-text-fill: white;
+    -fx-border-color: #3b3b3b;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
     -fx-border-width: 2;
     -fx-background-insets: 1;
 }
@@ -125,6 +129,7 @@
     -fx-padding: 20;
     -fx-spacing: 10;
 }
+
 .top-bottom-bar .text {
     -fx-font: 20 arial;
     -fx-fill: #7c7c7c;
@@ -137,6 +142,11 @@
     -fx-border-width: 0 2 0 2;
     -fx-background-insets: 1;
 }
+
+.top-bottom-padding{
+    -fx-padding: 0 10 0 10;
+}
+
 
 
 
