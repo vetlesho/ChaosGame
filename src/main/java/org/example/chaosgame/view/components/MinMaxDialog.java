@@ -1,20 +1,25 @@
 package org.example.chaosgame.view.components;
 
+import java.util.List;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.util.Pair;
-import org.example.chaosgame.model.linalg.Vector2D;
 
-import java.util.List;
-
+/**
+ * Class for the MinMaxDialog, extends Dialog.
+ * The dialog has fields for the min and max x and y coordinates.
+ */
 public class MinMaxDialog extends Dialog<List<String>> {
   private final TextField minXField;
   private final TextField minYField;
   private final TextField maxXField;
   private final TextField maxYField;
 
+  /**
+   * Constructor for the MinMaxDialog.
+   * Creates a dialog for setting the min and max coordinates.
+   */
   public MinMaxDialog() {
     setTitle("Set Min/Max Coordinates");
     setHeaderText("Please enter the min and max coordinates:");

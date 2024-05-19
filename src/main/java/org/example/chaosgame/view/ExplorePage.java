@@ -1,12 +1,5 @@
 package org.example.chaosgame.view;
 
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import org.example.chaosgame.controller.ExploreGameController;
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.Transform2D;
@@ -14,16 +7,25 @@ import org.example.chaosgame.view.components.BottomBar;
 import org.example.chaosgame.view.components.SideBar;
 import org.example.chaosgame.view.components.TopBar;
 
+/**
+ * Class for the ExplorePage, extends GamePage.
+ * The ExplorePage is used for displaying the exploreGame.
+ */
 public class ExplorePage extends GamePage {
-
-  private final SideBar sidebar;
   private final BottomBar bottomBar;
   private final TopBar topBar;
+
+  /**
+   * Constructor for the ExplorePage.
+   * Initializes the top bar, bottom bar and sidebar components.
+   *
+   * @param exploreGameController the explore game controller
+   */
   public ExplorePage(ExploreGameController exploreGameController) {
     super();
     this.setStyle("-fx-background-color: black;");
-    this.sidebar = new SideBar(exploreGameController);
-    this.sidebar.setStyle("-fx-background-color: black;");
+    SideBar sidebar = new SideBar(exploreGameController);
+    sidebar.setStyle("-fx-background-color: black;");
     this.topBar = new TopBar(exploreGameController);
     this.topBar.setStyle("-fx-background-color: black;");
     this.bottomBar = new BottomBar(exploreGameController);
@@ -35,17 +37,24 @@ public class ExplorePage extends GamePage {
     this.setTop(topBar);
 
     gc.getCanvas().setOnScroll(event -> {
-      try{
-      exploreGameController.onScroll(event);
-    } catch (Exception e) {
-      exploreGameController.resetImage();
-    }
+      try {
+        exploreGameController.onScroll(event);
+      } catch (Exception e) {
+        exploreGameController.resetImage();
+      }
     });
     this.setOnMousePressed(exploreGameController::mousePressed);
     this.setOnMouseDragged(exploreGameController::mouseDragged);
     this.setOnMouseReleased(exploreGameController::mouseReleased);
   }
 
+  /**
+   * Calls the updateTopBar and updateBottomBar methods in the ExplorePage.
+   *
+   * @param transformation the transformation
+   * @param min            the min coordinates
+   * @param max            the max coordinates
+   */
   public void updateInformation(Transform2D transformation, Vector2D min, Vector2D max) {
     topBar.updateTopBar(min, max);
     bottomBar.updateBottomBar(transformation);

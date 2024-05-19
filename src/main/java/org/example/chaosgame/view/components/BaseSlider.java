@@ -1,16 +1,23 @@
 package org.example.chaosgame.view.components;
 
 import javafx.scene.control.Slider;
-import org.example.chaosgame.controller.ChaosGameController;
-import org.example.chaosgame.controller.observer.GameController;
+import org.example.chaosgame.controller.interfaces.GameController;
 
 
 /**
  * Abstract class for sliders in the GUI to Julia values.
+ * Extends the Slider class.
  */
 public abstract class BaseSlider extends Slider {
+  /**
+   * Constructor for the BaseSlider.
+   *
+   * @param gameController the game controller
+   */
   public BaseSlider(GameController gameController) {
     super();
+    this.setMin(-1);
+    this.setMax(1);
     this.setValue(0);
     this.setShowTickLabels(true);
     this.setMaxWidth(200);

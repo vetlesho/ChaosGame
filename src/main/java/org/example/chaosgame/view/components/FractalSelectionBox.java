@@ -4,7 +4,8 @@ import javafx.scene.control.ComboBox;
 import org.example.chaosgame.controller.ChaosGameController;
 
 /**
- * ComboBox for selecting already implemented fractals.
+ * Class for the FractalSelectionBox, extends ComboBox.
+ * Creates a ComboBox for selecting already implemented fractals.
  */
 public class FractalSelectionBox extends ComboBox<String> {
 

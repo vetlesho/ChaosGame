@@ -1,18 +1,22 @@
 package org.example.chaosgame.view.components;
 
-import org.example.chaosgame.controller.ChaosGameController;
-import org.example.chaosgame.controller.observer.GameController;
+import org.example.chaosgame.controller.interfaces.GameController;
 
 /**
- * Slider for the imaginary part of a complex number.
+ * Class for the imaginary part slider, extends BaseSlider.
+ * The slider is used for setting the imaginary part of the complex number.
  */
 public class SliderImaginaryPart extends BaseSlider {
+  /**
+   * Constructor for the SliderImaginaryPart.
+   *
+   * @param gameController the game controller
+   */
   public SliderImaginaryPart(GameController gameController) {
     super(gameController);
-    this.setMin(-1);
-    this.setMax(1);
     this.getStyleClass().add("top-bottom-padding");
   }
+
   /**
    * {@inheritDoc}
    */
