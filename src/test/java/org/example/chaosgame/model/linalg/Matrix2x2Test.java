@@ -1,4 +1,4 @@
-package org.example.chaosgame.linalg;
+package org.example.chaosgame.model.linalg;
 
 import org.example.chaosgame.model.linalg.Matrix2x2;
 import org.example.chaosgame.model.linalg.Vector2D;
