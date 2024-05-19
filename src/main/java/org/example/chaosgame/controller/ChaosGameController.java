@@ -58,10 +58,11 @@ public class ChaosGameController implements Observer, Subject, GameController {
   }
 
   public void gameSelection(String selectedGame) {
-    if (selectedGame == null || selectedGame.trim().isEmpty()) {
-      AlertUtility.showErrorDialog("Invalid input", "Please select a game.");
-    } else {
-      updateChaosGame(ChaosGameDescriptionFactory.get(ChaosGameType.valueOf(selectedGame)));
+    try {
+      ChaosGameType gameType = ChaosGameType.valueOf(selectedGame);
+      updateChaosGame(ChaosGameDescriptionFactory.get(gameType));
+    } catch (IllegalArgumentException e) {
+      AlertUtility.showErrorDialog("Invalid input", "Please select a valid game.");
     }
   }
 
@@ -192,6 +193,13 @@ public class ChaosGameController implements Observer, Subject, GameController {
     }
   }
 
+  public void resetGame() {
+    chaosGame.resetTotalSteps();
+    update();
+    chaosPage.clearCanvas();
+  }
+
+  @Override
   public void updateJuliaValue(String partType, double value) {
     JuliaTransform juliaTransform = (JuliaTransform) chaosGame.getDescription().getTransforms().getFirst();
     double realPart = partType.equals("real") ? value : juliaTransform.getComplex().getX();
@@ -221,12 +229,7 @@ public class ChaosGameController implements Observer, Subject, GameController {
     }
   }
 
-  public void resetGame() {
-    chaosGame.resetTotalSteps();
-    update();
-    chaosPage.clearCanvas();
-  }
-
+  @Override
   public void homeButtonClicked() {
     notifyObservers();
   }
