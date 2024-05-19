@@ -33,6 +33,18 @@ public class ChaosGameDescription {
     this.transforms = transforms;
   }
 
+  /**
+   * Second constructor for ChaosGameDescription.
+   * Includes a list of probabilities for the transformations.
+   *
+   * @param minCoords Minimum coordinates of the game area
+   *
+   * @param maxCoords Maximum coordinates of the game area
+   *
+   * @param transforms List of transformations to apply to the points
+   *
+   * @param probabilities List of probabilities for the transformations
+   */
   public ChaosGameDescription(Vector2D minCoords, Vector2D maxCoords,
                               List<Transform2D> transforms, List<Integer> probabilities) {
     this.minCoords = minCoords;
@@ -49,21 +61,23 @@ public class ChaosGameDescription {
     return maxCoords;
   }
 
-  public void setMinCoords(Vector2D minCoords) {
-    this.minCoords = minCoords;
-  }
-  public void setMaxCoords(Vector2D maxCoords) {
-    this.maxCoords = maxCoords;
-  }
-
   public List<Transform2D> getTransforms() {
     return transforms;
-  }
-  public void setTransforms(List<Transform2D> transforms) {
-    this.transforms = transforms;
   }
 
   public List<Integer> getProbabilities() {
     return probabilities;
+  }
+
+  public void setTransforms(List<Transform2D> transforms) {
+    this.transforms = transforms;
+  }
+
+  public void setMinCoords(Vector2D minCoords) {
+    this.minCoords = minCoords;
+  }
+
+  public void setMaxCoords(Vector2D maxCoords) {
+    this.maxCoords = maxCoords;
   }
 }

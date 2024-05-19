@@ -3,7 +3,14 @@ package org.example.chaosgame.model.transformations;
 import org.example.chaosgame.model.linalg.Complex;
 import org.example.chaosgame.model.linalg.Vector2D;
 
-public class ExploreJulia implements Transform2D{
+/**
+ * Class for the Julia transformation.
+ * This formula describes the transformation:
+ * <br>
+ * <span style="font-family: Courier">
+ * z → z<sup>2</sup> + c </span>
+ */
+public class ExploreJulia implements Transform2D {
   private final Complex point;
 
   /**
@@ -21,10 +28,10 @@ public class ExploreJulia implements Transform2D{
 
   /**
    * Method to transform a 2D vector using the Julia transformation.
-   * The transformation is given by the formula:
+   * This formula describes this transformation:
    * <br>
    * <span style="font-family: Courier">
-   *   z → z<sup>2</sup> + c
+   *   z → z<sup>2</sup> + c </span>
    *
    * @param point the 2D vector to transform
    * @return a new 2D vector
@@ -36,5 +43,4 @@ public class ExploreJulia implements Transform2D{
     double a = temp + this.point.getX();
     return new Vector2D(a, b);
   }
-
 }

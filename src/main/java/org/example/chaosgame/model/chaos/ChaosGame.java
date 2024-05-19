@@ -3,9 +3,8 @@ package org.example.chaosgame.model.chaos;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.example.chaosgame.controller.observer.Observer;
-import org.example.chaosgame.controller.observer.Subject;
+import org.example.chaosgame.controller.interfaces.Observer;
+import org.example.chaosgame.controller.interfaces.Subject;
 import org.example.chaosgame.model.linalg.Vector2D;
 
 /**
@@ -29,6 +28,7 @@ public class ChaosGame implements Subject {
 
   /**
    * Private constructor for ChaosGame.
+   * Secures that only one instance of the ChaosGame can be created.
    *
    * @param description Description of the chaos game
    *
@@ -83,29 +83,39 @@ public class ChaosGame implements Subject {
     this.steps = steps;
   }
 
-
-  /**
-   * Method for setting the total number of steps.
-   *
-   * @param totalSteps Number of steps
-   */
   public void setTotalSteps(int totalSteps) {
     this.totalSteps = totalSteps;
   }
 
+  /**
+   * Method for setting the chaos game description.
+   *
+   * @param newDescription New description of the chaos game
+   */
+  public void setChaosGameDescription(ChaosGameDescription newDescription) {
+    this.description = newDescription;
+    resetTotalSteps();
+    setChaosCanvas(description.getMinCoords(), description.getMaxCoords());
+    notifyObservers();
+  }
 
   /**
-   * Method for adding steps to the total number of steps.
+   * Method for setting the chaos canvas.
    *
-   * @param newSteps Number of steps to add
+   * @param minCoords Minimum coordinates of the canvas
+   * @param maxCoords Maximum coordinates of the canvas
    */
+  public void setChaosCanvas(Vector2D minCoords, Vector2D maxCoords) {
+    this.canvas.clearCanvas();
+    this.canvas.setMinCoords(minCoords);
+    this.canvas.setMaxCoords(maxCoords);
+    this.canvas.setTransformCoordsToIndices();
+  }
+
   public void addTotalSteps(int newSteps) {
     this.totalSteps += newSteps;
   }
 
-  /**
-   * Method for resetting the total number of steps.
-   */
   public void resetTotalSteps() {
     this.totalSteps = 0;
   }
@@ -128,7 +138,7 @@ public class ChaosGame implements Subject {
     for (int i = 0; i < steps; i++) {
       int transformIndex = random.nextInt(description.getTransforms().size());
       currentPoint = description.getTransforms().get(transformIndex).transform(currentPoint);
-      canvas.putPixel(currentPoint);
+      canvas.putPixelChaos(currentPoint);
     }
   }
 
@@ -155,44 +165,37 @@ public class ChaosGame implements Subject {
         transformIndex = probabilities.size() - 1; // default to the last transformation
       }
       currentPoint = description.getTransforms().get(transformIndex).transform(currentPoint);
-      canvas.putPixel(currentPoint);
+      canvas.putPixelChaos(currentPoint);
     }
   }
 
-  public void setChaosGameDescription(ChaosGameDescription newDescription) {
-    if (!this.description.equals(newDescription)) {
-      this.resetTotalSteps();
-    }
-    this.description = newDescription;
-    this.totalSteps = 0;
-    setChaosCanvas(description.getMinCoords(), description.getMaxCoords());
-    notifyObservers();
-  }
-
-  public void setChaosCanvas(Vector2D minCoords, Vector2D maxCoords) {
-    this.canvas.clearCanvas();
-    this.canvas.setMinCoords(minCoords);
-    this.canvas.setMaxCoords(maxCoords);
-    this.canvas.setTransformCoordsToIndices();
-  }
-
+  /**
+   * Method for registering an observer.
+   *
+   * @param gameObserver Observer to register
+   */
   @Override
   public void registerObserver(Observer gameObserver) {
     gameObservers.add(gameObserver);
-    System.out.println("Observer added");
   }
 
+  /**
+   * Method for removing an observer.
+   *
+   * @param gameObserver Observer to remove
+   */
   @Override
   public void removeObserver(Observer gameObserver) {
     gameObservers.remove(gameObserver);
-    System.out.println("Observer removed");
   }
 
+  /**
+   * Method for notifying observers.
+   */
   @Override
   public void notifyObservers() {
     for (Observer gameObserver : gameObservers) {
       gameObserver.update();
-      System.out.println("Observer notified drawed");
     }
   }
 }

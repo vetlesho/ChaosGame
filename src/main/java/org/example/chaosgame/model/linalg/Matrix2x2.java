@@ -2,20 +2,17 @@ package org.example.chaosgame.model.linalg;
 
 
 /**
- * Class for 2x2 matrices.
+ * Record for 2x2 matrices.
  * The matrices are represented by four double values: a, b, c, and d.
  *
  * <br>
  * [ a b ]
  * <br>
  * [ c d ]
+ *
+ * <p>Chosen to use a, b, c, d instead of the traditional row, column notation for simplicity.
  */
-public class Matrix2x2 {
-  private final double a;
-  private final double b;
-  private final double c;
-  private final double d;
-
+public record Matrix2x2(double a, double b, double c, double d) {
   /**
    * Constructor for Matrix2x2.
    *
@@ -24,27 +21,7 @@ public class Matrix2x2 {
    * @param c second row, first column in the matrix.
    * @param d second row, second column in the matrix.
    */
-  public Matrix2x2(double a, double b, double c, double d) {
-    this.a = a;
-    this.b = b;
-    this.c = c;
-    this.d = d;
-  }
-
-  public double getA() {
-    return a;
-  }
-
-  public double getB() {
-    return b;
-  }
-
-  public double getC() {
-    return c;
-  }
-
-  public double getD() {
-    return d;
+  public Matrix2x2 {
   }
 
 
@@ -56,8 +33,8 @@ public class Matrix2x2 {
    */
   public Vector2D multiply(Vector2D vector) {
     return new Vector2D(
-      this.a * vector.getX() + this.b * vector.getY(),
-      this.c * vector.getX() + this.d * vector.getY()
+            this.a * vector.getX() + this.b * vector.getY(),
+            this.c * vector.getX() + this.d * vector.getY()
     );
   }
 }

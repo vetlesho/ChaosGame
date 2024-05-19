@@ -36,25 +36,25 @@ class Matrix2x2Test {
     @Test
     @DisplayName("Test getA")
     void getA() {
-      assertEquals(a, matrix.getA());
+      assertEquals(a, matrix.a());
     }
 
     @Test
     @DisplayName("Test getB")
     void getB() {
-      assertEquals(b, matrix.getB());
+      assertEquals(b, matrix.b());
     }
 
     @Test
     @DisplayName("Test getC")
     void getC() {
-      assertEquals(c, matrix.getC());
+      assertEquals(c, matrix.c());
     }
 
     @Test
     @DisplayName("Test getD")
     void getD() {
-      assertEquals(d, matrix.getD());
+      assertEquals(d, matrix.d());
     }
   }
 

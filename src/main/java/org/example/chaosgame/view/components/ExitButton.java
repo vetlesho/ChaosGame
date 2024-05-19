@@ -3,7 +3,7 @@ package org.example.chaosgame.view.components;
 import javafx.scene.control.Button;
 
 /**
- * Button for exiting the application.
+ * Class for the exit button, extends Button.
  */
 public class ExitButton extends Button  {
   public ExitButton() {

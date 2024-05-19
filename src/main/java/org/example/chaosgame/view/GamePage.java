@@ -1,69 +1,97 @@
 package org.example.chaosgame.view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import org.example.chaosgame.model.chaos.ChaosCanvas;
-import org.example.chaosgame.view.components.HomeButton;
 
-import java.util.Objects;
-
+/**
+ * Abstract class for the GamePage, extends BorderPane.
+ * The GamePage is used for displaying the game.
+ */
 public abstract class GamePage extends BorderPane {
   protected final GraphicsContext gc;
   private static final int COLOR_FACTOR = 6;
   private static final int CANVAS_WIDTH = 1250;
   private static final int CANVAS_HEIGHT = 805;
   private static final int MAX_COLOR_VALUE = 255;
-
   protected Color fractalColor;
 
+  /**
+   * Constructor for the GamePage.
+   * Initializes the canvas and fractal color.
+   */
   public GamePage() {
     this.gc = createCanvas();
     this.fractalColor = Color.WHITE;
   }
 
+  /**
+   * Method for setting color of the fractal.
+   *
+   * @param newFractalColor the new fractal color
+   */
+  public void setFractalColor(Color newFractalColor) {
+    this.fractalColor = newFractalColor;
+  }
+
+  /**
+   * Method for creating the canvas.
+   *
+   * @return the GraphicsContext
+   */
   private GraphicsContext createCanvas() {
     Canvas canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     return canvas.getGraphicsContext2D();
   }
 
+  /**
+   * Method for updating the canvas.
+   * Clears the canvas and draws the canvas.
+   *
+   * @param chaosCanvas the chaos canvas
+   */
   public void updateCanvas(ChaosCanvas chaosCanvas) {
     clearCanvas();
     drawCanvas(chaosCanvas);
   }
 
-  public void setCanvasSize(double width, double height) {
-    gc.getCanvas().setWidth(width);
-    gc.getCanvas().setHeight(height);
-  }
-
+  /**
+   * Method for clearing the canvas.
+   */
   public void clearCanvas() {
     gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
   }
 
+  /**
+   * Method for drawing the canvas.
+   *
+   * @param chaosCanvas the chaos canvas
+   */
   private void drawCanvas(ChaosCanvas chaosCanvas) {
     double[][] canvasArray = chaosCanvas.getCanvasArray();
     double cellWidth = gc.getCanvas().getWidth() / chaosCanvas.getWidth();
     double cellHeight = gc.getCanvas().getHeight() / chaosCanvas.getHeight();
 
-    // Create an off-screen image
     WritableImage offScreenImage = createOffScreenImage(chaosCanvas, canvasArray);
-    // Draw the off-screen image on the canvas
-    gc.drawImage(offScreenImage, 0, 0, cellWidth * chaosCanvas.getWidth(), cellHeight * chaosCanvas.getHeight());
+    gc.drawImage(offScreenImage, 0, 0, cellWidth * chaosCanvas.getWidth(),
+            cellHeight * chaosCanvas.getHeight());
   }
 
-  // Creates an off-screen image from the given ChaosCanvas and canvas array
+  /**
+   * Method for creating the offscreen image.
+   * Creates a WritableImage and sets the pixel color.
+   *
+   * @param chaosCanvas the chaos canvas
+   * @param canvasArray the canvas array
+   * @return the WritableImage
+   */
   private WritableImage createOffScreenImage(ChaosCanvas chaosCanvas, double[][] canvasArray) {
-    WritableImage offScreenImage = new WritableImage(chaosCanvas.getWidth(), chaosCanvas.getHeight());
+    WritableImage offScreenImage = new WritableImage(
+            chaosCanvas.getWidth(), chaosCanvas.getHeight());
     PixelWriter pixelWriter = offScreenImage.getPixelWriter();
 
     Color minColor = Color.BLACK;
@@ -83,15 +111,5 @@ public abstract class GamePage extends BorderPane {
     }
 
     return offScreenImage;
-  }
-
-  public void setFractalColor(Color newFractalColor) {
-    this.fractalColor = newFractalColor;
-  }
-
-  protected Button createHomeButton(EventHandler<ActionEvent> eventHandler) {
-    Button homeButton = new HomeButton();
-    homeButton.setOnAction(eventHandler);
-    return homeButton;
   }
 }
