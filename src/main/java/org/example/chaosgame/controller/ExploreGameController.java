@@ -261,8 +261,21 @@ public class ExploreGameController implements Observer, Subject, GameController 
 
   @Override
   public void setBind(StackPane mainPane) {
-    canvas.widthProperty().bind(mainPane.widthProperty().multiply(0.80));
-    canvas.heightProperty().bind(mainPane.heightProperty().multiply(0.80));
+    canvas.widthProperty().bind(mainPane.widthProperty().multiply(0.85));
+    canvas.heightProperty().bind(mainPane.heightProperty().multiply(0.85));
+    mainPane.heightProperty().addListener((observable, oldValue, newValue) -> {
+      // Update the canvas height here
+      if (mainPane.getHeight() > 0 && mainPane.getWidth() > 0) {
+        updateExplorePage();
+      }
+    });
+    // Add a change listener to the width property
+    mainPane.widthProperty().addListener((observable, oldValue, newValue) -> {
+      // Update the canvas width here
+      if (mainPane.getHeight() > 0 && mainPane.getWidth() > 0) {
+        updateExplorePage();
+      }
+    });
   }
 
   @Override

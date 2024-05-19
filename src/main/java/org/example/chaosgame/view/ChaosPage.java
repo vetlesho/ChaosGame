@@ -22,7 +22,9 @@ public class ChaosPage extends GamePage {
   public ChaosPage(ChaosGameController chaosGameController) {
     super();
     this.topBar = new TopBar(chaosGameController);
+    this.topBar.getStyleClass().add("chaos-text");
     this.bottomBar = new BottomBar(chaosGameController);
+    this.bottomBar.getStyleClass().add("chaos-text");
     SideBar sideBar = new SideBar(chaosGameController);
 
     this.setTop(topBar);

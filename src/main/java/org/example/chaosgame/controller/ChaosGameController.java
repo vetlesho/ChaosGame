@@ -252,5 +252,18 @@ public class ChaosGameController implements Observer, Subject, GameController {
   public void setBind(StackPane mainPane) {
     canvas.widthProperty().bind(mainPane.widthProperty().multiply(0.85));
     canvas.heightProperty().bind(mainPane.heightProperty().multiply(0.85));
+    mainPane.heightProperty().addListener((observable, oldValue, newValue) -> {
+      // Update the canvas height here
+      if (mainPane.getHeight() > 0 && mainPane.getWidth() > 0) {
+        chaosGame.notifyObservers();
+      }
+    });
+    // Add a change listener to the width property
+    mainPane.widthProperty().addListener((observable, oldValue, newValue) -> {
+      // Update the canvas width here
+      if (mainPane.getHeight() > 0 && mainPane.getWidth() > 0) {
+        chaosGame.notifyObservers();
+      }
+    });
   }
 }

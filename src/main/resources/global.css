@@ -1,7 +1,7 @@
 .button {
     -fx-text-fill: white;
     -fx-background-color: #252525;
-    -fx-font: 14 arial;
+    -fx-font: 20 arial;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
     -fx-border-color: #3b3b3b;
@@ -61,7 +61,7 @@
 
 .choose-game-button {
     -fx-text-fill: white;
-    -fx-font: 30 arial;
+    -fx-text-font: 30 arial;
     -fx-background-color: #252525;
     -fx-border-radius: 30;
     -fx-background-radius: 30;
@@ -99,11 +99,6 @@
     -fx-cursor: hand;
 }
 
-.text {
-    -fx-font: 20 arial;
-    -fx-fill: #d2d2d2;
-}
-
 .exit-button {
     -fx-text-fill: white;
     -fx-font: 24 garamond;
@@ -123,17 +118,21 @@
 }
 
 .top-bottom-bar {
-    -fx-background-color: #000000;
+    -fx-background-color: white;
     -fx-border-color: #252525;
     -fx-border-width: 2 0 2 0;
     -fx-background-insets: 1;
-    -fx-padding: 10;
-
+    -fx-padding: 20;
+    -fx-spacing: 10;
 }
-
+.top-bottom-bar .text {
+    -fx-font: 20 arial;
+    -fx-fill: #7c7c7c;
+}
 .side-bar{
-    -fx-background-color: #000000;
-    -fx-padding: 10;
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-spacing: 10;
     -fx-border-color: #252525;
     -fx-border-width: 0 2 0 2;
     -fx-background-insets: 1;

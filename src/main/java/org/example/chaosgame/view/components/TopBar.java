@@ -30,7 +30,6 @@ public class TopBar extends HBox {
     this.setSpacing(50);
     this.setAlignment(Pos.CENTER_LEFT);
     this.getStyleClass().add("top-bottom-bar");
-    this.setStyle("-fx-background-color: #f0f0f0;");
   }
 
   public void updateTopBar(Transform2D first, int totalSteps, Vector2D min, Vector2D max) {
@@ -43,5 +42,9 @@ public class TopBar extends HBox {
   public void updateTopBar(Vector2D min, Vector2D max) {
     coordinatesLabel.setText("Min-Coordinate: " + (double) Math.round(min.getX() * 100) / 100 + ", " + (double) Math.round(min.getY() * 100) / 100 +
             ". Max-Coordinate: " + (double) Math.round(max.getX() * 100) / 100 + ", " + (double) Math.round(max.getY() * 100) / 100);
+  }
+
+  public void setTopBarStyle(String text) {
+    coordinatesLabel.getStyleClass().add(text);
   }
 }
