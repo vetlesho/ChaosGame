@@ -14,7 +14,7 @@ import org.example.chaosgame.model.chaos.ChaosCanvas;
  */
 public abstract class GamePage extends BorderPane {
   protected final GraphicsContext gc;
-  private static final int COLOR_FACTOR = 6;
+  private static final int COLOR_FACTOR = 3;
   private static final int CANVAS_WIDTH = 1250;
   private static final int CANVAS_HEIGHT = 805;
   private static final int MAX_COLOR_VALUE = 255;
