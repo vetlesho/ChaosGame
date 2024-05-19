@@ -181,8 +181,8 @@ public class ChaosGameController implements GameObserver, PageSubject {
   }
 
   public void resetGame() {
-    //chaosGame.resetTotalSteps();
-    chaosGame.setChaosGameDescription(null);
+    chaosGame.resetTotalSteps();
+    //chaosGame.setChaosGameDescription(null);
     update();
     chaosPage.clearCanvas();
   }
