@@ -136,7 +136,7 @@ class Vector2DTest {
     @DisplayName("Test length should work")
     void length() {
       double l = vector.lengthSq();
-      assertEquals(2.23606797749979, l);
+      assertEquals(5.0, l);
     }
 
     @Test

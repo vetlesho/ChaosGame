@@ -92,11 +92,11 @@ class ChaosGameDescriptionTest {
   @Test
   void testEquals() {
     ChaosGameDescription sameChaosGameDescription = new ChaosGameDescription(minCoords, maxCoords, transforms, probabilities);
-    assertTrue(chaosGameDescription.equals(sameChaosGameDescription));
-    assertFalse(chaosGameDescription == null);
+    assertEquals(chaosGameDescription, sameChaosGameDescription);
+    assertNotNull(chaosGameDescription);
     assertNotEquals(chaosGameDescription, new Object());
     ChaosGameDescription differentChaosGameDescription = new ChaosGameDescription(new Vector2D(1, 1), new Vector2D(2, 2), transforms, probabilities);
-    assertFalse(chaosGameDescription.equals(differentChaosGameDescription));
+    assertNotEquals(chaosGameDescription, differentChaosGameDescription);
   }
 
   @Test
