@@ -42,6 +42,8 @@ class ChaosGameTest {
   @BeforeEach
   void init() {
     instance = ChaosGame.getInstance(juliaDescription, 500, 500);
+    instance.setSteps(0);
+    instance.setTotalSteps(0);
   }
 
   @Nested
@@ -119,10 +121,9 @@ class ChaosGameTest {
     @Test
     void addTotalSteps() {
       instance.addTotalSteps(10);
-      assertEquals(10, instance.getTotalSteps(), "The total steps should be 10");
+      instance.addTotalSteps(10);
+      assertEquals(20, instance.getTotalSteps(), "The total steps should be 10");
     }
-
-
 
     @Test
     void resetTotalSteps() {
@@ -130,26 +131,13 @@ class ChaosGameTest {
       instance.resetTotalSteps();
       assertEquals(0, instance.getTotalSteps(), "The total steps should be 0");
     }
-  }
 
-  @Test
-  void setSteps() {
-  }
-
-  @Test
-  void setTotalSteps() {
-  }
-
-  @Test
-  void addTotalSteps() {
-  }
-
-  @Test
-  void resetTotalSteps() {
-  }
-
-  @Test
-  void runSteps() {
+    @Test
+    void runSteps() {
+      instance.setSteps(10);
+      instance.runSteps();
+      assertEquals(10, instance.getSteps(), "The total steps should be 10");
+    }
   }
 
   @Test
@@ -159,4 +147,5 @@ class ChaosGameTest {
   @Test
   void setChaosCanvas() {
   }
+
 }

@@ -143,8 +143,9 @@ public class ChaosGame implements Subject {
 
 
   /**
-   * Method for running the chaos game. Randomly selects a transformation
-   * from the description and applies it to the current point.
+   * Method for running the chaos game.
+   * Selects which runSteps method to use based if it has a list of probabilities.
+   * Notifies observers after running the steps.
    */
   public void runSteps() {
     if (description.getProbabilities() != null) {
@@ -155,6 +156,10 @@ public class ChaosGame implements Subject {
     notifyObservers();
   }
 
+  /**
+   * Method for running the chaos game. Randomly selects a transformation
+   * from the description and applies it to the current point.
+   */
   private void runStepsUniform(int steps) {
     for (int i = 0; i < steps; i++) {
       int transformIndex = random.nextInt(description.getTransforms().size());
