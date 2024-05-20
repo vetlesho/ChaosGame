@@ -5,7 +5,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
 
 /**
- * Color picker component using ColorPicker from JavaFX.
+ * Class for the color picker component, extends ColorPicker.
  */
 public class ColorPickerComponent extends ColorPicker {
   /**

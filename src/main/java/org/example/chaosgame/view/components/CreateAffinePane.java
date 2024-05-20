@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 /**
- * Pane for creating affine transformations.
+ * Class for the CreateAffinePane, extends GridPane.
  */
 public class CreateAffinePane extends GridPane {
   private final List<List<TextField>> lines;
@@ -97,6 +97,11 @@ public class CreateAffinePane extends GridPane {
     this.getChildren().remove(lastVectorBox);
   }
 
+  /**
+   * Get the result of the affine transformation creation.
+   *
+   * @return the matrix and vector of the affine transformation
+   */
   public List<List<String>> getResult() {
     List<List<String>> result = new ArrayList<>();
     for (List<TextField> line : lines) {

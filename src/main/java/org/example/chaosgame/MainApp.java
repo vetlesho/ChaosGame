@@ -1,5 +1,6 @@
 package org.example.chaosgame;
 
+import java.util.Objects;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -8,12 +9,14 @@ import org.example.chaosgame.controller.ChaosGameController;
 import org.example.chaosgame.controller.ExploreGameController;
 import org.example.chaosgame.controller.PageController;
 
-import java.util.Objects;
-
-
+/**
+ * This is the main class for the JavaFX application.
+ * It sets up the primary stage and the main pane.
+ * It also sets up the controllers.
+ */
 public class MainApp extends Application {
   @Override
-  public void start(Stage primaryStage) throws Exception {
+  public void start(Stage primaryStage) {
     StackPane mainPane = new StackPane();
 
     ExploreGameController exploreGameController = new ExploreGameController();

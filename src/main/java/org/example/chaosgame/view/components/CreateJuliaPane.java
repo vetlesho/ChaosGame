@@ -5,7 +5,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.Pair;
 
 /**
- * Pane for creating Julia values.
+ * Class for the CreateJuliaPane, extends HBox.
  */
 public class CreateJuliaPane extends HBox {
   private final TextField realPart;

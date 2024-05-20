@@ -104,10 +104,10 @@ public class ChaosGameFileHandler {
       for (Transform2D transform : description.getTransforms()) {
         if (transform instanceof AffineTransform2D affine) {
           count++;
-          Matrix2x2 matrix = affine.getMatrix();
-          Vector2D vector = affine.getVector();
-          writer.write(matrix.getA() + ", " + matrix.getB() + ", "
-                  + matrix.getC() + ", " + matrix.getD() + ", "
+          Matrix2x2 matrix = affine.matrix();
+          Vector2D vector = affine.vector();
+          writer.write(matrix.a() + ", " + matrix.b() + ", "
+                  + matrix.c() + ", " + matrix.d() + ", "
                   + vector.getX() + ", " + vector.getY()
                   + "    # " + count + " transformation");
         } else if (transform instanceof JuliaTransform julia) {
@@ -132,7 +132,7 @@ public class ChaosGameFileHandler {
    * @return the transformation
    * @throws IllegalArgumentException if the type of transformation is unknown
    */
-  private Transform2D selectTransformation(String typeOfTransformation, String line)
+  public Transform2D selectTransformation(String typeOfTransformation, String line)
           throws IllegalArgumentException {
     return switch (typeOfTransformation) {
       case "Affine2D" -> parseAffine(line);
@@ -148,7 +148,7 @@ public class ChaosGameFileHandler {
    * @param line a line of text
    * @return the first part of the line
    */
-  private String skipComments(String line) {
+  public String skipComments(String line) {
     String[] parts = line.split("#");
     return parts[0].trim();
   }
@@ -159,7 +159,7 @@ public class ChaosGameFileHandler {
    * @param line a line of text
    * @return the vector
    */
-  private Vector2D parseVector(String line) {
+  public Vector2D parseVector(String line) {
     String numbers = skipComments(line);
     System.out.println("Parsing vector: " + numbers);
     String[] vectorParts = numbers.split(",");
@@ -174,7 +174,7 @@ public class ChaosGameFileHandler {
    * @param line a line of text
    * @return the transformation
    */
-  private Transform2D parseAffine(String line) {
+  public Transform2D parseAffine(String line) {
     String numbers = skipComments(line);
     System.out.println("Parsing transform: " + numbers);
     String[] transformParts = numbers.split(",");
@@ -193,7 +193,7 @@ public class ChaosGameFileHandler {
    * @param line a line of text
    * @return the transformation
    */
-  private Transform2D parseJulia(String line) {
+  public Transform2D parseJulia(String line) {
     String numbers = skipComments(line);
     System.out.println("Parsing transform: " + numbers);
     String[] parts = numbers.split(",");

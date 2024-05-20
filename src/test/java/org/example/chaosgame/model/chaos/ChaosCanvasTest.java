@@ -51,28 +51,28 @@ class ChaosCanvasTest {
     @Test
     @DisplayName("Test positive putPixel(Vector2D)")
     void putPixel() {
-      chaosCanvas.putPixel(new Vector2D(0, 0));
+      chaosCanvas.putPixelChaos(new Vector2D(0, 0));
       assertEquals(1.0, chaosCanvas.getPixel(new Vector2D(0, 0)));
     }
 
     @Test
     @DisplayName("Test negative putPixel(Vector2D)")
     void putPixelFail() {
-      chaosCanvas.putPixel(new Vector2D(0, 0));
+      chaosCanvas.putPixelChaos(new Vector2D(0, 0));
       assertNotEquals(0.0, chaosCanvas.getPixel(new Vector2D(0, 0)));
     }
 
     @Test
     @DisplayName("Test positive putPixel(int, int, double)")
     void putPixelInt() {
-      chaosCanvas.putPixel(0, 0, 1.0);
+      chaosCanvas.putPixelExplore(0, 0, 1.0);
       assertEquals(1.0, chaosCanvas.getPixel(new Vector2D(0, 1)));
     }
 
     @Test
     @DisplayName("Test negative putPixel(int, int, double)")
     void putPixelIntFail() {
-      chaosCanvas.putPixel(0, 0, 1.0);
+      chaosCanvas.putPixelExplore(0, 0, 1.0);
       assertNotEquals(0.0, chaosCanvas.getPixel(new Vector2D(0, 1)));
     }
   }
@@ -103,7 +103,7 @@ class ChaosCanvasTest {
     @Test
     @DisplayName("Test positive clearCanvas")
     void clearCanvas() {
-      chaosCanvas.putPixel(new Vector2D(0, 0));
+      chaosCanvas.putPixelChaos(new Vector2D(0, 0));
       chaosCanvas.clearCanvas();
       assertEquals(0.0, chaosCanvas.getPixel(new Vector2D(0, 0)));
     }
@@ -111,7 +111,7 @@ class ChaosCanvasTest {
     @Test
     @DisplayName("Test negative clearCanvas")
     void clearCanvasFail() {
-      chaosCanvas.putPixel(new Vector2D(0, 0));
+      chaosCanvas.putPixelChaos(new Vector2D(0, 0));
       chaosCanvas.clearCanvas();
       double[][] canvas = chaosCanvas.getCanvasArray();
       for (double[] row : canvas) {
