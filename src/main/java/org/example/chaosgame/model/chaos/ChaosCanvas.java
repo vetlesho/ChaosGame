@@ -88,6 +88,11 @@ public class ChaosCanvas {
     this.height = height;
   }
 
+
+  public AffineTransform2D getTransformCoordsToIndices() {
+    return transformCoordsToIndices;
+  }
+
   /**
    * Calculates the Affine transformation that maps coordinates to indices in the canvas array.
    * The transformation is calculated based on the width, height, minimum and maximum coordinates.
@@ -104,6 +109,7 @@ public class ChaosCanvas {
                     ((height - 1.0) * maxCoords.getY()) / (maxCoords.getY() - minCoords.getY()),
                     ((width - 1.0) * minCoords.getX()) / (minCoords.getX() - maxCoords.getX())
             ));
+
   }
 
   /**
@@ -159,10 +165,20 @@ public class ChaosCanvas {
    * Clears the canvas by setting all pixel values to 0.
    */
   public void clearCanvas() {
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        canvas[i][j] = 0;
+      for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+          canvas[i][j] = 0;
+        }
       }
+  }
+
+  public double getPixel(Vector2D point) {
+    Vector2D indices = transformCoordsToIndices.transform(point);
+    int x = (int) indices.getX();
+    int y = (int) indices.getY();
+    if (x >= 0 && x < height && y >= 0 && y < width) {
+      return canvas[x][y];
     }
+    return 0.0;
   }
 }

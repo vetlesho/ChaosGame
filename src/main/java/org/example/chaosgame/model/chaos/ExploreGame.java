@@ -1,5 +1,17 @@
 package org.example.chaosgame.model.chaos;
 
+
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.scene.canvas.Canvas;
+import org.example.chaosgame.model.linalg.Vector2D;
+import org.example.chaosgame.model.transformations.Transform2D;
+import org.example.chaosgame.view.components.AlertUtility;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -7,12 +19,13 @@ import org.example.chaosgame.controller.interfaces.Observer;
 import org.example.chaosgame.controller.interfaces.Subject;
 import org.example.chaosgame.model.linalg.Vector2D;
 
+
 /**
  * Class for exploring julia sets.
  */
 public class ExploreGame implements Subject {
   private static final int MAX_ITER = 256;
-  private final ChaosCanvas canvas;
+  private ChaosCanvas canvas;
   private ChaosGameDescription description;
   private Vector2D currentPoint = new Vector2D(0.0, 0.0);
   private final List<Observer> gameObservers;
@@ -28,22 +41,21 @@ public class ExploreGame implements Subject {
    */
   public ExploreGame(ChaosGameDescription description, int width, int height) {
     this.description = description;
-    this.canvas = new ChaosCanvas(width, height,
-            description.getMinCoords(), description.getMaxCoords());
+    this.canvas = new ChaosCanvas(width, height, description.getMinCoords(), description.getMaxCoords());
     this.gameObservers = new ArrayList<>();
   }
 
+  public void setExploreGame(ChaosGameDescription description, int width, int height) {
+    this.description = description;
+    setChaosCanvas(description.getMinCoords(), description.getMaxCoords(), width, height);
+
+  }
   public ChaosCanvas getCanvas() {
     return canvas;
   }
 
   public ChaosGameDescription getDescription() {
     return description;
-  }
-
-  public void setExploreGame(ChaosGameDescription description, int width, int height) {
-    this.description = description;
-    setChaosCanvas(description.getMinCoords(), description.getMaxCoords(), width, height);
   }
 
   /**
