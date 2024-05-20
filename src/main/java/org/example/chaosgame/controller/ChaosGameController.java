@@ -44,6 +44,7 @@ public class ChaosGameController implements Observer, Subject, GameController {
   private static final int WIDTH = 1200;
   private static final int HEIGHT = 800;
   private Canvas canvas;
+  private double cumulativeScaleFactor = 1;
 
   /**
    * Constructor for the ChaosGameController.
@@ -276,6 +277,7 @@ public class ChaosGameController implements Observer, Subject, GameController {
             chaosGame.getTotalSteps(),
             chaosGame.getDescription().getMinCoords(),
             chaosGame.getDescription().getMaxCoords());
+    chaosGame.getCanvas().clearCanvas();
     chaosPage.clearCanvas();
   }
 

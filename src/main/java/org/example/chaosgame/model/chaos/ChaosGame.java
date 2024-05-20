@@ -164,6 +164,8 @@ public class ChaosGame implements Subject {
   /**
    * Method for running the chaos game. Randomly selects a transformation
    * from the description and applies it to the current point.
+   *
+   * @param steps Number of steps to run
    */
   private void runStepsUniform(int steps) {
     for (int i = 0; i < steps; i++) {
