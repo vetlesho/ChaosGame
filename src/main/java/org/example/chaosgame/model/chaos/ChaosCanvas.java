@@ -13,7 +13,6 @@ import org.example.chaosgame.model.transformations.AffineTransform2D;
  * The canvas also has an Affine transformation that maps coordinates, {@link Vector2D},
  * to indices in the canvas array. This is used to map points to pixels in the canvas.
  */
-
 public class ChaosCanvas {
   private int width;
   private int height;

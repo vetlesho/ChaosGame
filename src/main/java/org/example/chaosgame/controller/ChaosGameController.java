@@ -2,10 +2,8 @@ package org.example.chaosgame.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
@@ -105,26 +103,26 @@ public class ChaosGameController implements Observer, Subject, GameController {
     String input = stepsField.getText();
     try {
       int steps = Integer.parseInt(input);
-      if (steps < 1 || steps > 10000000) {
-        throw new NumberFormatException();
-      }
+      chaosGame.setSteps(steps);
       if (chaosGame.getDescription().getTransforms().getFirst() instanceof JuliaTransform && steps > 250000) {
-        AlertUtility.showErrorDialog("Invalid input", "Please enter a lower amount of steps for Julia transformations.");
-        return;
+        throw new IllegalArgumentException("Please enter a lower amount of steps for Julia transformations.");
       }
       if (chaosGame.getTotalSteps() > Math.pow(10, 8)) {
-        AlertUtility.showErrorDialog("Invalid input", "The total number of steps is too high. Please reset the game.");
-        return;
+        throw new IllegalArgumentException("The total amount of steps is too high. Choose a lower amount.");
       }
-      chaosGame.setSteps(steps);
       chaosGame.addTotalSteps(steps);
       chaosGame.runSteps();
       stepsField.getStyleClass().remove("text-field-invalid");
-    } catch (NumberFormatException ex) {
+
+    } catch (NumberFormatException e){
+      stepsField.clear();
+      stepsField.getStyleClass().add("text-field-invalid");
+      AlertUtility.showErrorDialog("Invalid input", "Please enter a valid number.");
+    } catch (IllegalArgumentException ex) {
       stepsField.clear();
       stepsField.getStyleClass().add("text-field-invalid");
       AlertUtility.showErrorDialog(
-              "Invalid input", "Please enter a number between 1 - 10 000 000.");
+              "Invalid input", ex.getMessage());
     }
   }
 

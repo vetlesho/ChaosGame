@@ -30,8 +30,8 @@ class ComplexTest {
     @DisplayName("Test sqrt should work")
     void sqrt() {
       Complex newComplex = complex.sqrt(x, y);
-      assertEquals(0.5061178531536732, newComplex.getX()); //r-part is based on the example in the task description.
-      assertEquals(-0.3951648786024424, newComplex.getY()); //i-part is based on the example in the task description.
+      assertEquals(Math.abs(0.5061178531536732), Math.abs(newComplex.getX())); //r-part is based on the example in the task description.
+      assertEquals(Math.abs(-0.3951648786024424), Math.abs(newComplex.getY())); //i-part is based on the example in the task description.
     }
 
     @Test

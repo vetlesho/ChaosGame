@@ -16,8 +16,8 @@ class ChaosGameDescriptionFactoryTest {
   private static ChaosGameDescription expectedSierpinski;
   private static ChaosGameDescription expectedBarnsley;
 
-  @BeforeEach
-  void setUp() {
+  @BeforeAll
+  static void setUp() {
     expectedJulia = new ChaosGameDescription(
             new Vector2D(-1.6, -1.0),
             new Vector2D(1.6, 1.0),
@@ -124,8 +124,8 @@ class ChaosGameDescriptionFactoryTest {
     assertThrows(IllegalArgumentException.class, () -> ChaosGameDescriptionFactory.get(null));
   }
 
-  @AfterEach
-  void tearDown() {
+  @AfterAll
+  static void tearDown() {
     expectedJulia = null;
     expectedSierpinski = null;
     expectedBarnsley = null;

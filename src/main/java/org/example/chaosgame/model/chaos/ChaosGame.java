@@ -79,7 +79,19 @@ public class ChaosGame implements Subject {
     return totalSteps;
   }
 
-  public void setSteps(int steps) {
+  /**
+   * Method for setting the number of steps to run.
+   *
+   * @param steps Number of steps to run
+   * @throws IllegalArgumentException If steps is less than 0 or greater than 1000000
+   */
+  public void setSteps(int steps) throws IllegalArgumentException {
+    if (steps < 0) {
+      throw new IllegalArgumentException("Steps must be a positive number");
+    }
+    if (steps > 1000000) {
+      throw new IllegalArgumentException("Steps must be less than 1000000");
+    }
     this.steps = steps;
   }
 
@@ -112,7 +124,16 @@ public class ChaosGame implements Subject {
     this.canvas.setTransformCoordsToIndices();
   }
 
-  public void addTotalSteps(int newSteps) {
+  /**
+   * Method for adding steps to the total number of steps.
+   *
+   * @param newSteps Number of steps to add
+   * @throws IllegalArgumentException If newSteps is less than 0
+   */
+  public void addTotalSteps(int newSteps) throws IllegalArgumentException {
+    if (newSteps < 0) {
+      throw new IllegalArgumentException("Steps must be a positive number");
+    }
     this.totalSteps += newSteps;
   }
 
