@@ -15,7 +15,7 @@ public class NumberOfStepsInput extends TextField {
     this.setPromptText("Number of steps");
     this.setMaxWidth(180);
     this.setMinWidth(180);
-    this.setMinHeight(30);
-    this.setMaxHeight(30);
+    this.setMinHeight(40);
+    this.setMaxHeight(40);
   }
 }

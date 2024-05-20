@@ -1,6 +1,8 @@
 package org.example.chaosgame.view.components;
 
 import java.util.List;
+
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
@@ -24,8 +26,8 @@ public class MinMaxDialog extends Dialog<List<String>> {
     setTitle("Set Min/Max Coordinates");
     setHeaderText("Please enter the min and max coordinates:");
 
-    ButtonType okButtonType = new ButtonType("OK");
-    getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, okButtonType);
+    ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+    this.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 
     GridPane grid = new GridPane();
     grid.setHgap(10);
@@ -49,7 +51,7 @@ public class MinMaxDialog extends Dialog<List<String>> {
     getDialogPane().setContent(grid);
 
     setResultConverter(dialogButton -> {
-      if (dialogButton == okButtonType) {
+      if (dialogButton == saveButtonType) {
         String minX = minXField.getText();
         String minY = minYField.getText();
         String maxX = maxXField.getText();

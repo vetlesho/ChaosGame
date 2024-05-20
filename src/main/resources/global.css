@@ -27,8 +27,8 @@
 
 .text-field {
     -fx-font: 20 arial;
-    -fx-background-color: #252525;
-    -fx-text-fill: white;
+    -fx-background-color: white;
+    -fx-text-fill: black;
     -fx-border-color: #3b3b3b;
     -fx-background-radius: 20;
     -fx-border-radius: 20;
@@ -60,7 +60,6 @@
 
 .combo-box .indexed-cell:selected {
     -fx-text-fill: white;
-    -fx-background-radius: 20;
 }
 
 .choose-game-button {
