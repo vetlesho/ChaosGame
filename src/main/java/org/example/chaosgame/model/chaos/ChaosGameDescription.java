@@ -90,6 +90,9 @@ public class ChaosGameDescription {
    * @param transforms List of transformations to apply to the points
    */
   private void validateTransforms(List<Transform2D> transforms) {
+    if (transforms == null){
+      throw new IllegalArgumentException("Transformations cannot be null");
+    }
     if (transforms.size() > 4 || transforms.isEmpty()) {
       throw new IllegalArgumentException("Number of transformations must be between 1 and 4");
     }
@@ -112,6 +115,7 @@ public class ChaosGameDescription {
   }
 
   public void setTransforms(List<Transform2D> transforms) {
+    validateTransforms(transforms);
     this.transforms = transforms;
   }
 
@@ -128,7 +132,10 @@ public class ChaosGameDescription {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ChaosGameDescription that = (ChaosGameDescription) o;
-    return Objects.equals(minCoords, that.minCoords) && Objects.equals(maxCoords, that.maxCoords) && Objects.equals(transforms, that.transforms) && Objects.equals(probabilities, that.probabilities);
+    return Objects.equals(minCoords, that.minCoords)
+            && Objects.equals(maxCoords, that.maxCoords)
+            && Objects.equals(transforms, that.transforms)
+            && Objects.equals(probabilities, that.probabilities);
   }
 
   @Override

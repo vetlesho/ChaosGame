@@ -66,27 +66,73 @@ class ChaosGameDescriptionTest {
     assertEquals(probabilities, chaosGameDescription.getProbabilities());
   }
 
-  @Test
-  void testSetTransforms() {
-    Matrix2x2 newMatrix = new Matrix2x2(9.9, 9.9, 9.9, 9.9);
-    Vector2D newVector = new Vector2D(9.9, 9.9);
-    List<Transform2D> newTransforms = Arrays.asList(new AffineTransform2D(newMatrix, newVector));
-    chaosGameDescription.setTransforms(newTransforms);
-    assertEquals(newTransforms, chaosGameDescription.getTransforms());
+  @Nested
+  @DisplayName("SetTransforms")
+  class SetTransforms {
+    @Test
+    @DisplayName("Set null transforms")
+    void testSetNullTransforms() {
+      assertThrows(IllegalArgumentException.class, () -> chaosGameDescription.setTransforms(null));
+    }
+
+    @Test
+    @DisplayName("Set empty transforms")
+    void testSetEmptyTransforms() {
+      assertThrows(IllegalArgumentException.class, () -> chaosGameDescription.setTransforms(List.of()));
+    }
+
+    @Test
+    @DisplayName("Set too many transforms")
+    void testSetTooManyTransforms() {
+      List<Transform2D> tooManyTransforms = Arrays.asList(
+              new AffineTransform2D(matrixA, vectorPartA),
+              new AffineTransform2D(matrixB, vectorPartB),
+              new AffineTransform2D(matrixA, vectorPartA),
+              new AffineTransform2D(matrixB, vectorPartB),
+              new AffineTransform2D(matrixA, vectorPartA)
+      );
+      assertThrows(IllegalArgumentException.class, () -> chaosGameDescription.setTransforms(tooManyTransforms));
+    }
+
+    @Test
+    @DisplayName("Set valid transforms")
+    void testSetValidTransforms() {
+      Matrix2x2 newMatrix = new Matrix2x2(9.9, 9.9, 9.9, 9.9);
+      Vector2D newVector = new Vector2D(9.9, 9.9);
+      List<Transform2D> newTransforms = Arrays.asList(new AffineTransform2D(newMatrix, newVector));
+      chaosGameDescription.setTransforms(newTransforms);
+      assertEquals(newTransforms, chaosGameDescription.getTransforms());
+    }
   }
 
-  @Test
-  void testSetMinCoords() {
-    Vector2D newMinCoords = new Vector2D(-1, -1);
-    chaosGameDescription.setMinCoords(newMinCoords);
-    assertEquals(newMinCoords, chaosGameDescription.getMinCoords());
-  }
+  @Nested
+  @DisplayName("Set coordinates")
+  class SetCoordinates {
+    @Test
+    @DisplayName("Set min coordinates")
+    void testSetMinCoords() {
+      Vector2D newMinCoords = new Vector2D(-1, -1);
+      chaosGameDescription.setMinCoords(newMinCoords);
+      assertEquals(newMinCoords, chaosGameDescription.getMinCoords());
+    }
 
-  @Test
-  void testSetMaxCoords() {
-    Vector2D newMaxCoords = new Vector2D(2, 2);
-    chaosGameDescription.setMaxCoords(newMaxCoords);
-    assertEquals(newMaxCoords, chaosGameDescription.getMaxCoords());
+    @Test
+    @DisplayName("Set max coordinates")
+    void testSetMaxCoords() {
+      Vector2D newMaxCoords = new Vector2D(2, 2);
+      chaosGameDescription.setMaxCoords(newMaxCoords);
+      assertEquals(newMaxCoords, chaosGameDescription.getMaxCoords());
+    }
+
+    @Test
+    @DisplayName("Set min and max coordinates")
+    void testSetMinAndMaxCoords() {
+      Vector2D newMinCoords = new Vector2D(-99, -99);
+
+      assertThrows(IllegalArgumentException.class, () -> new ChaosGameDescription(newMinCoords, maxCoords, transforms, probabilities));
+      assertThrows(IllegalArgumentException.class, () -> new ChaosGameDescription(maxCoords, minCoords, transforms, probabilities));
+      assertThrows(IllegalArgumentException.class, () -> new ChaosGameDescription(minCoords, minCoords, transforms, probabilities));
+    }
   }
 
   @Test

@@ -17,8 +17,8 @@ class ChaosGameTest {
   private static ChaosGameDescription affineDescriptionWithProb;
   private static ChaosGame instance;
 
-  @BeforeAll
-  static void setUp() {
+  @BeforeEach
+  void init() {
     juliaDescription = new ChaosGameDescription(
             new Vector2D(-1.6, -1),
             new Vector2D(1.6, 1),
@@ -39,11 +39,8 @@ class ChaosGameTest {
                     new AffineTransform2D(new Matrix2x2(-0.15, 0.28, 0.26, 0.24),
                             new Vector2D(0.0, 0.44))
             ), List.of(2, 84, 7, 7));
-  }
-
-  @BeforeEach
-  void init() {
     instance = ChaosGame.getInstance(juliaDescription, 500, 500);
+    instance.setChaosGameDescription(juliaDescription);
     instance.setSteps(0);
     instance.setTotalSteps(0);
   }
@@ -52,8 +49,6 @@ class ChaosGameTest {
   class SingletonTests {
     @Test
     void testSingletonInstanceIsNull() {
-      instance = null;
-      instance = ChaosGame.getInstance(juliaDescription, 500, 500);
       assertNotNull(instance, "The singleton instance should not be null");
     }
 
@@ -152,6 +147,7 @@ class ChaosGameTest {
     void runStepsWithProbabilities() {
       instance.setChaosGameDescription(affineDescriptionWithProb);
       instance.setSteps(10);
+      instance.runSteps();
       assertEquals(10, instance.getSteps());
     }
   }
@@ -179,6 +175,26 @@ class ChaosGameTest {
     instance.setChaosCanvas(new Vector2D(-1.6, -1), new Vector2D(1.6, 1));
     assertEquals(new Vector2D(-1.6, -1), instance.getDescription().getMinCoords(), "The min coords should be the same");
     assertEquals(new Vector2D(1.6, 1), instance.getDescription().getMaxCoords(), "The max coords should be the same");
+  }
+
+  @Test
+  void registerAndNotifyObservers() {
+    Observer observer = () -> assertTrue(true, "Observer should be notified");
+    instance.registerObserver(observer);
+    instance.notifyObservers();
+  }
+
+  @Test
+  void removeObserver() {
+    Observer observer = () -> fail("Observer should not be notified");
+    instance.registerObserver(observer);
+    instance.removeObserver(observer);
+    instance.notifyObservers();
+  }
+
+  @AfterEach
+  void tearDown() {
+    instance = null;
   }
 
 }
