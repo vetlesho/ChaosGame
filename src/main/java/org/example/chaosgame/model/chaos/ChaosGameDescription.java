@@ -30,6 +30,8 @@ public class ChaosGameDescription {
    */
   public ChaosGameDescription(Vector2D minCoords, Vector2D maxCoords,
                               List<Transform2D> transforms) {
+    validateCoordinates(minCoords, maxCoords);
+    validateTransforms(transforms);
     this.minCoords = minCoords;
     this.maxCoords = maxCoords;
     this.transforms = transforms;
@@ -48,11 +50,49 @@ public class ChaosGameDescription {
    * @param probabilities List of probabilities for the transformations
    */
   public ChaosGameDescription(Vector2D minCoords, Vector2D maxCoords,
-                              List<Transform2D> transforms, List<Integer> probabilities) {
+                              List<Transform2D> transforms, List<Integer> probabilities)
+          throws IllegalArgumentException {
+    validateCoordinates(minCoords, maxCoords);
+    validateTransforms(transforms);
+    if (probabilities.size() != transforms.size()) {
+      throw new IllegalArgumentException("Probabilities must match the number of transformations");
+    }
     this.minCoords = minCoords;
     this.maxCoords = maxCoords;
     this.transforms = transforms;
     this.probabilities = probabilities;
+  }
+
+  /**
+   * Method for validating the coordinates.
+   *
+   * @param minCoords Minimum coordinates of the game area
+   *
+   * @param maxCoords Maximum coordinates of the game area
+   */
+  private void validateCoordinates(Vector2D minCoords, Vector2D maxCoords) {
+    if (minCoords.getX() < -50 || minCoords.getY() < -50
+            || minCoords.getX() > 50 || minCoords.getY() > 50
+            || maxCoords.getX() > 50 || maxCoords.getY() > 50
+            || maxCoords.getX() < -50 || maxCoords.getY() < -50) {
+      throw new IllegalArgumentException("Coordinates must be between -50 and 50");
+    } else if (minCoords.getX() > maxCoords.getX() || minCoords.getY() > maxCoords.getY()) {
+      throw new IllegalArgumentException("Minimum coordinates must be less than maximum coordinates");
+    }
+    if (minCoords.equals(maxCoords)) {
+      throw new IllegalArgumentException("Minimum and maximum coordinates cannot be the same");
+    }
+  }
+
+  /**
+   * Method for validating the transformations.
+   *
+   * @param transforms List of transformations to apply to the points
+   */
+  private void validateTransforms(List<Transform2D> transforms) {
+    if (transforms.size() > 4 || transforms.isEmpty()) {
+      throw new IllegalArgumentException("Number of transformations must be between 1 and 4");
+    }
   }
 
   public Vector2D getMinCoords() {

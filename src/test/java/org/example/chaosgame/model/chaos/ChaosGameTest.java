@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ChaosGameTest {
   private static ChaosGameDescription juliaDescription;
-  private static ChaosGameDescription affineDescription;
+  private static ChaosGameDescription affineDescriptionWithProb;
   private static ChaosGame instance;
 
   @BeforeAll
@@ -26,17 +26,19 @@ class ChaosGameTest {
                     new JuliaTransform(new Complex(-0.70176, -0.3842), 1)
             ));
 
-    affineDescription = new ChaosGameDescription(
-            new Vector2D(0.0, 0.0),
-            new Vector2D(1.0, 1.0),
+    affineDescriptionWithProb = new ChaosGameDescription(
+            new Vector2D(-2.65, 0.0),
+            new Vector2D(2.65, 10.0),
             List.of(
-                    new AffineTransform2D(new Matrix2x2(0.5, 0.0, 0.0, 0.5),
+                    new AffineTransform2D(new Matrix2x2(0.0, 0.0, 0.0, 0.16),
                             new Vector2D(0.0, 0.0)),
-                    new AffineTransform2D(new Matrix2x2(0.5, 0.0, 0.0, 0.5),
-                            new Vector2D(0.25, 0.50)),
-                    new AffineTransform2D(new Matrix2x2(0.5, 0.0, 0.0, 0.5),
-                            new Vector2D(0.5, 0.0))
-            ));
+                    new AffineTransform2D(new Matrix2x2(0.85, 0.04, -0.04, 0.85),
+                            new Vector2D(0.0, 1.60)),
+                    new AffineTransform2D(new Matrix2x2(0.20, -0.26, 0.23, 0.22),
+                            new Vector2D(0.0, 1.60)),
+                    new AffineTransform2D(new Matrix2x2(-0.15, 0.28, 0.26, 0.24),
+                            new Vector2D(0.0, 0.44))
+            ), List.of(2, 84, 7, 7));
   }
 
   @BeforeEach
@@ -138,14 +140,45 @@ class ChaosGameTest {
       instance.runSteps();
       assertEquals(10, instance.getSteps(), "The total steps should be 10");
     }
+
+    @Test
+    void runStepsUniform() {
+      instance = ChaosGame.getInstance(juliaDescription, 500, 500);
+      instance.setSteps(10);
+      assertEquals(10, instance.getSteps());
+    }
+
+    @Test
+    void runStepsWithProbabilities() {
+      instance.setChaosGameDescription(affineDescriptionWithProb);
+      instance.setSteps(10);
+      assertEquals(10, instance.getSteps());
+    }
   }
 
-  @Test
-  void setChaosGameDescription() {
+  @Nested
+  class setDescription {
+    @Test
+    void setChaosGameDescription() {
+      instance.setChaosGameDescription(affineDescriptionWithProb);
+      assertEquals(affineDescriptionWithProb, instance.getDescription(), "The description should be the same");
+      assertEquals(0, instance.getTotalSteps(), "The total steps should be 0");
+      assertEquals(500, instance.getCanvas().getWidth(), "The width should be 500");
+      assertEquals(500, instance.getCanvas().getHeight(), "The height should be 500");
+    }
+
+    @Test
+    void setChaosGameDescriptionNull() {
+      assertThrows(IllegalArgumentException.class, () -> instance.setChaosGameDescription(null),
+              "The description should not be null");
+    }
   }
 
   @Test
   void setChaosCanvas() {
+    instance.setChaosCanvas(new Vector2D(-1.6, -1), new Vector2D(1.6, 1));
+    assertEquals(new Vector2D(-1.6, -1), instance.getDescription().getMinCoords(), "The min coords should be the same");
+    assertEquals(new Vector2D(1.6, 1), instance.getDescription().getMaxCoords(), "The max coords should be the same");
   }
 
 }
