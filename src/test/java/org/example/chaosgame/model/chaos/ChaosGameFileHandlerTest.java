@@ -1,12 +1,8 @@
 package org.example.chaosgame.model.chaos;
 
-import org.example.chaosgame.model.linalg.Complex;
-import org.example.chaosgame.model.linalg.Matrix2x2;
-import org.example.chaosgame.model.linalg.Vector2D;
-import org.example.chaosgame.model.transformations.AffineTransform2D;
-import org.example.chaosgame.model.transformations.JuliaTransform;
-import org.example.chaosgame.model.transformations.Transform2D;
-import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,8 +10,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import org.example.chaosgame.controller.ChaosGameFileHandler;
+import org.example.chaosgame.model.linalg.Complex;
+import org.example.chaosgame.model.linalg.Matrix2x2;
+import org.example.chaosgame.model.linalg.Vector2D;
+import org.example.chaosgame.model.transformations.AffineTransform2D;
+import org.example.chaosgame.model.transformations.JuliaTransform;
+import org.example.chaosgame.model.transformations.Transform2D;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+
+
 
 class ChaosGameFileHandlerTest {
   private static ChaosGameFileHandler fileHandler;
@@ -67,7 +76,7 @@ class ChaosGameFileHandlerTest {
   }
 
   private Path createTempFileWithContent(String content) throws IOException {
-    Path tempFile = Files.createTempFile("chaosgame", ".txt");
+    Path tempFile = Files.createTempFile("chaosGame", ".txt");
     try (BufferedWriter writer = Files.newBufferedWriter(tempFile)) {
       writer.write(content);
     }
@@ -118,7 +127,8 @@ class ChaosGameFileHandlerTest {
     @Test
     void testReadUnknownType() throws IOException {
       Path tempFile = createTempFileWithContent(invalidTypeContent);
-      assertThrows(IllegalArgumentException.class, () -> fileHandler.readFromFile(tempFile.toString()),
+      assertThrows(IllegalArgumentException.class,
+              () -> fileHandler.readFromFile(tempFile.toString()),
               "Unknown type of transformation should throw IllegalArgumentException");
 
       Files.delete(tempFile);
@@ -142,24 +152,30 @@ class ChaosGameFileHandlerTest {
               new Vector2D(-2.65, 0.0),
               new Vector2D(2.65, 10.0),
               List.of(
-                      new AffineTransform2D(new Matrix2x2(0.0, 0.0, 0.0, 0.16), new Vector2D(0.0, 0.0)),
-                      new AffineTransform2D(new Matrix2x2(0.85, 0.04, -0.04, 0.85), new Vector2D(0.0, 1.6)),
-                      new AffineTransform2D(new Matrix2x2(0.2, -0.26, 0.23, 0.22), new Vector2D(0.0, 1.6)),
-                      new AffineTransform2D(new Matrix2x2(-0.15, 0.28, 0.26, 0.24), new Vector2D(0.0, 0.44))
+                      new AffineTransform2D(new Matrix2x2(0.0, 0.0, 0.0, 0.16),
+                              new Vector2D(0.0, 0.0)),
+                      new AffineTransform2D(new Matrix2x2(0.85, 0.04, -0.04, 0.85),
+                              new Vector2D(0.0, 1.6)),
+                      new AffineTransform2D(new Matrix2x2(0.2, -0.26, 0.23, 0.22),
+                              new Vector2D(0.0, 1.6)),
+                      new AffineTransform2D(new Matrix2x2(-0.15, 0.28, 0.26, 0.24),
+                              new Vector2D(0.0, 0.44))
               )
       );
 
-      Path tempFile = Files.createTempFile("chaosgame", ".txt");
+      Path tempFile = Files.createTempFile("chaosGame", ".txt");
       fileHandler.writeToFile(description, tempFile.toString());
 
       String expectedContent =
-              "Affine2D    # Type of transformation\n" +
-                      "-2.65, 0.0    # Min-coordinate\n" +
-                      "2.65, 10.0    # Max-coordinate\n" +
-                      "0.0, 0.0, 0.0, 0.16, 0.0, 0.0    # 1 transformation\n" +
-                      "0.85, 0.04, -0.04, 0.85, 0.0, 1.6    # 2 transformation\n" +
-                      "0.2, -0.26, 0.23, 0.22, 0.0, 1.6    # 3 transformation\n" +
-                      "-0.15, 0.28, 0.26, 0.24, 0.0, 0.44    # 4 transformation\n";
+              """
+                      Affine2D    # Type of transformation
+                      -2.65, 0.0    # Min-coordinate
+                      2.65, 10.0    # Max-coordinate
+                      0.0, 0.0, 0.0, 0.16, 0.0, 0.0    # 1 transformation
+                      0.85, 0.04, -0.04, 0.85, 0.0, 1.6    # 2 transformation
+                      0.2, -0.26, 0.23, 0.22, 0.0, 1.6    # 3 transformation
+                      -0.15, 0.28, 0.26, 0.24, 0.0, 0.44    # 4 transformation
+                      """;
 
       StringBuilder actualContent = new StringBuilder();
       try (BufferedReader reader = Files.newBufferedReader(tempFile)) {
@@ -182,14 +198,16 @@ class ChaosGameFileHandlerTest {
               List.of(new JuliaTransform(new Complex(-0.70176, -0.3842), 1))
       );
 
-      Path tempFile = Files.createTempFile("chaosgame", ".txt");
+      Path tempFile = Files.createTempFile("chaosGame", ".txt");
       fileHandler.writeToFile(description, tempFile.toString());
 
       String expectedContent =
-              "Julia    # Type of transformation\n" +
-                      "-1.6, -1.0    # Min-coordinate\n" +
-                      "1.6, 1.0    # Max-coordinate\n" +
-                      "-0.70176, -0.3842    # Real and imaginary part of the complex number\n";
+              """
+                      Julia    # Type of transformation
+                      -1.6, -1.0    # Min-coordinate
+                      1.6, 1.0    # Max-coordinate
+                      -0.70176, -0.3842    # Real and imaginary part of the complex number
+                      """;
 
       StringBuilder actualContent = new StringBuilder();
       try (BufferedReader reader = Files.newBufferedReader(tempFile)) {

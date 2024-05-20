@@ -1,6 +1,8 @@
-package org.example.chaosgame.model.chaos;
+package org.example.chaosgame.controller;
 
 import java.util.List;
+import org.example.chaosgame.model.chaos.ChaosGameDescription;
+import org.example.chaosgame.model.chaos.ChaosGameType;
 import org.example.chaosgame.model.linalg.Complex;
 import org.example.chaosgame.model.linalg.Matrix2x2;
 import org.example.chaosgame.model.linalg.Vector2D;

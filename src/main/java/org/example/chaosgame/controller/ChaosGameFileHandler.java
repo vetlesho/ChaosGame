@@ -1,4 +1,4 @@
-package org.example.chaosgame.model.chaos;
+package org.example.chaosgame.controller;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.example.chaosgame.model.chaos.ChaosGameDescription;
 import org.example.chaosgame.model.linalg.Complex;
 import org.example.chaosgame.model.linalg.Matrix2x2;
 import org.example.chaosgame.model.linalg.Vector2D;

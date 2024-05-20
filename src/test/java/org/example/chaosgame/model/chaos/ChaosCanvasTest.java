@@ -2,7 +2,11 @@ package org.example.chaosgame.model.chaos;
 
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.AffineTransform2D;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,7 +37,7 @@ class ChaosCanvasTest {
     @Test
     @DisplayName("Test positive getPixel")
     void getPixel() {
-      double pixel = chaosCanvas.getPixel(new Vector2D(0, 0));
+      double pixel = chaosCanvas.getPixel(new Vector2D(0.5, 0.5));
       assertEquals(0.0, pixel);
     }
 

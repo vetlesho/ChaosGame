@@ -103,7 +103,8 @@ public class ExploreGameController implements Observer, Subject, GameController 
     Vector2D dragDistance = new Vector2D(event.getX(),
             canvas.getHeight() - event.getY()).subtract(dragStartTemp);
     Vector2D fractalRange = description.getMaxCoords().subtract(description.getMinCoords());
-    Vector2D adjustedDragDistance = dragDistance.multiply(fractalRange).divide(new Vector2D(canvas.getWidth(), canvas.getHeight()));
+    Vector2D adjustedDragDistance = dragDistance.multiply(fractalRange)
+            .divide(new Vector2D(canvas.getWidth(), canvas.getHeight()));
     minCoords = description.getMinCoords().subtract(adjustedDragDistance);
     maxCoords = description.getMaxCoords().subtract(adjustedDragDistance);
     updateExplorePage();
@@ -118,54 +119,59 @@ public class ExploreGameController implements Observer, Subject, GameController 
    */
   public void zoomButtonClicked(double scaleFactor) {
     cumulativeScaleFactor *= scaleFactor;
-    Vector2D canvasCenter = chaosCanvas.transformIndicesToCoords(chaosCanvas.getWidth() / 2, chaosCanvas.getHeight() / 2);
-    minCoords = canvasCenter.subtract(canvasCenter.subtract(description.getMinCoords()).scale(scaleFactor));
-    maxCoords = canvasCenter.add(description.getMaxCoords().subtract(canvasCenter).scale(scaleFactor));
+    Vector2D canvasCenter = chaosCanvas.transformIndicesToCoords(
+            chaosCanvas.getWidth() / 2, chaosCanvas.getHeight() / 2);
+    minCoords = canvasCenter.subtract(canvasCenter.subtract(
+            description.getMinCoords()).scale(scaleFactor));
+    maxCoords = canvasCenter.add(description.getMaxCoords()
+            .subtract(canvasCenter).scale(scaleFactor));
 
     updateExplorePage();
   }
 
-    /**
-     * Method for handling scroll events.
-     * Zooms in or out based on the scroll direction.
-     *
-     * @param event ScrollEvent
-     */
-    public void onScroll (ScrollEvent event){
-      double mouseX = event.getX();
-      double mouseY = event.getY();
-      double scaleBase = event.isControlDown() ? 2 : 1.1;
-      double scaleFactor = 1;
-      double zoomInLimit = Math.pow(10, -15);
-      double zoomOutLimit = 8;
-      if (event.getDeltaY() > 0 && cumulativeScaleFactor > zoomInLimit) {
-        // Zoom in
-        scaleFactor = 1 / scaleBase;
-      } else if (event.getDeltaY() < 0 && cumulativeScaleFactor < zoomOutLimit) {
-        // Zoom out
-        scaleFactor = scaleBase;
-      }
+  /**
+   * Method for handling scroll events.
+   * Zooms in or out based on the scroll direction.
+   *
+   * @param event ScrollEvent
+   */
+  public void onScroll(ScrollEvent event) {
+    double mouseX = event.getX();
+    double mouseY = event.getY();
+    double scaleBase = event.isControlDown() ? 2 : 1.1;
+    double scaleFactor = 1;
+    double zoomInLimit = Math.pow(10, -15);
+    double zoomOutLimit = 8;
+    if (event.getDeltaY() > 0 && cumulativeScaleFactor > zoomInLimit) {
+      // Zoom in
+      scaleFactor = 1 / scaleBase;
+    } else if (event.getDeltaY() < 0 && cumulativeScaleFactor < zoomOutLimit) {
+      // Zoom out
+      scaleFactor = scaleBase;
+    }
 
-      cumulativeScaleFactor *= scaleFactor;
-      double middleMouseX = mouseX - (double) chaosCanvas.getWidth() / 2;
-      double middleMouseY = mouseY - (double) chaosCanvas.getHeight() / 2;
-      double translateX = canvas.getTranslateX();
-      double translateY = canvas.getTranslateY();
+    cumulativeScaleFactor *= scaleFactor;
+    double middleMouseX = mouseX - (double) chaosCanvas.getWidth() / 2;
+    double middleMouseY = mouseY - (double) chaosCanvas.getHeight() / 2;
+    double translateX = canvas.getTranslateX();
+    double translateY = canvas.getTranslateY();
 
-      canvas.setScaleX(canvas.getScaleX() * scaleFactor);
-      canvas.setScaleY(canvas.getScaleY() * scaleFactor);
+    canvas.setScaleX(canvas.getScaleX() * scaleFactor);
+    canvas.setScaleY(canvas.getScaleY() * scaleFactor);
 
-      double newTranslateX = (middleMouseX - translateX) * (scaleFactor - 1);
-      double newTranslateY = (middleMouseY - translateY) * (scaleFactor - 1);
-      double setTranslateX = translateX - newTranslateX;
-      double setTranslateY = translateY - newTranslateY;
-      canvas.setTranslateX(setTranslateX);
-      canvas.setTranslateY(setTranslateY);
+    double newTranslateX = (middleMouseX - translateX) * (scaleFactor - 1);
+    double newTranslateY = (middleMouseY - translateY) * (scaleFactor - 1);
+    double setTranslateX = translateX - newTranslateX;
+    double setTranslateY = translateY - newTranslateY;
+    canvas.setTranslateX(setTranslateX);
+    canvas.setTranslateY(setTranslateY);
 
-      Vector2D canvasCenter = chaosCanvas.transformIndicesToCoords((int) mouseX, (int) mouseY);
-      minCoords = canvasCenter.subtract(canvasCenter.subtract(description.getMinCoords()).scale(scaleFactor));
-      maxCoords = canvasCenter.add(description.getMaxCoords().subtract(canvasCenter).scale(scaleFactor));
-      updateExplorePage();
+    Vector2D canvasCenter = chaosCanvas.transformIndicesToCoords((int) mouseX, (int) mouseY);
+    minCoords = canvasCenter.subtract(canvasCenter.subtract(
+            description.getMinCoords()).scale(scaleFactor));
+    maxCoords = canvasCenter.add(description.getMaxCoords()
+            .subtract(canvasCenter).scale(scaleFactor));
+    updateExplorePage();
   }
 
 
@@ -173,7 +179,8 @@ public class ExploreGameController implements Observer, Subject, GameController 
     this.description.setMinCoords(minCoords);
     this.description.setMaxCoords(maxCoords);
     this.description.setTransforms(trans);
-    this.exploreGame = new ExploreGame(description, (int) canvas.getWidth(),(int) canvas.getHeight());
+    this.exploreGame = new ExploreGame(
+            description, (int) canvas.getWidth(), (int) canvas.getHeight());
     this.exploreGame.registerObserver(this);
     this.chaosCanvas = exploreGame.getCanvas();
     exploreGame.exploreFractals();
@@ -248,7 +255,6 @@ public class ExploreGameController implements Observer, Subject, GameController 
             ? value : exploreTransform.getComplex().getY();
 
     trans = List.of(new ExploreJulia(new Complex(realPart, imaginaryPart)));
-//    description.setTransforms(trans);
     updateExplorePage();
   }
 

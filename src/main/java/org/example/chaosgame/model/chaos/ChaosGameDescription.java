@@ -2,7 +2,6 @@ package org.example.chaosgame.model.chaos;
 
 import java.util.List;
 import java.util.Objects;
-
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.Transform2D;
 
@@ -77,7 +76,8 @@ public class ChaosGameDescription {
             || maxCoords.getX() < -50 || maxCoords.getY() < -50) {
       throw new IllegalArgumentException("Coordinates must be between -50 and 50");
     } else if (minCoords.getX() > maxCoords.getX() || minCoords.getY() > maxCoords.getY()) {
-      throw new IllegalArgumentException("Minimum coordinates must be less than maximum coordinates");
+      throw new IllegalArgumentException(
+              "Minimum coordinates must be less than maximum coordinates");
     }
     if (minCoords.equals(maxCoords)) {
       throw new IllegalArgumentException("Minimum and maximum coordinates cannot be the same");
@@ -90,7 +90,7 @@ public class ChaosGameDescription {
    * @param transforms List of transformations to apply to the points
    */
   private void validateTransforms(List<Transform2D> transforms) {
-    if (transforms == null){
+    if (transforms == null) {
       throw new IllegalArgumentException("Transformations cannot be null");
     }
     if (transforms.size() > 4 || transforms.isEmpty()) {
@@ -129,8 +129,12 @@ public class ChaosGameDescription {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     ChaosGameDescription that = (ChaosGameDescription) o;
     return Objects.equals(minCoords, that.minCoords)
             && Objects.equals(maxCoords, that.maxCoords)

@@ -165,13 +165,22 @@ public class ChaosCanvas {
    * Clears the canvas by setting all pixel values to 0.
    */
   public void clearCanvas() {
-      for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-          canvas[i][j] = 0;
-        }
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        canvas[i][j] = 0;
       }
+    }
   }
 
+
+  /**
+   * Returns the pixel value at the given point.
+   * If the point is outside the canvas, the method returns 0.
+   *
+   * @param point The point to get the pixel value at
+   *
+   * @return The pixel value at the given point
+   */
   public double getPixel(Vector2D point) {
     Vector2D indices = transformCoordsToIndices.transform(point);
     int x = (int) indices.getX();

@@ -2,8 +2,10 @@ package org.example.chaosgame.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
@@ -15,12 +17,10 @@ import org.example.chaosgame.controller.interfaces.Observer;
 import org.example.chaosgame.controller.interfaces.Subject;
 import org.example.chaosgame.model.chaos.ChaosGame;
 import org.example.chaosgame.model.chaos.ChaosGameDescription;
-import org.example.chaosgame.model.chaos.ChaosGameDescriptionFactory;
-import org.example.chaosgame.model.chaos.ChaosGameFileHandler;
 import org.example.chaosgame.model.chaos.ChaosGameType;
 import org.example.chaosgame.model.linalg.Complex;
-import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.linalg.Matrix2x2;
+import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.AffineTransform2D;
 import org.example.chaosgame.model.transformations.JuliaTransform;
 import org.example.chaosgame.model.transformations.Transform2D;
@@ -104,17 +104,20 @@ public class ChaosGameController implements Observer, Subject, GameController {
     try {
       int steps = Integer.parseInt(input);
       chaosGame.setSteps(steps);
-      if (chaosGame.getDescription().getTransforms().getFirst() instanceof JuliaTransform && steps > 250000) {
-        throw new IllegalArgumentException("Please enter a lower amount of steps for Julia transformations.");
+      if (chaosGame.getDescription().getTransforms().getFirst()
+              instanceof JuliaTransform && steps > 250000) {
+        throw new IllegalArgumentException(
+                "Please enter a lower amount of steps for Julia transformations.");
       }
       if (chaosGame.getTotalSteps() > Math.pow(10, 8)) {
-        throw new IllegalArgumentException("The total amount of steps is too high. Choose a lower amount.");
+        throw new IllegalArgumentException(
+                "The total amount of steps is too high. Choose a lower amount.");
       }
       chaosGame.addTotalSteps(steps);
       chaosGame.runSteps();
       stepsField.getStyleClass().remove("text-field-invalid");
 
-    } catch (NumberFormatException e){
+    } catch (NumberFormatException e) {
       stepsField.clear();
       stepsField.getStyleClass().add("text-field-invalid");
       AlertUtility.showErrorDialog("Invalid input", "Please enter a valid number.");
@@ -186,10 +189,12 @@ public class ChaosGameController implements Observer, Subject, GameController {
   }
 
   /**
-   * Method for creating a new fractal.
+   * Method for user creation of fractal.
+   * {@link org.example.chaosgame.view.components.CreateFractalDialog} returns either a
+   * {@link java.util.List}<{@link java.util.List}<{@link java.lang.String}>>
+   * or a {@link javafx.util.Pair}<{@link java.lang.String}, {@link java.lang.String}>.
    *
    * <p>Opens a dialog for the user to create a new fractal.
-   *
    */
   public void createOwnFractal() {
     CreateFractalDialog dialog = new CreateFractalDialog();
@@ -200,7 +205,7 @@ public class ChaosGameController implements Observer, Subject, GameController {
       List<Transform2D> transforms = new ArrayList<>();
       if (fractalData instanceof List) {
         List<List<String>> userInput = (List<List<String>>) fractalData;
-        for(List<String> input : userInput) {
+        for (List<String> input : userInput) {
           try {
             double a = Double.parseDouble(input.get(0));
             double b = Double.parseDouble(input.get(1));
@@ -209,8 +214,8 @@ public class ChaosGameController implements Observer, Subject, GameController {
             double x = Double.parseDouble(input.get(4));
             double y = Double.parseDouble(input.get(5));
 
-            if (a < -5 || a > 5 || b < -5 || b > 5 || c < -5 || c > 5 ||
-                    d < -5 || d > 5 || x < -5 || x > 5 || y < -5 || y > 5) {
+            if (a < -5 || a > 5 || b < -5 || b > 5 || c < -5 || c > 5
+                    || d < -5 || d > 5 || x < -5 || x > 5 || y < -5 || y > 5) {
               throw new NumberFormatException();
             } else {
               transforms.add(new AffineTransform2D(new Matrix2x2(a, b, c, d), new Vector2D(x, y)));
@@ -223,7 +228,6 @@ public class ChaosGameController implements Observer, Subject, GameController {
             AlertUtility.showErrorDialog("Invalid input", "Please enter a valid number.");
           }
         }
-//        List<Transform2D> transforms = new ArrayList<>(transformations);
       } else if (fractalData instanceof Pair) {
         Pair<String, String> userInput = (Pair<String, String>) fractalData;
         try { // Check if the input is a valid number

@@ -1,15 +1,21 @@
 package org.example.chaosgame.model.chaos;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
+import org.example.chaosgame.controller.ChaosGameDescriptionFactory;
 import org.example.chaosgame.model.linalg.Complex;
 import org.example.chaosgame.model.linalg.Matrix2x2;
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.AffineTransform2D;
 import org.example.chaosgame.model.transformations.JuliaTransform;
-import org.junit.jupiter.api.*;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 class ChaosGameDescriptionFactoryTest {
   private static ChaosGameDescription expectedJulia;
@@ -81,19 +87,22 @@ class ChaosGameDescriptionFactoryTest {
   class SierpinskiTests {
     @Test
     void testSierpinskiNotNull() {
-      ChaosGameDescription sierpinskiResult = ChaosGameDescriptionFactory.get(ChaosGameType.SIERPINSKI);
+      ChaosGameDescription sierpinskiResult =
+              ChaosGameDescriptionFactory.get(ChaosGameType.SIERPINSKI);
       assertNotNull(sierpinskiResult);
     }
 
     @Test
     void testSierpinskiInstanceOf() {
-      ChaosGameDescription sierpinskiResult = ChaosGameDescriptionFactory.get(ChaosGameType.SIERPINSKI);
+      ChaosGameDescription sierpinskiResult =
+              ChaosGameDescriptionFactory.get(ChaosGameType.SIERPINSKI);
       assertInstanceOf(ChaosGameDescription.class, sierpinskiResult);
     }
 
     @Test
     void testSierpinskiEquals() {
-      ChaosGameDescription sierpinskiResult = ChaosGameDescriptionFactory.get(ChaosGameType.SIERPINSKI);
+      ChaosGameDescription sierpinskiResult =
+              ChaosGameDescriptionFactory.get(ChaosGameType.SIERPINSKI);
       assertEquals(expectedSierpinski, sierpinskiResult);
     }
   }
@@ -102,7 +111,8 @@ class ChaosGameDescriptionFactoryTest {
   class BarnsleyTests {
     @Test
     void testBarnsleyNotNull() {
-      ChaosGameDescription barnsleyResult = ChaosGameDescriptionFactory.get(ChaosGameType.BARNSLEY);
+      ChaosGameDescription barnsleyResult =
+              ChaosGameDescriptionFactory.get(ChaosGameType.BARNSLEY);
       assertNotNull(barnsleyResult);
     }
 

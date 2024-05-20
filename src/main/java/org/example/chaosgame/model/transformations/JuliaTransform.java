@@ -1,9 +1,8 @@
 package org.example.chaosgame.model.transformations;
 
+import java.util.Objects;
 import org.example.chaosgame.model.linalg.Complex;
 import org.example.chaosgame.model.linalg.Vector2D;
-
-import java.util.Objects;
 
 /**
  * Class for the Julia transformation.
@@ -63,8 +62,12 @@ public class JuliaTransform implements Transform2D {
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     JuliaTransform that = (JuliaTransform) o;
     return sign == that.sign && Objects.equals(point, that.point);
   }

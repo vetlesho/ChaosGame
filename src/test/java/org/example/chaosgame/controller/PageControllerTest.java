@@ -6,15 +6,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PageControllerTest {
 
-    @Test
-    void goToPage() {
-    }
+  @Test
+  void goToPage() {
+  }
 
-    @Test
-    void exitGame() {
-    }
+  @Test
+  void exitGame() {
+  }
 
-    @Test
-    void update() {
-    }
+  @Test
+  void update() {
+  }
 }

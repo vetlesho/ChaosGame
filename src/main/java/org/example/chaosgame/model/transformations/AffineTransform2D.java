@@ -1,9 +1,9 @@
 package org.example.chaosgame.model.transformations;
 
+import java.util.Objects;
 import org.example.chaosgame.model.linalg.Matrix2x2;
 import org.example.chaosgame.model.linalg.Vector2D;
 
-import java.util.Objects;
 
 /**
  * Record for 2D affine transformations.
@@ -46,8 +46,12 @@ public record AffineTransform2D(Matrix2x2 matrix, Vector2D vector) implements Tr
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     AffineTransform2D that = (AffineTransform2D) o;
     return Objects.equals(vector, that.vector) && Objects.equals(matrix, that.matrix);
   }

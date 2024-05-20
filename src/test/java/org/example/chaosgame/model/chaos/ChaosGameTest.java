@@ -1,16 +1,22 @@
 package org.example.chaosgame.model.chaos;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.List;
 import org.example.chaosgame.controller.interfaces.Observer;
 import org.example.chaosgame.model.linalg.Complex;
 import org.example.chaosgame.model.linalg.Matrix2x2;
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.AffineTransform2D;
 import org.example.chaosgame.model.transformations.JuliaTransform;
-import org.junit.jupiter.api.*;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 class ChaosGameTest {
   private static ChaosGameDescription juliaDescription;
@@ -61,7 +67,7 @@ class ChaosGameTest {
 
 
   @Nested
-  class gettersTest {
+  class GetterTests {
     @Test
     void getCanvas() {
       assertNotNull(instance.getCanvas(), "The canvas should not be null");
@@ -69,7 +75,9 @@ class ChaosGameTest {
 
     @Test
     void getDescription() {
-      assertEquals(juliaDescription, instance.getDescription(), "The description should be the same");
+      assertEquals(juliaDescription,
+              instance.getDescription(),
+              "The description should be the same");
     }
 
     @Test
@@ -153,14 +161,18 @@ class ChaosGameTest {
   }
 
   @Nested
-  class setDescription {
+  class SetDescription {
     @Test
     void setChaosGameDescription() {
       instance.setChaosGameDescription(affineDescriptionWithProb);
-      assertEquals(affineDescriptionWithProb, instance.getDescription(), "The description should be the same");
-      assertEquals(0, instance.getTotalSteps(), "The total steps should be 0");
-      assertEquals(500, instance.getCanvas().getWidth(), "The width should be 500");
-      assertEquals(500, instance.getCanvas().getHeight(), "The height should be 500");
+      assertEquals(affineDescriptionWithProb, instance.getDescription(),
+              "The description should be the same");
+      assertEquals(0, instance.getTotalSteps(),
+              "The total steps should be 0");
+      assertEquals(500, instance.getCanvas().getWidth(),
+              "The width should be 500");
+      assertEquals(500, instance.getCanvas().getHeight(),
+              "The height should be 500");
     }
 
     @Test
@@ -173,8 +185,12 @@ class ChaosGameTest {
   @Test
   void setChaosCanvas() {
     instance.setChaosCanvas(new Vector2D(-1.6, -1), new Vector2D(1.6, 1));
-    assertEquals(new Vector2D(-1.6, -1), instance.getDescription().getMinCoords(), "The min coords should be the same");
-    assertEquals(new Vector2D(1.6, 1), instance.getDescription().getMaxCoords(), "The max coords should be the same");
+    assertEquals(new Vector2D(-1.6, -1),
+            instance.getDescription().getMinCoords(),
+            "The min coords should be the same");
+    assertEquals(new Vector2D(1.6, 1),
+            instance.getDescription().getMaxCoords(),
+            "The max coords should be the same");
   }
 
   @Test

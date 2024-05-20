@@ -50,10 +50,17 @@ public record Matrix2x2(double a, double b, double c, double d) {
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     Matrix2x2 matrix2x2 = (Matrix2x2) o;
-    return Double.compare(a, matrix2x2.a) == 0 && Double.compare(b, matrix2x2.b) == 0 && Double.compare(c, matrix2x2.c) == 0 && Double.compare(d, matrix2x2.d) == 0;
+    return Double.compare(a, matrix2x2.a) == 0
+            && Double.compare(b, matrix2x2.b) == 0
+            && Double.compare(c, matrix2x2.c) == 0
+            && Double.compare(d, matrix2x2.d) == 0;
   }
 
   /**

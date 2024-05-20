@@ -24,7 +24,10 @@ public class MainApp extends Application {
     new PageController(mainPane, chaosGameController, exploreGameController);
 
     Scene scene = new Scene(mainPane, 1200, 800);
-    scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/global.css")).toExternalForm());
+    scene.getStylesheets().add(
+            Objects.requireNonNull(getClass()
+                    .getResource("/global.css"))
+                    .toExternalForm());
 
     primaryStage.setMinWidth(1000);
     primaryStage.setMinHeight(650);
