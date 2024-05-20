@@ -164,4 +164,8 @@ public class ChaosCanvas {
   public void setHeight(int height) {
     this.height = height;
   }
+
+  public AffineTransform2D getTransformCoordsToIndices() {
+    return transformCoordsToIndices;
+  }
 }

@@ -1,15 +1,18 @@
 package org.example.chaosgame.model.chaos;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.canvas.Canvas;
 import org.example.chaosgame.controller.observer.Observer;
 import org.example.chaosgame.controller.observer.Subject;
 import org.example.chaosgame.model.linalg.Vector2D;
 import org.example.chaosgame.model.transformations.Transform2D;
+import org.example.chaosgame.view.components.AlertUtility;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Class for exploring julia sets.
@@ -32,8 +35,7 @@ public class ExploreGame extends Task implements Subject {
    * @param height Height of the canvas
    */
   public ExploreGame(ChaosGameDescription description, int width, int height) {
-    this.description = description;
-    this.canvas = new ChaosCanvas(width, height, description.getMinCoords(), description.getMaxCoords());
+    setExploreGame(description, width, height);
     this.gameObservers = new ArrayList<>();
   }
 
@@ -51,9 +53,9 @@ public class ExploreGame extends Task implements Subject {
     yStream.parallel().forEach(y -> {
 //    for (int y = 0; y < canvas.getHeight(); y++) {
       for (int x = 0; x < canvas.getWidth(); x++) {
-//        if (isCancelled()) {
-//          break;
-//        }
+        if (isCancelled()) {
+          break;
+        }
         int iter = 0;
         currentPoint = canvas.transformIndicesToCoords(x, y);
         Vector2D tempPoint = currentPoint;
@@ -83,7 +85,7 @@ public class ExploreGame extends Task implements Subject {
   }
   public void setExploreGame(ChaosGameDescription description, int width, int height) {
     this.description = description;
-    setChaosCanvas(description.getMinCoords(), description.getMaxCoords(), width, height);
+    this.canvas = new ChaosCanvas(width, height, description.getMinCoords(), description.getMaxCoords());
   }
 
   public ChaosCanvas getCanvas() {
@@ -107,18 +109,14 @@ public class ExploreGame extends Task implements Subject {
   @Override
   public void notifyObservers() {
     List<Observer> gameObservers = new ArrayList<>(this.gameObservers);
-    for (Observer gameObserver : gameObservers) {
-      try {
-        gameObserver.update();
-      } catch (Exception e) {
-        System.out.println("Message: " + e.getMessage());
-      }
-
-    }
+    Platform.runLater(() -> {
+      gameObservers.forEach(Observer::update);
+    });
   }
 
-  public Task call() throws Exception {
-    System.out.println("Task called");
+  @Override
+  public Task call() {
+    exploreFractals();
     return this;
   }
   public void stopTask() {
