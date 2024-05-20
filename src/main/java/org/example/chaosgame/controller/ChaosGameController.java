@@ -148,7 +148,8 @@ public class ChaosGameController implements Observer, Subject, GameController {
                 Double.parseDouble(coords.get(3)));
 
         updateChaosGame(new ChaosGameDescription(min, max,
-                chaosGame.getDescription().getTransforms()));
+                chaosGame.getDescription().getTransforms(),
+                chaosGame.getDescription().getProbabilities()));
       } catch (NumberFormatException e) {
         AlertUtility.showErrorDialog("Invalid input",
                 "Please enter a valid number.");

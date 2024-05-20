@@ -53,7 +53,7 @@ public class ChaosGameDescription {
           throws IllegalArgumentException {
     validateCoordinates(minCoords, maxCoords);
     validateTransforms(transforms);
-    if (probabilities.size() != transforms.size()) {
+    if (probabilities != null && probabilities.size() != transforms.size()) {
       throw new IllegalArgumentException("Probabilities must match the number of transformations");
     }
     this.minCoords = minCoords;
