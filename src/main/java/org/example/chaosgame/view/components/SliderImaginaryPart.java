@@ -14,6 +14,7 @@ public class SliderImaginaryPart extends BaseSlider {
    */
   public SliderImaginaryPart(GameController gameController) {
     super(gameController);
+    this.getStyleClass().add("top-bottom-padding");
   }
 
   /**

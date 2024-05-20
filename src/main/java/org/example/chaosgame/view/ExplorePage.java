@@ -36,13 +36,7 @@ public class ExplorePage extends GamePage {
     this.setBottom(bottomBar);
     this.setTop(topBar);
 
-    gc.getCanvas().setOnScroll(event -> {
-      try {
-        exploreGameController.onScroll(event);
-      } catch (Exception e) {
-        exploreGameController.resetImage();
-      }
-    });
+    gc.getCanvas().setOnScroll(exploreGameController::onScroll);
     this.setOnMousePressed(exploreGameController::mousePressed);
     this.setOnMouseDragged(exploreGameController::mouseDragged);
     this.setOnMouseReleased(exploreGameController::mouseReleased);

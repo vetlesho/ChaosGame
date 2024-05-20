@@ -79,7 +79,19 @@ public class ChaosGame implements Subject {
     return totalSteps;
   }
 
-  public void setSteps(int steps) {
+  /**
+   * Method for setting the number of steps to run.
+   *
+   * @param steps Number of steps to run
+   * @throws IllegalArgumentException If steps is less than 0 or greater than 1000000
+   */
+  public void setSteps(int steps) throws IllegalArgumentException {
+    if (steps < 0) {
+      throw new IllegalArgumentException("Steps must be a positive number");
+    }
+    if (steps > 1000000) {
+      throw new IllegalArgumentException("Steps must be less than 1000000");
+    }
     this.steps = steps;
   }
 
@@ -91,8 +103,13 @@ public class ChaosGame implements Subject {
    * Method for setting the chaos game description.
    *
    * @param newDescription New description of the chaos game
+   * @throws IllegalArgumentException If newDescription is null
    */
-  public void setChaosGameDescription(ChaosGameDescription newDescription) {
+  public void setChaosGameDescription(ChaosGameDescription newDescription)
+          throws IllegalArgumentException {
+    if (newDescription == null) {
+      throw new IllegalArgumentException("Description cannot be null");
+    }
     this.description = newDescription;
     resetTotalSteps();
     setChaosCanvas(description.getMinCoords(), description.getMaxCoords());
@@ -112,7 +129,16 @@ public class ChaosGame implements Subject {
     this.canvas.setTransformCoordsToIndices();
   }
 
-  public void addTotalSteps(int newSteps) {
+  /**
+   * Method for adding steps to the total number of steps.
+   *
+   * @param newSteps Number of steps to add
+   * @throws IllegalArgumentException If newSteps is less than 0
+   */
+  public void addTotalSteps(int newSteps) throws IllegalArgumentException {
+    if (newSteps < 0) {
+      throw new IllegalArgumentException("Steps must be a positive number");
+    }
     this.totalSteps += newSteps;
   }
 
@@ -122,8 +148,9 @@ public class ChaosGame implements Subject {
 
 
   /**
-   * Method for running the chaos game. Randomly selects a transformation
-   * from the description and applies it to the current point.
+   * Method for running the chaos game.
+   * Selects which runSteps method to use based if it has a list of probabilities.
+   * Notifies observers after running the steps.
    */
   public void runSteps() {
     if (description.getProbabilities() != null) {
@@ -134,6 +161,10 @@ public class ChaosGame implements Subject {
     notifyObservers();
   }
 
+  /**
+   * Method for running the chaos game. Randomly selects a transformation
+   * from the description and applies it to the current point.
+   */
   private void runStepsUniform(int steps) {
     for (int i = 0; i < steps; i++) {
       int transformIndex = random.nextInt(description.getTransforms().size());

@@ -30,16 +30,15 @@ public class BottomBar extends HBox {
   public BottomBar(GameController gameController) {
     this.setSpacing(10);
     this.realPartLabel = new Label();
+    this.realPartLabel.getStyleClass().add("top-bottom-padding");
     this.imaginaryPartLabel = new Label();
+    this.imaginaryPartLabel.getStyleClass().add("top-bottom-padding");
     this.sliderRealPart = new SliderRealPart(gameController);
     this.sliderImaginaryPart = new SliderImaginaryPart(gameController);
 
     realPartLabel.setMinSize(200, 20);
     imaginaryPartLabel.setMinSize(200, 20);
-    realPartLabel.setAlignment(Pos.CENTER);
-    imaginaryPartLabel.setAlignment(Pos.CENTER);
-
-    this.setAlignment(javafx.geometry.Pos.CENTER);
+    this.setAlignment(Pos.CENTER);
     this.getChildren().addAll(realPartLabel, sliderRealPart,
             sliderImaginaryPart, imaginaryPartLabel);
 

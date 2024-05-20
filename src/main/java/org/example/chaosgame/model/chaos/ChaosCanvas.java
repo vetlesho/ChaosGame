@@ -13,7 +13,6 @@ import org.example.chaosgame.model.transformations.AffineTransform2D;
  * The canvas also has an Affine transformation that maps coordinates, {@link Vector2D},
  * to indices in the canvas array. This is used to map points to pixels in the canvas.
  */
-
 public class ChaosCanvas {
   private int width;
   private int height;
@@ -89,6 +88,11 @@ public class ChaosCanvas {
     this.height = height;
   }
 
+
+  public AffineTransform2D getTransformCoordsToIndices() {
+    return transformCoordsToIndices;
+  }
+
   /**
    * Calculates the Affine transformation that maps coordinates to indices in the canvas array.
    * The transformation is calculated based on the width, height, minimum and maximum coordinates.
@@ -105,6 +109,7 @@ public class ChaosCanvas {
                     ((height - 1.0) * maxCoords.getY()) / (maxCoords.getY() - minCoords.getY()),
                     ((width - 1.0) * minCoords.getX()) / (minCoords.getX() - maxCoords.getX())
             ));
+
   }
 
   /**
@@ -165,5 +170,24 @@ public class ChaosCanvas {
         canvas[i][j] = 0;
       }
     }
+  }
+
+
+  /**
+   * Returns the pixel value at the given point.
+   * If the point is outside the canvas, the method returns 0.
+   *
+   * @param point The point to get the pixel value at
+   *
+   * @return The pixel value at the given point
+   */
+  public double getPixel(Vector2D point) {
+    Vector2D indices = transformCoordsToIndices.transform(point);
+    int x = (int) indices.getX();
+    int y = (int) indices.getY();
+    if (x >= 0 && x < height && y >= 0 && y < width) {
+      return canvas[x][y];
+    }
+    return 0.0;
   }
 }

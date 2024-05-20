@@ -7,6 +7,8 @@ import org.example.chaosgame.controller.interfaces.Observer;
 import org.example.chaosgame.controller.interfaces.Subject;
 import org.example.chaosgame.model.linalg.Vector2D;
 
+
+
 /**
  * Class for exploring julia sets.
  */
@@ -28,9 +30,26 @@ public class ExploreGame implements Subject {
    */
   public ExploreGame(ChaosGameDescription description, int width, int height) {
     this.description = description;
-    this.canvas = new ChaosCanvas(width, height,
-            description.getMinCoords(), description.getMaxCoords());
+    this.canvas = new ChaosCanvas(
+            width, height,
+            description.getMinCoords(),
+            description.getMaxCoords());
     this.gameObservers = new ArrayList<>();
+  }
+
+  /**
+   * Method for setting the chaos game.
+   *
+   * @param description Description of the chaos game
+   *
+   * @param width Width of the canvas
+   *
+   * @param height Height of the canvas
+   */
+  public void setExploreGame(ChaosGameDescription description, int width, int height) {
+    this.description = description;
+    setChaosCanvas(description.getMinCoords(), description.getMaxCoords(), width, height);
+
   }
 
   public ChaosCanvas getCanvas() {
@@ -39,11 +58,6 @@ public class ExploreGame implements Subject {
 
   public ChaosGameDescription getDescription() {
     return description;
-  }
-
-  public void setExploreGame(ChaosGameDescription description, int width, int height) {
-    this.description = description;
-    setChaosCanvas(description.getMinCoords(), description.getMaxCoords(), width, height);
   }
 
   /**
