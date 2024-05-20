@@ -76,4 +76,74 @@ class Vector2DTest {
       assertNotEquals(2.0, w.getY());
     }
   }
+
+  @Nested
+  @DisplayName("Test scale and multiply")
+  class TestScaleAndMultiply {
+    @Test
+    @DisplayName("Test scale should work")
+    void scale() {
+      Vector2D w = vector.scale(2.0);
+      assertEquals(2.0, w.getX());
+      assertEquals(4.0, w.getY());
+    }
+
+    @Test
+    @DisplayName("Test scale should not work")
+    void scaleFail() {
+      Vector2D w = vector.scale(2.0);
+      assertNotEquals(1.0, w.getX());
+      assertNotEquals(2.0, w.getY());
+    }
+
+    @Test
+    @DisplayName("Test multiply should work")
+    void multiply() {
+      Vector2D w = vector.multiply(otherVector);
+      assertEquals(1.0, w.getX());
+      assertEquals(2.0, w.getY());
+    }
+
+    @Test
+    @DisplayName("Test multiply should not work")
+    void multiplyFail() {
+      Vector2D w = vector.multiply(otherVector);
+      assertNotEquals(2.0, w.getX());
+      assertNotEquals(4.0, w.getY());
+    }
+  }
+
+  @Nested
+  @DisplayName("Test divide and length")
+  class TestDivide {
+    @Test
+    @DisplayName("Test divide should work")
+    void divide() {
+      Vector2D w = vector.divide(otherVector);
+      assertEquals(1.0, w.getX());
+      assertEquals(2.0, w.getY());
+    }
+
+    @Test
+    @DisplayName("Test divide should not work")
+    void divideFail() {
+      Vector2D w = vector.divide(otherVector);
+      assertNotEquals(2.0, w.getX());
+      assertNotEquals(4.0, w.getY());
+    }
+
+    @Test
+    @DisplayName("Test length should work")
+    void length() {
+      double l = vector.lengthSq();
+      assertEquals(2.23606797749979, l);
+    }
+
+    @Test
+    @DisplayName("Test length should not work")
+    void lengthFail() {
+      double l = vector.lengthSq();
+      assertNotEquals(2.0, l);
+    }
+  }
 }

@@ -83,34 +83,14 @@ public class ChaosGameDescription {
     this.maxCoords = maxCoords;
   }
 
-  /**
-   * Equals method for ChaosGameDescription.
-   * Overrides the default equals method.
-   * Compares the minimum and maximum coordinates, the list of transformations,
-   * and the list of probabilities.
-   *
-   * @param o Object to compare
-   * @return true if the objects are equal, false otherwise
-   */
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ChaosGameDescription that = (ChaosGameDescription) o;
-    return Objects.equals(minCoords, that.minCoords)
-            && Objects.equals(maxCoords, that.maxCoords)
-            && Objects.equals(transforms, that.transforms)
-            && Objects.equals(probabilities, that.probabilities);
+    return Objects.equals(minCoords, that.minCoords) && Objects.equals(maxCoords, that.maxCoords) && Objects.equals(transforms, that.transforms) && Objects.equals(probabilities, that.probabilities);
   }
 
-  /**
-   * Hashcode method for ChaosGameDescription.
-   * Overrides the default hashcode method.
-   * Use the minimum and maximum coordinates, the list of transformations,
-   * and the list of probabilities to generate the hashcode.
-   *
-   * @return the hashcode of the ChaosGameDescription object
-   */
   @Override
   public int hashCode() {
     return Objects.hash(minCoords, maxCoords, transforms, probabilities);
