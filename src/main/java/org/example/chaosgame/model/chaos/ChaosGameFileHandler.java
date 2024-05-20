@@ -42,8 +42,6 @@ public class ChaosGameFileHandler {
     Vector2D maxCoords;
     try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
       String typeOfTransformation = skipComments(reader.readLine());
-      System.out.println("Parsing type of transformation: " + typeOfTransformation);
-
       minCoords = parseVector(reader.readLine().trim());
       maxCoords = parseVector(reader.readLine().trim());
 
@@ -161,7 +159,6 @@ public class ChaosGameFileHandler {
    */
   public Vector2D parseVector(String line) {
     String numbers = skipComments(line);
-    System.out.println("Parsing vector: " + numbers);
     String[] vectorParts = numbers.split(",");
     double x = Double.parseDouble(vectorParts[0].trim());
     double y = Double.parseDouble(vectorParts[1].trim());
@@ -176,7 +173,6 @@ public class ChaosGameFileHandler {
    */
   public Transform2D parseAffine(String line) {
     String numbers = skipComments(line);
-    System.out.println("Parsing transform: " + numbers);
     String[] transformParts = numbers.split(",");
     double a = Double.parseDouble(transformParts[0].trim());
     double b = Double.parseDouble(transformParts[1].trim());
@@ -195,7 +191,6 @@ public class ChaosGameFileHandler {
    */
   public Transform2D parseJulia(String line) {
     String numbers = skipComments(line);
-    System.out.println("Parsing transform: " + numbers);
     String[] parts = numbers.split(",");
     double r = Double.parseDouble(parts[0].trim());
     double i = Double.parseDouble(parts[1].trim());
