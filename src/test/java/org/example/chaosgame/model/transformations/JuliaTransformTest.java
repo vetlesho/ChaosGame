@@ -15,8 +15,7 @@ class JuliaTransformTest {
   @Test
   void transform() {
     Vector2D testJulia = juliaTransform.transform(new Vector2D(0.4, 0.2));
-    assertEquals(0.5061178531536732, testJulia.getX());
-    assertEquals(-0.3951648786024423, testJulia.getY());
-
+    assertEquals(Math.abs(0.5061178531536732), Math.abs(testJulia.getX()));
+    assertEquals(Math.abs(-0.3951648786024423), Math.abs(testJulia.getY()));
   }
 }

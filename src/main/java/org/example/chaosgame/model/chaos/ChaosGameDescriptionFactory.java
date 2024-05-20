@@ -13,12 +13,16 @@ import org.example.chaosgame.model.transformations.JuliaTransform;
 public class ChaosGameDescriptionFactory {
 
   /**
-   * Returns a ChaosGameDescription object based on the description and complex number.
+   * Returns a ChaosGameDescription object based on the ChaosGameType-enum.
    *
    * @param type The description of the chaos game
    * @return A ChaosGameDescription object
+   * @throws IllegalArgumentException if the ChaosGameType is null
    */
-  public static ChaosGameDescription get(ChaosGameType type) {
+  public static ChaosGameDescription get(ChaosGameType type) throws IllegalArgumentException {
+    if (type == null) {
+      throw new IllegalArgumentException("ChaosGameType cannot be null");
+    }
     return switch (type) {
       case JULIA -> createJulia();
       case BARNSLEY -> createBarnsley();
