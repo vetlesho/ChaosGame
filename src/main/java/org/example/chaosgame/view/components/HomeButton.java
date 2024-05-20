@@ -17,7 +17,7 @@ public class HomeButton extends Button {
   public HomeButton() {
     super();
     String filePath = Objects.requireNonNull(getClass()
-            .getResource("/White-home-icon.png")).toString();
+            .getResource("/media/White-home-icon.png")).toString();
     ImageView homeIcon = new ImageView(new Image(filePath));
     homeIcon.setFitHeight(24);
     homeIcon.setFitWidth(24);

@@ -26,7 +26,7 @@ public class MainApp extends Application {
     Scene scene = new Scene(mainPane, 1200, 800);
     scene.getStylesheets().add(
             Objects.requireNonNull(getClass()
-                    .getResource("/global.css"))
+                    .getResource("/stylesheets/global.css"))
                     .toExternalForm());
 
     primaryStage.setMinWidth(1000);

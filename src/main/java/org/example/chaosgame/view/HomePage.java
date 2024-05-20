@@ -50,11 +50,11 @@ public class HomePage extends StackPane {
     colorAdjust.setBrightness(-0.8);
 
     String chaosPath = Objects.requireNonNull(getClass()
-            .getResource("/ChaosVideoFinal.mp4")).toString();
+            .getResource("/media/ChaosVideoFinal.mp4")).toString();
     chaosVideo = new MediaPlayer(new Media(chaosPath));
 
     String explorePath = Objects.requireNonNull(getClass()
-            .getResource("/ExploreVideoFinal.mp4")).toString();
+            .getResource("/media/ExploreVideoFinal.mp4")).toString();
     exploreVideo = new MediaPlayer(new Media(explorePath));
 
     chaosView = new MediaView(chaosVideo);
