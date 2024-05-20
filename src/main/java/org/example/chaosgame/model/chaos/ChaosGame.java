@@ -103,8 +103,13 @@ public class ChaosGame implements Subject {
    * Method for setting the chaos game description.
    *
    * @param newDescription New description of the chaos game
+   * @throws IllegalArgumentException If newDescription is null
    */
-  public void setChaosGameDescription(ChaosGameDescription newDescription) {
+  public void setChaosGameDescription(ChaosGameDescription newDescription)
+          throws IllegalArgumentException {
+    if (newDescription == null) {
+      throw new IllegalArgumentException("Description cannot be null");
+    }
     this.description = newDescription;
     resetTotalSteps();
     setChaosCanvas(description.getMinCoords(), description.getMaxCoords());

@@ -144,44 +144,20 @@ public class ChaosGameController implements Observer, Subject, GameController {
         Vector2D max = new Vector2D(Double.parseDouble(coords.get(2)),
                 Double.parseDouble(coords.get(3)));
 
-        if (validateCoordinates(min) && validateCoordinates(max)) {
-          updateChaosGame(new ChaosGameDescription(
-                  min, max,
-                  chaosGame.getDescription().getTransforms()));
-        } else {
-          AlertUtility.showErrorDialog("Invalid input",
-                  "Please enter a double between -50 and 50.");
-        }
+        updateChaosGame(new ChaosGameDescription(min, max,
+                chaosGame.getDescription().getTransforms()));
       } catch (NumberFormatException e) {
-
         AlertUtility.showErrorDialog("Invalid input",
                 "Please enter a valid number.");
       } catch (IndexOutOfBoundsException e) {
         AlertUtility.showErrorDialog("Invalid input",
                 "Please enter all coordinates.");
+      } catch (IllegalArgumentException e) {
+        AlertUtility.showErrorDialog("Invalid input",
+                e.getMessage());
       }
 
     }
-  }
-
-  /**
-   * Method for validating the coordinates.
-   *
-   * @param vector Vector2D with the coordinates
-   * @return boolean True if the coordinates are valid, false otherwise
-   */
-  private boolean validateCoordinates(Vector2D vector) {
-    try {
-      System.out.println("parsing" + vector.getX() + " " + vector.getY());
-      double x = vector.getX();
-      double y = vector.getY();
-      if (x < -50 || x > 50 || y < -50 || y > 50) {
-        return false;
-      }
-    } catch (NumberFormatException e) {
-      return false;
-    }
-    return true;
   }
 
   /**
