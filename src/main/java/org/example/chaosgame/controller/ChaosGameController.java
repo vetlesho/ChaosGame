@@ -37,14 +37,13 @@ import org.example.chaosgame.view.components.MinMaxDialog;
  *
  * <p>Implements the GameController interface.
  */
-public class ChaosGameController implements Observer, Subject, GameController {
+public class ChaosGameController extends CanvasPainter implements Observer, Subject, GameController {
   private final ChaosGame chaosGame;
   private final ChaosPage chaosPage;
   private final List<Observer> pageObservers;
   private static final int WIDTH = 1200;
   private static final int HEIGHT = 800;
   private Canvas canvas;
-  private double cumulativeScaleFactor = 1;
 
   /**
    * Constructor for the ChaosGameController.
@@ -278,7 +277,7 @@ public class ChaosGameController implements Observer, Subject, GameController {
             chaosGame.getDescription().getMinCoords(),
             chaosGame.getDescription().getMaxCoords());
     chaosGame.getCanvas().clearCanvas();
-    chaosPage.clearCanvas();
+    clearCanvas(chaosPage.getGraphicsContext());
   }
 
   @Override
@@ -325,8 +324,8 @@ public class ChaosGameController implements Observer, Subject, GameController {
 
   @Override
   public void updateFractalColor(Color color) {
-    chaosPage.setFractalColor(color);
-    chaosPage.updateCanvas(chaosGame.getCanvas());
+    setFractalColor(color);
+    updateCanvas(chaosGame.getCanvas(), chaosPage.getGraphicsContext());
   }
 
   @Override
@@ -344,7 +343,7 @@ public class ChaosGameController implements Observer, Subject, GameController {
             chaosGame.getTotalSteps(),
             chaosGame.getDescription().getMinCoords(),
             chaosGame.getDescription().getMaxCoords());
-    chaosPage.updateCanvas(chaosGame.getCanvas());
+    updateCanvas(chaosGame.getCanvas(), chaosPage.getGraphicsContext());
   }
 
   /**

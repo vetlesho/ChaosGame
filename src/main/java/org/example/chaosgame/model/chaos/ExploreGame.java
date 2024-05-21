@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 import org.example.chaosgame.controller.interfaces.Observer;
 import org.example.chaosgame.controller.interfaces.Subject;
 import org.example.chaosgame.model.linalg.Vector2D;
-
+import org.example.chaosgame.model.transformations.Transform2D;
 
 
 /**
@@ -14,7 +14,7 @@ import org.example.chaosgame.model.linalg.Vector2D;
  */
 public class ExploreGame implements Subject {
   private static final int MAX_ITER = 256;
-  private final ChaosCanvas canvas;
+  private ChaosCanvas canvas;
   private ChaosGameDescription description;
   private Vector2D currentPoint = new Vector2D(0.0, 0.0);
   private final List<Observer> gameObservers;
@@ -72,18 +72,16 @@ public class ExploreGame implements Subject {
    * @param height Height of the canvas
    */
   public void setChaosCanvas(Vector2D minCoords, Vector2D maxCoords, int width, int height) {
-    this.canvas.clearCanvas();
-    this.canvas.setMaxCoords(maxCoords);
-    this.canvas.setMinCoords(minCoords);
-    this.canvas.setWidth(width);
-    this.canvas.setHeight(height);
+    this.canvas = new ChaosCanvas(width, height, minCoords, maxCoords);
   }
 
   /**
    * Method for exploring fractals. Iterates over all pixels in the canvas
    * and applies the transformation to the current point.
    * Inspiration from <a href="https://www.youtube.com/watch?v=uc2yok_pLV4">Pezzza's Work</a>
-   * and <a href="https://github.com/majidrouhani/idatt2003-gui-demo-mandelbrot">idatt2003-gui-demo-mandelbrot</a>
+   * for the smoothing algorithm.
+   * And also <a href="https://github.com/majidrouhani/idatt2003-gui-demo-mandelbrot">idatt2003-gui-demo-mandelbrot</a>
+   * for the parallel stream.
    *
    */
   public void exploreFractals() {
@@ -137,5 +135,9 @@ public class ExploreGame implements Subject {
     for (Observer gameObserver : gameObservers) {
       gameObserver.update();
     }
+  }
+
+  public void setDescription(Vector2D minCoords, Vector2D maxCoords, List<Transform2D> transforms) {
+    this.description = new ChaosGameDescription(minCoords, maxCoords, transforms);
   }
 }

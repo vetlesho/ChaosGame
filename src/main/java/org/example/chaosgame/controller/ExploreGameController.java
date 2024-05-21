@@ -26,7 +26,7 @@ import org.example.chaosgame.view.ExplorePage;
  *
  * <p>The controller implements the GameController, and is a Subject and Observer.
  */
-public class ExploreGameController implements Observer, Subject, GameController {
+public class ExploreGameController extends CanvasPainter implements Observer, Subject, GameController  {
   private ExploreGame exploreGame;
   private final ExplorePage explorePage;
   private ChaosCanvas chaosCanvas;
@@ -58,6 +58,7 @@ public class ExploreGameController implements Observer, Subject, GameController 
     this.pageObservers = new ArrayList<>();
     exploreGame.registerObserver(this);
     this.explorePage = new ExplorePage(this);
+
   }
 
   public void setCanvas(Canvas canvas) {
@@ -132,6 +133,13 @@ public class ExploreGameController implements Observer, Subject, GameController 
   /**
    * Method for handling scroll events.
    * Zooms in or out based on the scroll direction.
+   * Prevents zooming out too far by setting a zoom in/out limit
+   * and saving the cumulative scale factor.
+   * Allows for faster zooming when holding down the control key.
+   * <p>
+   * Inspired by:
+   * <a href="https://github.com/majidrouhani/idatt2003-gui-demo-mandelbrot">
+   * idatt2003-gui-demo-mandelbrot</a>
    *
    * @param event ScrollEvent
    */
@@ -172,9 +180,16 @@ public class ExploreGameController implements Observer, Subject, GameController 
     maxCoords = canvasCenter.add(description.getMaxCoords()
             .subtract(canvasCenter).scale(scaleFactor));
     updateExplorePage();
+    event.consume();
   }
 
 
+  /**
+   * Method for updating the ExplorePage.
+   * Updates the ExplorePage with the new ExploreGame.
+   * Updates the canvas with the new fractal.
+   * Resets the canvas position and scale.
+   */
   private void updateExplorePage() {
     this.description.setMinCoords(minCoords);
     this.description.setMaxCoords(maxCoords);
@@ -184,8 +199,6 @@ public class ExploreGameController implements Observer, Subject, GameController 
     this.exploreGame.registerObserver(this);
     this.chaosCanvas = exploreGame.getCanvas();
     exploreGame.exploreFractals();
-    explorePage.updateCanvas(exploreGame.getCanvas());
-
     this.canvas.setTranslateX(0);
     this.canvas.setTranslateY(0);
     this.canvas.setScaleX(1);
@@ -208,8 +221,8 @@ public class ExploreGameController implements Observer, Subject, GameController 
    */
   @Override
   public void updateFractalColor(Color color) {
-    explorePage.setFractalColor(color);
-    explorePage.updateCanvas(exploreGame.getCanvas());
+    setFractalColor(color);
+    updateCanvas(chaosCanvas, canvas.getGraphicsContext2D());
   }
 
   /**
@@ -264,7 +277,7 @@ public class ExploreGameController implements Observer, Subject, GameController 
    */
   @Override
   public void update() {
-    explorePage.updateCanvas(exploreGame.getCanvas());
+    updateCanvas(chaosCanvas, canvas.getGraphicsContext2D());
     explorePage.updateInformation(
             description.getTransforms().getFirst(),
             description.getMinCoords(), description.getMaxCoords());

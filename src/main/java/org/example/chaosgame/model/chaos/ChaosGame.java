@@ -1,6 +1,7 @@
 package org.example.chaosgame.model.chaos;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 import java.util.Random;
 import org.example.chaosgame.controller.interfaces.Observer;
@@ -168,6 +169,7 @@ public class ChaosGame implements Subject {
    * @param steps Number of steps to run
    */
   private void runStepsUniform(int steps) {
+    currentPoint = new Vector2D(0.0, 0.0);
     for (int i = 0; i < steps; i++) {
       int transformIndex = random.nextInt(description.getTransforms().size());
       currentPoint = description.getTransforms().get(transformIndex).transform(currentPoint);
@@ -184,6 +186,7 @@ public class ChaosGame implements Subject {
    * @param probabilities List of probabilities for the transformations
    */
   private void runStepsWithProbabilities(int steps, List<Integer> probabilities) {
+    currentPoint = new Vector2D(0.0, 0.0);
     for (int i = 0; i < steps; i++) {
       int test = random.nextInt(100);
       int transformIndex = -1;
