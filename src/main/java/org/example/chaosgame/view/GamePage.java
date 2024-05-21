@@ -13,7 +13,6 @@ public abstract class GamePage extends BorderPane {
   private static final int CANVAS_HEIGHT = 805;
   protected final GraphicsContext gc;
 
-
   /**
    * Constructor for the GamePage.
    * Initializes the canvas and makes a new GraphicsContext

@@ -8,13 +8,12 @@ import org.example.chaosgame.model.chaos.ChaosCanvas;
 
 
 /**
- * Class for the CanvasPainter.
+ * Abstract class for the CanvasPainter.
  * The CanvasPainter is used for painting a fractal 
  * on the canvas.
  * All methods are public and static.
  */
 public abstract class CanvasPainter {
-
   protected Color fractalColor = Color.WHITE;
   private static final int COLOR_FACTOR = 3;
   private static final int MAX_COLOR_VALUE = 255;
@@ -22,7 +21,7 @@ public abstract class CanvasPainter {
   /**
    * Method for painting the canvas.
    * Draws the canvas on the graphics context.
-   * Uses the method createOffScreenImage to create the offscreen image.
+   * Use the method createOffScreenImage to create the offscreen image.
    *
    * @param chaosCanvas the chaos canvas
    * @param gc the graphics context
