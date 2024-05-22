@@ -16,5 +16,7 @@ public class GameButton extends Button {
     super(text);
     this.setMaxWidth(180);
     this.setMinWidth(180);
+    this.setMinHeight(40);
+    this.setMaxHeight(40);
   }
 }

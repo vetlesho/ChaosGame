@@ -47,12 +47,12 @@ public class SideBar extends VBox {
             chaosGameController::updateFractalColor);
 
     this.getChildren().addAll(
-            fractalSelectionBox, colorPicker, coordinatesButton,
-            createOwnFractal, saveFractalButton, openFileButton,
+            fractalSelectionBox, colorPicker, createOwnFractal,
+            coordinatesButton, saveFractalButton, openFileButton,
             numberOfStepsInput, runGame, resetGame);
     this.setAlignment(Pos.CENTER_RIGHT);
 
-    VBox.setMargin(coordinatesButton, new Insets(30, 0, 0, 0));
+    VBox.setMargin(createOwnFractal, new Insets(30, 0, 0, 0));
     VBox.setMargin(numberOfStepsInput, new Insets(30, 0, 0, 0));
 
     this.getStyleClass().add("side-bar");
