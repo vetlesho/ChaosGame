@@ -18,7 +18,9 @@ public class SliderImaginaryPart extends BaseSlider {
   }
 
   /**
-   * {@inheritDoc}
+   * Get the complex number type of the slider.
+   *
+   * @return the part type of the slider
    */
   @Override
   protected String getPartType() {

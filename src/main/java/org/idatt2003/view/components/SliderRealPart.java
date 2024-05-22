@@ -17,6 +17,11 @@ public class SliderRealPart extends BaseSlider {
     this.getStyleClass().add("top-bottom-padding");
   }
 
+  /**
+   * Get the complex number type of the slider.
+   *
+   * @return the part type of the slider
+   */
   @Override
   protected String getPartType() {
     return "real";
