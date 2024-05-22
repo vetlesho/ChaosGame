@@ -1,0 +1,46 @@
+package org.idatt2003.model.transformations;
+
+import org.idatt2003.model.linalg.Complex;
+import org.idatt2003.model.linalg.Vector2D;
+
+/**
+ * Class for the Julia transformation.
+ * This formula describes the transformation:
+ * <br>
+ * <span style="font-family: Courier">
+ * z → z<sup>2</sup> + c </span>
+ */
+public class ExploreJulia implements Transform2D {
+  private final Complex point;
+
+  /**
+   * Constructor for JuliaTransform.
+   *
+   * @param point the complex number c
+   */
+  public ExploreJulia(Complex point) {
+    this.point = point;
+  }
+
+  public Complex getComplex() {
+    return point;
+  }
+
+  /**
+   * Method to transform a 2D vector using the Julia transformation.
+   * This formula describes this transformation:
+   * <br>
+   * <span style="font-family: Courier">
+   *   z → z<sup>2</sup> + c </span>
+   *
+   * @param point the 2D vector to transform
+   * @return a new 2D vector
+   */
+  @Override
+  public Vector2D transform(Vector2D point) {
+    double temp = point.getX() * point.getX() - point.getY() * point.getY();
+    double b = 2 * point.getX() * point.getY() + this.point.getY();
+    double a = temp + this.point.getX();
+    return new Vector2D(a, b);
+  }
+}
