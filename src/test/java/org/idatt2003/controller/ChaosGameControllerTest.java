@@ -2,6 +2,12 @@ package org.idatt2003.controller;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class for the ChaosGameController class.
+ * Tried to implement Mockito to test the ChaosGameController class.
+ * But we could not because the controller requires JavaFX components.
+ * We have tested the ChaosGameController class manually.
+ */
 class ChaosGameControllerTest {
 
   @Test

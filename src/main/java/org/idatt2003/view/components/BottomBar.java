@@ -3,11 +3,11 @@ package org.idatt2003.view.components;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import org.idatt2003.controller.interfaces.GameController;
+import org.idatt2003.model.linalg.Complex;
 import org.idatt2003.model.transformations.ExploreJulia;
 import org.idatt2003.model.transformations.JuliaTransform;
 import org.idatt2003.model.transformations.Transform2D;
-import org.idatt2003.controller.interfaces.GameController;
-import org.idatt2003.model.linalg.Complex;
 
 
 /**
@@ -70,8 +70,10 @@ public class BottomBar extends HBox {
     sliderInfoVisibility(true);
     sliderRealPart.setValue(complex.getX());
     sliderImaginaryPart.setValue(complex.getY());
-    realPartLabel.setText("Real Part: " + (double) Math.round(complex.getX() * 100) / 100);
-    imaginaryPartLabel.setText("Imaginary Part: " + (double) Math.round(complex.getY() * 100) / 100);
+    realPartLabel.setText("Real Part: "
+            + (double) Math.round(complex.getX() * 100) / 100);
+    imaginaryPartLabel.setText("Imaginary Part: "
+            + (double) Math.round(complex.getY() * 100) / 100);
   }
 
   /**

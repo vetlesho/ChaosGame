@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
-
 import org.idatt2003.model.chaos.ChaosGameDescription;
 import org.idatt2003.model.chaos.ChaosGameType;
 import org.idatt2003.model.linalg.Complex;
@@ -19,6 +18,17 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class for the ChaosGameDescriptionFactory class.
+ * Tests the get method in the ChaosGameDescriptionFactory class, and
+ * that the factory returns the correct ChaosGameDescription object.
+ *
+ * <p>For each method that creates a ChaosGameDescription object,
+ * we test that the object is not null,
+ * that the object is an instance of ChaosGameDescription,
+ * and that the object is equal to the expected object.
+ * After the first tests were created, we used Copilot to generate the rest of the tests.
+ */
 class ChaosGameDescriptionFactoryTest {
   private static ChaosGameDescription expectedJulia;
   private static ChaosGameDescription expectedSierpinski;

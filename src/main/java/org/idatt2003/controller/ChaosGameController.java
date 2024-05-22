@@ -37,7 +37,8 @@ import org.idatt2003.view.components.MinMaxDialog;
  *
  * <p>Implements the GameController interface.
  */
-public class ChaosGameController extends CanvasPainter implements Observer, Subject, GameController {
+public class ChaosGameController extends CanvasPainter
+        implements Observer, Subject, GameController {
   private final ChaosGame chaosGame;
   private final ChaosPage chaosPage;
   private final List<Observer> pageObservers;
@@ -331,6 +332,7 @@ public class ChaosGameController extends CanvasPainter implements Observer, Subj
   /**
    * Method for updating the fractal color.
    * Sets the color than updates the canvas with the new color.
+   *
    * @param color the new color.
    */
   @Override

@@ -12,7 +12,7 @@ public class Complex extends Vector2D {
 
   /**
    * Constructor for Complex class.
-   * super(x, y) is used to call the constructor of the superclass, Vector2D.
+   * Method super(x, y) is used to call the constructor of the superclass, Vector2D.
    *
    * @param real x-coordinate.
    * @param imaginary y-coordinate.
@@ -28,7 +28,6 @@ public class Complex extends Vector2D {
    * <span style="font-family: Courier">
    *   z → &#177;&radic;&#x305;(&#x305;a&#x305; &#x305;+&#x305;
    *   &#x305;b&#x305;i&#x305;) </span>
-   *
    * where:
    * <ul>
    *   <li>a is the real part of the complex number</li>

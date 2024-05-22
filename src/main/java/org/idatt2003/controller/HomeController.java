@@ -48,7 +48,7 @@ public class HomeController {
       view.setEffect(colorAdjust);
       header.setEffect(headerAdjust);
       header.setOpacity(0.2);
-    } else if (mouseEvent == MouseEvent.MOUSE_EXITED){
+    } else if (mouseEvent == MouseEvent.MOUSE_EXITED) {
       video.seek(Duration.seconds(0));
       video.pause();
       view.setEffect(colorAdjust);

@@ -23,10 +23,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-
-
-
-
+/**
+ * Test class for the ChaosGameFileHandler class.
+ * Tests the readFromFile and writeToFile methods.
+ * Tests the skipComments, selectTransformation, parseVector, parseAffine and parseJulia methods.
+ * GitHub Copilot helped with setting up test data and test cases.
+ * Especially in the testReadValidAffine and testReadValidJulia methods,
+ * as these are methods that handle much logic.
+ */
 class ChaosGameFileHandlerTest {
   private static ChaosGameFileHandler fileHandler;
   private static String validAffineContent;

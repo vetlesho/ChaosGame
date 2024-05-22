@@ -2,6 +2,12 @@ package org.idatt2003.controller;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class for the ExploreGameController class.
+ * Tried to implement Mockito to test the ExploreGameController class.
+ * But we could not because the controller requires JavaFX components.
+ * We have tested the ExploreGameController class manually.
+ */
 class ExploreGameControllerTest {
 
   @Test

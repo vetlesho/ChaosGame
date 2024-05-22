@@ -20,8 +20,7 @@ public class ChaosGameDescription {
 
   /**
    * Constructor for ChaosGameDescription.
-   * Validates the coordinates and transformations,
-   * Then sets the
+   * Validates the coordinates and transformations.
    *
    * @param minCoords Minimum coordinates of the game area
    *
@@ -134,7 +133,8 @@ public class ChaosGameDescription {
 
   /**
    * Method for setting the descriptions min coordinates
-   * Does not validate because of the drag and drop functionality in explore game
+   * Does not validate because of the drag and drop functionality in Explore Game.
+   *
    * @param minCoords new min coordinates
    */
   public void setMinCoords(Vector2D minCoords) {
@@ -142,8 +142,9 @@ public class ChaosGameDescription {
   }
 
   /**
-   * Method for setting the descriptions max coordinates
-   * Does not validate because of the drag and drop functionality in explore game
+   * Method for setting the description max coordinates.
+   * Does not validate because of the drag and drop functionality in Explore Game.
+   *
    * @param maxCoords new max coordinates
    */
   public void setMaxCoords(Vector2D maxCoords) {

@@ -60,7 +60,10 @@ public class TopBar extends HBox {
    * @param max the max coordinates
    */
   public void updateTopBar(Vector2D min, Vector2D max) {
-    coordinatesLabel.setText("Coordinates: " + (double) Math.round(min.getX() * 100) / 100 + " , " + (double) Math.round(min.getY() * 100) / 100 +
-            " (min), " + (double) Math.round(max.getX() * 100) / 100 + ", " + (double) Math.round(max.getY() * 100) / 100 + " (max)");
+    coordinatesLabel.setText("Coordinates: "
+            + (double) Math.round(min.getX() * 100) / 100 + " , "
+            + (double) Math.round(min.getY() * 100) / 100 + " (min), "
+            + (double) Math.round(max.getX() * 100) / 100 + ", "
+            + (double) Math.round(max.getY() * 100) / 100 + " (max)");
   }
 }

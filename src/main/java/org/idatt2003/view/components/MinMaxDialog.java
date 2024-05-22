@@ -1,7 +1,6 @@
 package org.idatt2003.view.components;
 
 import java.util.List;
-
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -13,10 +12,10 @@ import javafx.scene.layout.GridPane;
  * The dialog has fields for the min and max x and y coordinates.
  */
 public class MinMaxDialog extends Dialog<List<String>> {
-  private final TextField minXField;
-  private final TextField minYField;
-  private final TextField maxXField;
-  private final TextField maxYField;
+  private final TextField xMinField;
+  private final TextField yMinField;
+  private final TextField xMaxField;
+  private final TextField yMaxField;
 
   /**
    * Constructor for the MinMaxDialog.
@@ -33,29 +32,29 @@ public class MinMaxDialog extends Dialog<List<String>> {
     grid.setHgap(10);
     grid.setVgap(10);
 
-    minXField = new TextField();
-    minXField.setPromptText("Min X");
-    minYField = new TextField();
-    minYField.setPromptText("Min Y");
+    xMinField = new TextField();
+    xMinField.setPromptText("Min X");
+    yMinField = new TextField();
+    yMinField.setPromptText("Min Y");
 
-    maxXField = new TextField();
-    maxXField.setPromptText("Max X");
-    maxYField = new TextField();
-    maxYField.setPromptText("Max Y");
+    xMaxField = new TextField();
+    xMaxField.setPromptText("Max X");
+    yMaxField = new TextField();
+    yMaxField.setPromptText("Max Y");
 
-    grid.add(minXField, 0, 0);
-    grid.add(minYField, 1, 0);
-    grid.add(maxXField, 0, 1);
-    grid.add(maxYField, 1, 1);
+    grid.add(xMinField, 0, 0);
+    grid.add(yMinField, 1, 0);
+    grid.add(xMaxField, 0, 1);
+    grid.add(yMaxField, 1, 1);
 
     getDialogPane().setContent(grid);
 
     setResultConverter(dialogButton -> {
       if (dialogButton == saveButtonType) {
-        String minX = minXField.getText();
-        String minY = minYField.getText();
-        String maxX = maxXField.getText();
-        String maxY = maxYField.getText();
+        String minX = xMinField.getText();
+        String minY = yMinField.getText();
+        String maxX = xMaxField.getText();
+        String maxY = yMaxField.getText();
         return List.of(minX, minY, maxX, maxY);
       }
       return null;

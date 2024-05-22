@@ -10,13 +10,13 @@ import javafx.scene.paint.Color;
 import org.idatt2003.controller.interfaces.GameController;
 import org.idatt2003.controller.interfaces.Observer;
 import org.idatt2003.controller.interfaces.Subject;
+import org.idatt2003.model.chaos.ChaosCanvas;
+import org.idatt2003.model.chaos.ChaosGameDescription;
 import org.idatt2003.model.chaos.ExploreGame;
 import org.idatt2003.model.linalg.Complex;
 import org.idatt2003.model.linalg.Vector2D;
 import org.idatt2003.model.transformations.ExploreJulia;
 import org.idatt2003.model.transformations.Transform2D;
-import org.idatt2003.model.chaos.ChaosCanvas;
-import org.idatt2003.model.chaos.ChaosGameDescription;
 import org.idatt2003.view.ExplorePage;
 
 /**
@@ -26,7 +26,8 @@ import org.idatt2003.view.ExplorePage;
  *
  * <p>The controller implements the GameController, and is a Subject and Observer.
  */
-public class ExploreGameController extends CanvasPainter implements Observer, Subject, GameController {
+public class ExploreGameController extends CanvasPainter
+        implements Observer, Subject, GameController {
   private ExploreGame exploreGame;
   private final ExplorePage explorePage;
   private ChaosCanvas chaosCanvas;
@@ -46,7 +47,7 @@ public class ExploreGameController extends CanvasPainter implements Observer, Su
   /**
    * Constructor for ExploreGameController.
    * Initializes the ExploreGame and ExplorePage.
-   * Registers the controller as an observer of the explore game.
+   * It registers itself as an observer of the ExploreGame.
    *
    */
   public ExploreGameController() {
@@ -140,8 +141,8 @@ public class ExploreGameController extends CanvasPainter implements Observer, Su
    * Prevents zooming out too far by setting a zoom in/out limit
    * and saving the cumulative scale factor.
    * Allows for faster zooming when holding down the control key.
-   * <p>
-   * Inspired by:
+   *
+   * <p>Inspired by:
    * <a href="https://github.com/majidrouhani/idatt2003-gui-demo-mandelbrot">
    * idatt2003-gui-demo-mandelbrot</a>
    *

@@ -31,7 +31,7 @@ public record Matrix2x2(double a, double b, double c, double d) {
    * Method to multiply a 2x2 matrix with a 2D vector.
    * Multiplies the matrix x-values with the vector x-values and the matrix
    * y-values with the vector y-values.
-   * adds the results together to get a new vector with new x and y values.
+   * Method add the results together to get a new vector with new x and y values.
    *
    * @param vector the vector to multiply with.
    * @return a new 2D vector.

@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.idatt2003.model.chaos.ChaosGameDescription;
 import org.idatt2003.model.linalg.Complex;
 import org.idatt2003.model.linalg.Matrix2x2;
@@ -18,6 +17,7 @@ import org.idatt2003.model.transformations.Transform2D;
 
 /**
  * Class for reading and writing chaos game descriptions from and to files.
+ * The class can read and write chaos game descriptions to text files.
  */
 public class ChaosGameFileHandler {
   private final List<Transform2D> transforms = new ArrayList<>();

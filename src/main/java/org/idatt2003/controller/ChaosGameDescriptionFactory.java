@@ -1,17 +1,17 @@
 package org.idatt2003.controller;
 
 import java.util.List;
-
-import org.idatt2003.model.linalg.Vector2D;
-import org.idatt2003.model.transformations.AffineTransform2D;
-import org.idatt2003.model.transformations.JuliaTransform;
 import org.idatt2003.model.chaos.ChaosGameDescription;
 import org.idatt2003.model.chaos.ChaosGameType;
 import org.idatt2003.model.linalg.Complex;
 import org.idatt2003.model.linalg.Matrix2x2;
+import org.idatt2003.model.linalg.Vector2D;
+import org.idatt2003.model.transformations.AffineTransform2D;
+import org.idatt2003.model.transformations.JuliaTransform;
 
 /**
  * Factory class for creating ChaosGameDescription objects.
+ * Creates a ChaosGameDescription object based on the ChaosGameType-enum.
  */
 public class ChaosGameDescriptionFactory {
 

@@ -12,8 +12,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
-import org.idatt2003.controller.PageController;
 import org.idatt2003.controller.HomeController;
+import org.idatt2003.controller.PageController;
 import org.idatt2003.view.components.ExitButton;
 import org.idatt2003.view.components.GameHeader;
 

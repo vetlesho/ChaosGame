@@ -3,7 +3,6 @@ package org.idatt2003.model.chaos;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import org.idatt2003.controller.interfaces.Observer;
 import org.idatt2003.controller.interfaces.Subject;
 import org.idatt2003.model.linalg.Vector2D;
